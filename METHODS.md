@@ -6,7 +6,7 @@
 
 LinkD is an AI-powered platform designed to integrate and query multi-source biomedical data for drug-disease-target associations. The platform provides four interconnected modules:
 
-- **LinkD-DTI**: Drug-target interaction binding affinity analysis (1,068 targets with pKd values)
+- **LinkD-Bind**: Drug-target interaction binding affinity analysis (1,068 targets with pKd values)
 - **LinkD-Select**: Drug selectivity profiling via UMAP clustering (14,981 drugs)
 - **LinkD-Pheno**: Phenotype-drug associations from electronic health records (41K+ associations)
 - **LinkD-Agent**: AI-powered multi-step analysis using LLMs (OpenAI, Google Gemini, Anthropic Claude)

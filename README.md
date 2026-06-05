@@ -12,7 +12,7 @@ LinkD is an integrated platform that combines drug-target interaction binding af
 
 | Module | Description | Key Data |
 |--------|-------------|----------|
-| **LinkD-DTI** | Drug-target interaction binding affinity explorer | 1,068 targets with pKd values, 20K+ binding pairs |
+| **LinkD-Bind** | Drug-target interaction binding affinity explorer | 1,068 targets with pKd values, 20K+ binding pairs |
 | **LinkD-Select** | Drug selectivity profiling via UMAP clustering | 14,981 drugs, selectivity scores, 3 drug types |
 | **LinkD-Pheno** | Phenotype-drug associations from EHR data | 41K+ Mount Sinai + 693 UK Biobank cancer associations |
 | **LinkD-Agent** | AI-powered multi-step analysis agent | Supports OpenAI, Google Gemini, Anthropic Claude |
@@ -118,7 +118,7 @@ python scripts/download_data.py
 ┌─────────────────────────────────────┐
 │  React Frontend (TypeScript)        │
 │  Plotly.js charts, Tailwind CSS     │
-│  Pages: Home, Overview, LinkD-DTI,  │
+│  Pages: Home, Overview, LinkD-Bind, │
 │  LinkD-Select, LinkD-Pheno,         │
 │  LinkD-Agent, About, Docs           │
 └──────────────┬──────────────────────┘
@@ -162,7 +162,7 @@ LinkD_Agent/
 │   │   ├── services.py             # DB loading, data versioning
 │   │   └── routers/                # API endpoints
 │   │       ├── overview.py         # GET /api/overview
-│   │       ├── binding.py          # LinkD-DTI endpoints
+│   │       ├── binding.py          # LinkD-Bind endpoints
 │   │       ├── selectivity.py      # LinkD-Select endpoints
 │   │       ├── ehr.py              # LinkD-Pheno endpoints
 │   │       └── agent.py            # LinkD-Agent endpoints
@@ -185,7 +185,7 @@ LinkD_Agent/
 |------|-----|--------|-------------|
 | Home | `/` | — | Platform overview, key stats, feature cards |
 | Overview | `/overview` | — | Database statistics, records chart, phase distribution |
-| LinkD-DTI | `/binding` | LinkD-DTI | 1,068 gene targets, binding landscape, evidence radar |
+| LinkD-Bind | `/binding` | LinkD-Bind | 1,068 gene targets, binding landscape, evidence radar |
 | LinkD-Select | `/selectivity` | LinkD-Select | UMAP landscape, 14,981 drugs, selectivity profiles |
 | LinkD-Pheno | `/ehr` | LinkD-Pheno | Cancer-focused EHR, volcano plot (OR vs -log10p) |
 | LinkD-Agent | `/agent` | LinkD-Agent | Free Gemini model or custom API key, plan + execute |

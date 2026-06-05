@@ -48,7 +48,7 @@ export default function Binding() {
 
   return (
     <div>
-      <h2 className="text-xl font-bold text-gray-800 mb-2">LinkD-DTI: Drug-Target Interaction Binding Affinity</h2>
+      <h2 className="text-xl font-bold text-gray-800 mb-2">LinkD-Bind: Drug-Target Interaction Binding Affinity</h2>
       <p className="text-sm text-gray-500 mb-4">Browse all {data?.total?.toLocaleString() || '...'} gene targets with binding statistics. Click a gene to explore its drug binding landscape.</p>
 
       {/* Search bar */}

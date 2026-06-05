@@ -26,7 +26,7 @@ export const PLOTLY_LAYOUT: Record<string, any> = {
 export const NAV_ITEMS = [
   { path: '/', label: 'Home' },
   { path: '/overview', label: 'Overview' },
-  { path: '/binding', label: 'LinkD-DTI' },
+  { path: '/binding', label: 'LinkD-Bind' },
   { path: '/selectivity', label: 'LinkD-Select' },
   { path: '/ehr', label: 'LinkD-Pheno' },
   { path: '/agent', label: 'LinkD-Agent' },

@@ -6,7 +6,7 @@
 
 #### Comprehensive Data Integration
 
-The LinkD platform integrates multiple biomedical data sources across four modules (LinkD-DTI, LinkD-Select, LinkD-Pheno, LinkD-Agent), providing comprehensive coverage of drug-disease-target relationships:
+The LinkD platform integrates multiple biomedical data sources across four modules (LinkD-Bind, LinkD-Select, LinkD-Pheno, LinkD-Agent), providing comprehensive coverage of drug-disease-target relationships:
 
 **Drug-Target-Disease Associations:**
 - **Total Records**: 276,147 associations

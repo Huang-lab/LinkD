@@ -3,7 +3,7 @@ import { COLORS } from '../styles/theme';
 
 const MODULES = [
   {
-    title: 'LinkD-DTI: Drug-Target Interaction Binding Affinity',
+    title: 'LinkD-Bind: Drug-Target Interaction Binding Affinity',
     path: '/binding',
     desc: 'Browse and search all gene targets with quantitative binding affinity data.',
     features: [

@@ -50,7 +50,7 @@ export default function Overview() {
       {/* Feature explorer links */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-6">
         {[
-          { label: 'LinkD-DTI', path: '/binding', desc: 'Drug-target interaction binding affinity', color: COLORS.primary },
+          { label: 'LinkD-Bind', path: '/binding', desc: 'Drug-target interaction binding affinity', color: COLORS.primary },
           { label: 'LinkD-Select', path: '/selectivity', desc: 'Drug selectivity landscape', color: COLORS.green },
           { label: 'LinkD-Pheno', path: '/ehr', desc: 'Phenotype-drug associations', color: COLORS.amber },
           { label: 'LinkD-Agent', path: '/agent', desc: 'AI multi-source analysis', color: COLORS.purple },

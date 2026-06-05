@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-06-06: Module Rename — LinkD-DTI → LinkD-Bind
+
+- Renamed module **LinkD-DTI → LinkD-Bind** across the web server (nav bar, Home, Overview, Binding page heading, Docs) and documentation. Route (`/binding`) and API paths (`/api/binding/*`) are unchanged.
+
 ## 2026-03-26: LinkD Branding + Publication Prep
 
 - Renamed modules: Binding → **LinkD-DTI**, Selectivity → **LinkD-Select**, EHR → **LinkD-Pheno**, AI Agent → **LinkD-Agent**

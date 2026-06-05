@@ -4,7 +4,7 @@ import { fetchOverview } from '../api/client';
 import { COLORS } from '../styles/theme';
 
 const FEATURES = [
-  { title: 'LinkD-DTI', desc: 'Explore 20,000+ drug-target interaction binding affinities (pKd) with selectivity scores from ChEMBL bioactivity data.', path: '/binding', color: COLORS.primary, icon: '🔬' },
+  { title: 'LinkD-Bind', desc: 'Explore 20,000+ drug-target interaction binding affinities (pKd) with selectivity scores from ChEMBL bioactivity data.', path: '/binding', color: COLORS.primary, icon: '🔬' },
   { title: 'LinkD-Select', desc: 'Visualize drug selectivity landscape via UMAP clustering. Identify highly selective vs broad-spectrum compounds.', path: '/selectivity', color: COLORS.green, icon: '🎯' },
   { title: 'LinkD-Pheno', desc: 'Real-world drug-disease associations from Mount Sinai and UK Biobank electronic health records (41K+ associations).', path: '/ehr', color: COLORS.amber, icon: '🏥' },
   { title: 'LinkD-Agent', desc: 'Ask questions in natural language. The LLM agent creates multi-step analysis plans across all data sources.', path: '/agent', color: COLORS.purple, icon: '🤖' },
