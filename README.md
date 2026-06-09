@@ -84,15 +84,36 @@ python scripts/download_data.py
 
 ### Render (recommended for public hosting)
 
+The frontend is **prebuilt and committed** to git (`interactive_web_server/frontend/dist/`), so Render does **not** run an npm build — it only installs Python dependencies and serves the prebuilt bundle ([main.py](interactive_web_server/backend/main.py) serves `frontend/dist/` when present). This keeps deploys fast and avoids consuming build pipeline minutes on the frontend.
+
 1. Push code to GitHub
-2. Create Render web service → connect repo → auto-detects `render.yaml`
-3. Add environment variables in Render dashboard:
-   - `DATABASE_DIR` = `/opt/render/project/src/data`
+2. Create a Render web service → connect the repo
+3. Set the commands (Dashboard → **Settings → Build & Deploy**):
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `python scripts/download_data.py && cd interactive_web_server/backend && python -m uvicorn main:app --host 0.0.0.0 --port $PORT`
+4. Add environment variables (Dashboard → **Environment**):
+   - `DATABASE_DIR` = `/opt/render/project/src/data/Database`
    - `GEMINI_FREE_KEY` = your free Gemini API key (for LinkD-Agent free mode)
    - Optional: `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`
-4. Deploy — first build downloads data from Zenodo (~10 min)
+   - `NODE_VERSION` = `22` (only needed if you ever re-enable the npm build on Render; Vite 8 requires Node ≥20.19/≥22.12)
+5. Add a 20 GB persistent disk mounted at `/opt/render/project/src/data`
+6. Deploy — the **first start** downloads data from Zenodo to the disk (~10 min); later deploys skip it because the data persists on the disk
 
-**Cost**: $11/mo (Render Starter $7 + 20GB disk $4)
+**Cost**: $11/mo (Render Starter $7 + 20GB disk $4). Builds also consume your **workspace pipeline minutes**; if those run out, deploys fail *before the build starts* (status "Failed", "Awaiting build logs…" with no output) — wait for the monthly reset or upgrade the workspace.
+
+> **Note**: `render.yaml` documents this setup, but a service configured through the Render dashboard reads its Build/Start commands from the **dashboard**, not from `render.yaml`. Keep the two in sync, or recreate the service as a **Blueprint** to make `render.yaml` authoritative.
+
+### Updating the frontend
+
+Because the frontend is served from the committed `dist/`, Render does not rebuild it. **After changing any frontend source (`interactive_web_server/frontend/src/`), rebuild and commit the output**, or your changes won't appear on the live site:
+
+```bash
+cd interactive_web_server/frontend && npm run build && cd ../..
+git add interactive_web_server/frontend/dist
+git commit -m "rebuild frontend" && git push
+```
+
+Backend-only changes (Python under `backend/`, `agent/`) do **not** need a frontend rebuild.
 
 ### Zenodo (data hosting)
 
@@ -232,6 +253,8 @@ Interactive API docs: `http://localhost:8000/docs` (Swagger UI)
 | Agent error "no attribute client" | Use latest `agent/llm_planning_agent.py` |
 | Parquet queries slow | Ensure `drug_index.json` and `target_index.json` exist |
 | EHR 500 error | Check for duplicate columns — fixed in latest version |
+| UI change not showing after deploy | Frontend is served from the committed `dist/` — run `npm run build` and commit `dist/` (Render does not build the frontend) |
+| Render deploy fails with empty build logs | Workspace is out of **pipeline minutes** (build never starts) — wait for the monthly reset or upgrade the workspace plan |
 
 ## License
 
