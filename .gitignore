@@ -24,6 +24,9 @@ Target_Disease_Association/
 # Figshare upload staging
 figshare_upload/
 
+# Deep-dive deliverables (generated figures + slide deck)
+deep_dive_deliverables/
+
 # Node
 interactive_web_server/frontend/node_modules/
 
