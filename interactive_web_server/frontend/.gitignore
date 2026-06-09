@@ -8,7 +8,8 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
-dist
+# dist/ is committed to git so Render serves the prebuilt frontend without an npm build.
+# After changing frontend source, rebuild locally (npm run build) and commit dist/.
 dist-ssr
 *.local
 

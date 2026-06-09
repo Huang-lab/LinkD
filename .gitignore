@@ -30,8 +30,8 @@ deep_dive_deliverables/
 # Node
 interactive_web_server/frontend/node_modules/
 
-# Keep frontend build (dist/) in git for single-port deployment
-# !interactive_web_server/frontend/dist/
+# Keep frontend build (dist/) in git for single-port deployment (avoids npm build on Render)
+!interactive_web_server/frontend/dist/
 
 # Jupyter
 .ipynb_checkpoints/
