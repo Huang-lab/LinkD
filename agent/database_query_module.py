@@ -71,7 +71,15 @@ class DrugDiseaseTargetDB:
         target_priority_file = association_dir / "target_priority.csv"
         if target_priority_file.exists():
             print(f"Loading {target_priority_file.name}...")
-            self.dfs['target_priority'] = pd.read_csv(target_priority_file, low_memory=False)
+            # This file is ~900 MB; loading it whole costs multiple GB of RAM and OOMs
+            # small instances. Only these 6 columns are ever read (gene/disease priority
+            # lookups), so load just them — keeps all rows, drops large unused text fields.
+            tp_cols = ['targetId', 'Gene', 'diseaseId', 'score', 'evidenceCount', 'subject_label']
+            try:
+                self.dfs['target_priority'] = pd.read_csv(target_priority_file, usecols=tp_cols, low_memory=False)
+            except ValueError:
+                # Column names differ from expectation — fall back to a bounded row sample
+                self.dfs['target_priority'] = pd.read_csv(target_priority_file, nrows=100000, low_memory=False)
             print(f"  Loaded {len(self.dfs['target_priority']):,} records")
         
         # Disease-target associations (by source) - load sample if too large and load_full_data is False
