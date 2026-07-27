@@ -17,7 +17,7 @@ export default function About() {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <h2 className="text-xl font-bold text-gray-800 mb-4">About LinkD Agent</h2>
+      <h2 className="text-xl font-bold text-gray-800 mb-4">About LinkD</h2>
 
       {/* Data Version */}
       {version?.data_version && (
@@ -33,19 +33,14 @@ export default function About() {
       {/* Overview */}
       <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm mb-6">
         <p className="text-sm text-gray-600 leading-relaxed mb-4">
-          <strong>LinkD</strong> is an agentic cancer drug discovery platform that bridges the gap between
-          target-centric and phenotype-driven computational approaches. Conventional methods either predict
-          drug-target interactions in isolation — missing the broader selectivity landscape across the
-          proteome — or leverage phenotypic screens without mechanistic resolution to specific molecular targets.
-        </p>
-        <p className="text-sm text-gray-600 leading-relaxed mb-4">
-          LinkD addresses these limitations by integrating drug-target binding affinity and selectivity metrics
-          across the druggable proteome, CRISPR-based genetic dependency maps (PRISM, GDSC) linking functional
-          drug response to gene knockouts, and population-scale electronic health record associations from
-          Mount Sinai (11.5M individuals) and UK Biobank (500K participants) for real-world clinical validation.
+          <strong>LinkD: An Agentic Platform for Drug Repurposing Unified across Molecular, Phenotypic, and Clinical Scales</strong>{' '}
+          integrates drug-target binding affinity and selectivity metrics across the druggable proteome,
+          CRISPR-based genetic dependency maps (PRISM, GDSC) linking functional drug response to gene knockouts,
+          and population-scale electronic health record associations from Mount Sinai and UK Biobank for
+          real-world clinical validation.
         </p>
         <p className="text-sm text-gray-600 leading-relaxed">
-          An AI-powered agent (LinkD-Agent) enables researchers to query across all evidence sources using
+          An AI-powered agent (<strong>LinkD-Agent</strong>) enables researchers to query across all evidence sources using
           natural language, automatically decomposing complex biomedical questions into multi-step analysis
           plans that systematically retrieve, integrate, and synthesize findings from binding affinity,
           drug response, and EHR data to support drug repurposing decisions.

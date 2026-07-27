@@ -1,4 +1,4 @@
-# LinkD: An Agentic Platform for Drug Repurposing
+# LinkD: An Agentic Platform for Drug Repurposing Unified across Molecular, Phenotypic, and Clinical Scales
 
 LinkD unifies molecular, phenotypic, and clinical evidence for cancer drug discovery —
 binding affinity and selectivity, CRISPR drug-response, and EHR associations — behind an

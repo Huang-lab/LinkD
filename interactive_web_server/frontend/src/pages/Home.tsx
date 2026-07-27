@@ -27,13 +27,13 @@ export default function Home() {
     <div>
       {/* Hero */}
       <div className="text-center mb-10">
-        <h1 className="text-3xl font-bold text-gray-900 mb-3">LinkD</h1>
+        <h1 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 max-w-4xl mx-auto leading-snug">
+          LinkD: An Agentic Platform for Drug Repurposing Unified across Molecular, Phenotypic, and Clinical Scales
+        </h1>
         <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-          An agentic cancer drug discovery platform that bridges the gap between target-centric and
-          phenotype-driven approaches by integrating drug-target binding affinity and selectivity
-          landscapes across the druggable proteome, CRISPR-based functional drug response data,
-          and population-scale electronic health record associations — unified through an AI-powered
-          agent for systematic multi-source evidence analysis.
+          LinkD unifies molecular, phenotypic, and clinical evidence for cancer drug discovery —
+          binding affinity and selectivity, CRISPR drug-response, and EHR associations — behind an
+          AI agent (<strong>LinkD-Agent</strong>) that plans and executes multi-step analyses from natural language.
         </p>
       </div>
 
