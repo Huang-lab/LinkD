@@ -25,5 +25,7 @@ python scripts/reviewer_data/validate_package.py
 
 The packager takes newly extracted panel tables when present, combines them
 with the licensed static assets and release metadata in
-`build/reviewer_bundle/`, and writes the ZIP and SHA-256 companion under
-`zenodo_upload/`.
+`build/reviewer_bundle/`, and writes the ZIP under `zenodo_upload/`. It also
+writes a local SHA-256 companion for author-side verification; only the ZIP is
+uploaded to Zenodo because the notebook verifies Zenodo's checksum and the
+archive's internal SHA-256 manifest.

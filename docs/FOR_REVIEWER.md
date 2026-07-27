@@ -25,7 +25,7 @@ under `For_Reviewer/outputs/`. Static submitted panels are displayed with
 provenance notes. No GPU, API key, patient-level EHR data, or access to the
 author's `Drug-Repo-scRNA` directory is required.
 
-The live Zenodo version must contain the reproduction ZIP and its `.sha256`
-companion before reviewer release. Author extraction and deterministic
-packaging commands live under `scripts/reviewer_data/` and
+The live Zenodo version only needs the reproduction ZIP. The notebook verifies
+Zenodo's checksum and the ZIP's internal SHA-256 manifest. Author extraction
+and deterministic packaging commands live under `scripts/reviewer_data/` and
 `scripts/prepare_for_reviewer_zenodo.py`, outside the reviewer package.

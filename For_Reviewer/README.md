@@ -21,9 +21,10 @@ All**. It resolves the latest version of Zenodo concept DOI
 `LinkD_Figure_Reproduction_Data.zip`, verifies all checksums and schemas, and
 installs the inputs under `data/` and `static/`.
 
-The live Zenodo record must contain both the ZIP and its `.sha256` companion
-before reviewer release. Until that version is published, the notebook can use
-`../zenodo_upload/` as a prominently labelled author-only testing fallback.
+The live Zenodo record only needs to contain the ZIP. The notebook checks
+Zenodo's published checksum and then verifies every bundled file against the
+ZIP's internal SHA-256 manifest. If the ZIP is not published, the notebook can
+use `../zenodo_upload/` as a prominently labelled author-only testing fallback.
 
 ## Figure notebooks
 
