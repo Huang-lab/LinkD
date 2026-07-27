@@ -77,15 +77,14 @@ python3 benchmark/report/leaderboard.py
 python3 benchmark/report/fig6_cell.py
 ```
 
-## Numeric freeze vs current regen
+## Submission freeze (Fig 6c)
 
 Manuscript / SI (`docs/FIG6_BENCHMARK_SI.md`): orchestrator mean **0.734**,
 T5 **0.467 / 0.806**, n **152**.
 
-On-disk `summary.c1*.jsonl` (and For_Reviewer copies) are a later regen:
-T5 **0.392 / 0.850**, n **144**, orch mean **0.740**. Submission-era n=152
-summaries were not found in this tree. Do not treat auto-regen as the paper
-freeze until restored; Fig 6c for submission should match Submission numbers.
+Active `summary.c1*.jsonl` (and `For_Reviewer/source_data/benchmark/` copies) were
+restored to this submission freeze on 2026-07-27. A later n=144 regen is archived under
+[`archive/submission_regen_144/`](archive/submission_regen_144/).
 
 ## No-cost smoke checks
 

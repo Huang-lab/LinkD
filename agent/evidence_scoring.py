@@ -14,7 +14,7 @@ Replaces the old "count how many sources were found" heuristic with:
       - "penalize_missing": Open Targets style -- missing layers contribute 0 and the
         sum is normalised over ALL weighted layers (presence == confidence).
 
-Design rationale and citations live in docs/feature_plan.md
+Design rationale and citations live in METHODS.md (evidence-weight section).
 (Open Targets weighted harmonic sum; Nat Rev Genet 2025 context/reliability
 weighting + separate confidence score).
 

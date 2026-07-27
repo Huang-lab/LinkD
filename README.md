@@ -6,6 +6,7 @@ AI agent (**LinkD-Agent**) that plans and executes multi-step analyses from natu
 
 **License:** [MIT](LICENSE)  
 **Code:** [https://github.com/Huang-lab/LinkD](https://github.com/Huang-lab/LinkD)  
+**Submission release:** [v1.0-submission](https://github.com/Huang-lab/LinkD/releases/tag/v1.0-submission)  
 **Interactive:** [https://linkd-agent.net/](https://linkd-agent.net/)  
 **Data:** [Zenodo DOI 10.5281/zenodo.21615191](https://doi.org/10.5281/zenodo.21615191) (~16 GB)
 

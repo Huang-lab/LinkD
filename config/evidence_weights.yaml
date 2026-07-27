@@ -18,7 +18,7 @@
 aggregator: strength_coverage
 
 # Per-layer reliability weights (relative; need not sum to 1).
-# Literature-informed defaults -- see docs/feature_plan.md.
+# Literature-informed defaults -- see METHODS.md (evidence-weight section).
 weights:
   genetic_causality: 1.0   # causal gene-disease / Open Targets score  (highest reliability)
   clinical_phase:    1.0   # ChEMBL max clinical trial phase           (real outcomes)

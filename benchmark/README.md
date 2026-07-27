@@ -24,9 +24,9 @@ Fig 6c methods: LinkD · closed-book LLM (**gpt-5.4** lock) · ToolUniverse/OT �
 ## Numeric freeze
 
 Submission / SI scores (orchestrator mean **0.734**; T5 **0.467→0.806**, n **152**) are the
-manuscript freeze. Current `results/` / `For_Reviewer/source_data/benchmark/` regenerations
-use T5 n=144 / orch mean **0.740** — see [TASK_CATALOG.md](TASK_CATALOG.md). Reviewer Fig 6
-panels should match **Submission** numbers, not the later auto-regen, until inputs are restored.
+manuscript freeze in `results/summary.c1*.jsonl` and `For_Reviewer/source_data/benchmark/`.
+See [TASK_CATALOG.md](TASK_CATALOG.md). A later n=144 regen is archived under
+[`archive/submission_regen_144/`](archive/submission_regen_144/).
 
 ## Quick start (deterministic slice)
 

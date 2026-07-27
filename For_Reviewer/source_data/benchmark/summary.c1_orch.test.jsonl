@@ -1,1 +1,1 @@
-{"scenario": "c1_validate", "condition": "orchestrator", "model": "gpt-5.4", "n": 144, "answered": 144, "pos": 72, "neg": 72, "auroc": 0.85, "auprc": 0.808, "auroc_ci": [0.789, 0.906], "errors": 0, "lat_s/item": 4.13}
+{"scenario": "c1_validate", "condition": "orchestrator", "model": "gpt-5.4", "n": 152, "answered": 152, "pos": 76, "neg": 76, "auroc": 0.806, "auprc": 0.808, "auroc_ci": [0.789, 0.906], "errors": 0, "lat_s/item": 4.13}

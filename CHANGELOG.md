@@ -1,5 +1,7 @@
 # Changelog
 
+> Internal development log. Submission release: see [GitHub Releases](https://github.com/Huang-lab/LinkD/releases).
+
 ## 2026-06-29 (d): Cell-spec Figure 6 benchmark panel + SI tables + draft text
 
 - **`benchmark/report/fig6_cell.py`** → `fig6_benchmark_bars.{png,pdf}` (grouped bars, 7 tasks +
@@ -20,7 +22,7 @@
   best/tied** on all three (0.901 / 0.985 / 0.988). So the manuscript-aligned reframe gives LinkD
   real, well-above-chance signal but does NOT flip selectivity/CRISPR/fusion into LinkD wins —
   recognition is the LLM's home turf; LinkD's unique edge stays quantitative pKd + novel interactions.
-  Full numbers in `docs/WEAK_TASK_REDESIGN.md` and `docs/COMPREHENSIVE_TASK_TABLE.md`.
+  Full numbers in `docs/FIG6_BENCHMARK_SI.md` and `benchmark/TASK_CATALOG.md`.
 - **Fix 1 — request timeout.** `llm_client.py` built the OpenAI/Anthropic clients with no timeout;
   the first two background grids hung ~75 min on a stalled localhost-proxy connection (flat CPU, zero
   rows). Added `timeout=90s` + `max_retries=2` to both clients.
@@ -32,7 +34,7 @@
 ## 2026-06-29 (b): Rebuilt the weak modules to the manuscript's own validation form
 
 Read `docs/Submit/Manuscript_VF` and found the "weak" tasks used gold misaligned with what the
-modules do. Rebuilt them (see `docs/WEAK_TASK_REDESIGN.md`); on aligned gold LinkD's weak modules
+modules do. Rebuilt them (see `benchmark/TASK_CATALOG.md`); on aligned gold LinkD's weak modules
 become strong (LinkD-alone deterministic AUROC; LLM/Combined/Orchestrator comparisons deferred to
 API availability — conditions + maps already wired):
 
@@ -62,7 +64,7 @@ API availability — conditions + maps already wired):
   (documented fact — LLM home turf). Headline = **7 tasks**: T1 binding (LinkD-Bind), T2 target-ID
   (causal+clinical), T3 prioritization (TPI), T4 CRISPR→MoA, T5 multi-evidence fusion, T6 MoA
   recall, T7 selectivity (LinkD-Select).
-- **New deliverable `docs/COMPREHENSIVE_TASK_TABLE.md`** — task description × LinkD signal × LLM
+- **New deliverable `docs/FIG6_BENCHMARK_SI.md`** — task description × LinkD signal × LLM
   comparators (gpt-5.4 / claude-sonnet-4-6 / gpt-4.1) × open-source comparators (ToolUniverse /
   OpenTargets / OT-genetics / PubMed; DeepDTA/GraphDTA cited for DTI) × example query × metric ×
   result, with the manuscript-module→task coverage map.
@@ -304,7 +306,7 @@ API availability — conditions + maps already wired):
   with data) scores so sparsely-covered diseases are no longer unfairly penalised.
   Two selectable aggregators: `strength_coverage` (default) and `penalize_missing`
   (Open Targets style). Weights are user-adjustable in `config/evidence_weights.yaml`
-  (`LINKD_EVIDENCE_WEIGHTS` env override). Literature basis in `docs/feature_plan.md`.
+  (`LINKD_EVIDENCE_WEIGHTS` env override). Literature basis in `METHODS.md` (evidence-weight section).
 - `get_comprehensive_drug_target_evidence()` now disease-aware (`disease`/`icd_code`),
   delegates to the weighted scorer, and is backward compatible (`overall_strength`
   retained, now equal to the weighted verdict). Planner summary + agent API surface

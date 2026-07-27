@@ -59,6 +59,14 @@ docs/nr-reporting-summary*.pdf
 docs/nr-software-policy.pdf
 docs/*.docx
 
+# Author-only notes (Nature forms, internal plans) — never push
+docs/_author/
+docs/nr-*-ANSWERS.md
+docs/GIT_AUTHORSHIP.md
+docs/WEAK_TASK_REDESIGN.md
+docs/feature_plan.md
+docs/COMPREHENSIVE_TASK_TABLE.md
+
 # Benchmark caches are tracked when present (Fig 6 / agent eval).
 # Oversized LinkD DB tables stay on Zenodo (see Database/ rules above).
 

@@ -257,7 +257,7 @@ module/layer and grouped by **task type** defined a priori — *what the task te
 wins*. **Prediction** = the answer must be computed from molecular/clinical data and is not
 in any text corpus (LinkD's design target); **Mechanism/Integration** = infer or fuse
 evidence; **Knowledge** = the answer is a documented fact (LLM home turf). Full specification:
-`docs/COMPREHENSIVE_TASK_TABLE.md`.
+`docs/FIG6_BENCHMARK_SI.md` and [`benchmark/TASK_CATALOG.md`](benchmark/TASK_CATALOG.md).
 
 - **T1 · binding affinity** *(Prediction; LinkD-Bind)* — predict pKd for a drug–kinase pair,
   scored against experimental Kd from **TDC DAVIS** (DAVIS CID→ChEMBL via UniChem, targets→LinkD

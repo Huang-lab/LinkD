@@ -273,7 +273,7 @@ The system provides a foundation for evidence-based drug discovery and repurposi
 We evaluate LinkD as a drug-discovery **agent**, head-to-head against frontier LLMs,
 open-source tool-agents, and two LinkD+LLM hybrids, on **external gold standards**
 (independent of LinkD's own tables). The refined benchmark (`benchmark/`; see Methods, and
-`docs/COMPREHENSIVE_TASK_TABLE.md` for the full specification) spans **seven manuscript-aligned
+`docs/FIG6_BENCHMARK_SI.md` and [`benchmark/TASK_CATALOG.md`](benchmark/TASK_CATALOG.md) for the full specification) spans **seven manuscript-aligned
 tasks**, grouped by **task type** defined a priori — *what the task tests, not who wins*:
 
 | # | Type | Task | LinkD module | External gold | Metric |

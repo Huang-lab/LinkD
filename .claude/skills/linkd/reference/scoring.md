@@ -38,7 +38,7 @@ is from **how complete** it is — so sparsely-covered diseases aren't penalised
 
 Basis: Open Targets weighted harmonic sum (user-adjustable, downweights indirect
 sources); *Nat Rev Genet* 2025 — weight by context/reliability and carry a separate
-confidence score. See `docs/feature_plan.md` for citations.
+confidence score. See `METHODS.md` (evidence-weight section) for citations.
 
 ## Output fields (`evidence` / `deep-dive`)
 `strength_score`, `coverage`, `final_score`, `verdict`, `present`, `missing`,

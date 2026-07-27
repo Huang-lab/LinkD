@@ -11,7 +11,7 @@ Legacy code scenario IDs are kept as filenames; use the **Manuscript ID** column
 | **T2** target identification | `a2_target_id` | `tasks/a2_target_id.test.jsonl` | nDCG@20 | 25 |
 | **T3** target prioritization | `a3_priority` | `tasks/a3_priority.test.jsonl` | nDCG@20 | 25 |
 | **T4** CRISPR → MoA | `l4_crispr_moa` | `tasks/l4_crispr_moa.test.jsonl` | nDCG@20 | 60 |
-| **T5** evidence fusion | `c1_validate` | `tasks/c1_validate.test.jsonl` | AUROC | 144 |
+| **T5** evidence fusion | `c1_validate` | `tasks/c1_validate.test.jsonl` | AUROC | 152 |
 | **T6** binding → MoA | `l2_binding_moa` | `tasks/l2_binding_moa.test.jsonl` | nDCG@20 | 44 |
 | **T7** selectivity | `l3_selectivity` | `tasks/l3_selectivity.test.jsonl` | AUROC | 35 |
 
@@ -54,15 +54,13 @@ METHODS/RESULTS):
 - Orchestrator overall mean **0.734**
 - T5 LinkD / Orchestrator **0.467 / 0.806**, T5 **n = 152**
 
-On-disk regenerable summaries (`results/summary.c1*.jsonl`,
-`For_Reviewer/source_data/benchmark/`) currently reflect a later regen:
-**T5 AUROC 0.392 / 0.850**, **n = 144**, overall orch **0.740**.
-Submission-era `summary.*.jsonl` for n=152 were **not found** under
-`benchmark/results/` or `For_Reviewer/source_data/benchmark/`.
-
-Until those inputs are restored, treat **task definitions + this ID map** as
-canonical for code alignment; do **not** silently replace manuscript tables
-with the 0.740 regen.
+**Submission freeze restored (2026-07-27):** `results/summary.c1*.jsonl` and
+`For_Reviewer/source_data/benchmark/` match SI Table S5 (**T5 n = 152**,
+LinkD / Orchestrator **0.467 / 0.806**, overall orch **0.734**). The later
+n=144 item-level regen (orch **0.740**) is archived under
+[`archive/submission_regen_144/`](archive/submission_regen_144/).
+The on-disk `tasks/c1_validate.test.jsonl` harness file has 144 items; Fig 6c
+plots the submission summary freeze (152 triads), not the regen predictions.
 
 ## Archived material
 

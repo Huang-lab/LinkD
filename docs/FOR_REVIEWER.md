@@ -1,5 +1,9 @@
 # Figure reproduction for reviewers
 
+> **Required before Fig 2f–g / Fig 3:** run `python setup/download_source_data.py`
+> (Zenodo [10.5281/zenodo.21615191](https://doi.org/10.5281/zenodo.21615191)).
+> Without it, ~206 MB of panel CSVs are missing and those notebooks will fail.
+
 The **`For_Reviewer/`** package regenerates manuscript figure panels from packaged extracts.
 
 ## Layout
