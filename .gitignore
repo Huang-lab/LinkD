@@ -11,7 +11,7 @@ __pycache__/
 build/
 .eggs/
 
-# Data directories (host on Figshare, ~16 GB total)
+# Data directories (host on Zenodo, ~16 GB total)
 Database/
 DrugTargetMetrics/
 EHR_Results/
@@ -23,7 +23,8 @@ Target_Disease_Association/
 *.parquet
 *.zip
 
-# Figshare upload staging
+# Zenodo upload staging (author machine only; not used by the web server)
+zenodo_upload/
 figshare_upload/
 
 # Deep-dive deliverables (generated figures + slide deck)
@@ -65,7 +66,12 @@ benchmark/results/
 # Local Davis extract (use TDC / Zenodo instead)
 data/
 
-# Full figure-reproduction tree is large; see docs/FOR_REVIEWER.md + Zenodo
+# For_Reviewer: track code + small data; ignore oversized CSVs (Zenodo) and regenerable outputs
+For_Reviewer/source_data/known_drug_rank_crispr_cancer_driver_role.csv
+For_Reviewer/source_data/docking_scores_fig2fg.csv
+For_Reviewer/source_data/For_Reviewer_large_data.zip
+For_Reviewer/outputs/
+For_Reviewer/.venv/
 For Reviewer/
 
 # Claude skill only (ignore other local Claude state)

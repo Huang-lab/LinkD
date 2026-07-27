@@ -1,0 +1,4 @@
+{"scenario": "l3_selectivity", "condition": "linkd_selectivity", "model": "tools-only", "n": 35, "answered": 35, "pos": 19, "neg": 16, "auroc": 0.474, "auprc": 0.58, "auroc_ci": [0.276, 0.668], "errors": 0, "lat_s/item": 0.01}
+{"scenario": "l3_selectivity", "condition": "closed_book", "model": "gpt-4o-mini", "n": 35, "answered": 32, "pos": 17, "neg": 15, "auroc": 0.665, "auprc": 0.768, "auroc_ci": [0.451, 0.843], "errors": 0, "lat_s/item": 1.22}
+{"scenario": "l3_selectivity", "condition": "closed_book", "model": "gpt-4o", "n": 35, "answered": 24, "pos": 13, "neg": 11, "auroc": 0.881, "auprc": 0.919, "auroc_ci": [0.71, 0.99], "errors": 0, "lat_s/item": 1.15}
+{"scenario": "l3_selectivity", "condition": "closed_book", "model": "gpt-4.1", "n": 35, "answered": 35, "pos": 19, "neg": 16, "auroc": 0.908, "auprc": 0.951, "auroc_ci": [0.814, 0.977], "errors": 0, "lat_s/item": 0.85}

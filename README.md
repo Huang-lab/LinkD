@@ -12,7 +12,7 @@ LinkD is an integrated platform that combines drug-target interaction binding af
 >
 > **Data**: [Zenodo DOI 10.5281/zenodo.19241152](https://doi.org/10.5281/zenodo.19241152) (~16 GB)
 >
-> **Figure reproduction for reviewers:** see [docs/FOR_REVIEWER.md](docs/FOR_REVIEWER.md) (large extracts live on Zenodo / reviewer archive, not in git)
+> **Figure reproduction for reviewers:** see [docs/FOR_REVIEWER.md](docs/FOR_REVIEWER.md) and [`For_Reviewer/`](For_Reviewer/) (code in git; oversized CSVs download from Zenodo)
 
 ## Modules
 
@@ -143,21 +143,30 @@ Backend-only changes (Python under `backend/`, `agent/`) do **not** need a front
 
 ### Zenodo (data hosting)
 
-1. Prepare zip archives:
+`zenodo_upload/` is a **local staging folder only** (gitignored). The web server never reads it — runtime data comes from Zenodo HTTPS via `scripts/download_data.py` into `DATABASE_DIR`.
+
+1. Prepare the main dataset zips (15 files, ~16 GB total):
    ```bash
-   bash scripts/prepare_figshare.sh
-   # Creates 15 zip files in figshare_upload/ (~1.3 GB each max)
+   bash scripts/prepare_zenodo.sh
+   # Creates zips in zenodo_upload/ (~1.3 GB each max for parquet parts)
    ```
-2. Go to https://doi.org/10.5281/zenodo.19241152 → New Upload
-3. Upload all zip files from `figshare_upload/`
-   - Zenodo allows up to 50 GB per record (no per-file limit issue)
-4. Fill metadata:
+2. Prepare the For_Reviewer large-table zip (figure notebooks; not used by the web app):
+   ```bash
+   bash scripts/prepare_for_reviewer_zenodo.sh
+   # Creates zenodo_upload/For_Reviewer_large_data.zip (~32 MB compressed)
+   ```
+3. Go to https://doi.org/10.5281/zenodo.19241152 → **New version** (or New Upload)
+4. Upload all zips from `zenodo_upload/` (the 15 dataset archives + optional `For_Reviewer_large_data.zip`)
+5. Fill metadata:
    - **Title**: LinkD: Drug-Target-Disease Multi-Evidence Database
    - **License**: CC BY 4.0
    - **Type**: Dataset
-5. Publish → copy DOI
-6. Update `scripts/download_data.py` with Zenodo file URLs
-7. Update this README with DOI
+6. Publish → copy DOI / file URLs
+7. Update `scripts/download_data.py` with dataset file URLs if they changed
+8. Update `For_Reviewer/setup/download_source_data.py` with the `For_Reviewer_large_data.zip` URL if needed
+9. Update this README with DOI
+
+Legacy alias: `bash scripts/prepare_figshare.sh` still works and calls `prepare_zenodo.sh`.
 
 ## Architecture
 

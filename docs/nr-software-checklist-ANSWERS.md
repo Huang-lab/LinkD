@@ -2,7 +2,7 @@
 
 Paste into [`nr-software-policy.pdf`](nr-software-policy.pdf) (**nature research | software submission checklist**, June 2017) using **Adobe Reader**.  
 Companion guidance: https://www.nature.com/documents/GuidelinesCodePublication.pdf  
-Sources: manuscript Code availability, root `README.md`, `For Reviewer/`, Zenodo deposit.
+Sources: manuscript Code availability, root `README.md`, `For_Reviewer/`, Zenodo deposit.
 
 ---
 
@@ -21,8 +21,8 @@ MIT `LICENSE` is in the repository root (commit `ef481b9`). After push, add one 
 ### 2. Pinned dependency / tool versions — tentative
 
 ```
-Python 3.12 (For Reviewer environment.yml; root README).
-For Reviewer: pandas≥2.0, numpy≥1.24, matplotlib≥3.7, seaborn≥0.13, openpyxl≥3.1, pyarrow≥14.0, scipy≥1.11, jupyter, nbclient, ipykernel.
+Python 3.12 (For_Reviewer environment.yml; root README).
+For_Reviewer: pandas≥2.0, numpy≥1.24, matplotlib≥3.7, seaborn≥0.13, openpyxl≥3.1, pyarrow≥14.0, scipy≥1.11, jupyter, nbclient, ipykernel.
 Full app (requirements.txt): fastapi≥0.100, uvicorn≥0.23, gradio≥4, openai≥1, google-generativeai≥0.4, anthropic≥0.20, plus core data/viz packages.
 Docking (SI): RDKit ≥2022.09, Open Babel ≥3.1, AutoDockTools/MGLTools, PDB2PQR ≥3.x, FPocket, P2Rank, Smina (confirm builds).
 OS tested [TENTATIVE]: macOS 15 (darwin) and/or Ubuntu 22.04.
@@ -34,7 +34,7 @@ Node.js and browser versions: record from author machine when pasting (frontend 
 
 | Step | Tentative time |
 |------|----------------|
-| For Reviewer venv + pip | ~10 minutes |
+| For_Reviewer venv + pip | ~10 minutes |
 | Full app install (no Zenodo) | ~30 minutes |
 | Zenodo ~16 GB download/extract | ~30–120 minutes (network-dependent) |
 | `execute_all.py` on packaged extracts | ~15–45 minutes |
@@ -43,7 +43,7 @@ Node.js and browser versions: record from author machine when pasting (frontend 
 ### 4. Colleague install test — tentative
 
 ```
-[TENTATIVE] Installation of the For Reviewer package and/or local web app will be tested by a colleague unfamiliar with LinkD prior to or during revision (name/date: REPLACE). Feedback will be used to clarify README steps.
+[TENTATIVE] Installation of the For_Reviewer package and/or local web app will be tested by a colleague unfamiliar with LinkD prior to or during revision (name/date: REPLACE). Feedback will be used to clarify README steps.
 ```
 
 ### 5. Public access — tentative confirmation
@@ -81,7 +81,7 @@ Yes — two tiers:
 
 1) Full redistributable prediction and summary tables: Zenodo DOI 10.5281/zenodo.19241152 (https://zenodo.org/records/19241152), including drug–protein affinity/selectivity products, processed drug-response summaries, and aggregate EHR statistics.
 
-2) Figure-panel demo extracts for peer review (no PHI, no GPU): For Reviewer/source_data/ with checksums in For Reviewer/source_data/manifest.csv. Run For Reviewer/notebooks/00_Setup_and_Data_Check.ipynb or For Reviewer/execute_all.py.
+2) Figure-panel demo extracts for peer review (no PHI, no GPU): For_Reviewer/source_data/ with checksums in For_Reviewer/source_data/manifest.csv. Run For_Reviewer/notebooks/00_Setup_and_Data_Check.ipynb or For_Reviewer/execute_all.py.
 
 Individual-level Mount Sinai / UK Biobank EHR cannot be shared; demos use aggregate odds ratios and VCT summary tables only.
 ```
@@ -95,10 +95,10 @@ Individual-level Mount Sinai / UK Biobank EHR cannot be shared; demos use aggreg
 ```
 Primary platform: macOS or Linux (Windows via WSL also typical). Python 3.10+ (3.12 recommended).
 
-Figure-reproduction environment (For Reviewer):
-- pip install -r For Reviewer/requirements-repro.txt
+Figure-reproduction environment (For_Reviewer):
+- pip install -r For_Reviewer/requirements-repro.txt
   (pandas≥2.0, numpy≥1.24, matplotlib≥3.7, seaborn≥0.13, openpyxl≥3.1, pyarrow≥14.0, scipy≥1.11, jupyter, nbclient, ipykernel)
-- Optional: conda env create -f For Reviewer/environment.yml && conda activate linkd-repro
+- Optional: conda env create -f For_Reviewer/environment.yml && conda activate linkd-repro
 
 Full LinkD-Agent application (repository root README):
 - conda create -n ttdrug python=3.12; pip install -r requirements.txt
@@ -113,13 +113,13 @@ OS tested [TENTATIVE]: macOS 15 (darwin) and/or Ubuntu 22.04.
 **Versions the software has been tested on**
 
 ```
-[TENTATIVE — confirm from author machine] Python 3.12.x; packages at or above For Reviewer/requirements-repro.txt and root requirements.txt minima; Node.js as used for interactive_web_server/frontend build; browsers used to test https://linkd-agent.net/ (Chrome/Safari/Firefox as applicable). Record `pip freeze` / Node version when finalizing.
+[TENTATIVE — confirm from author machine] Python 3.12.x; packages at or above For_Reviewer/requirements-repro.txt and root requirements.txt minima; Node.js as used for interactive_web_server/frontend build; browsers used to test https://linkd-agent.net/ (Chrome/Safari/Firefox as applicable). Record `pip freeze` / Node version when finalizing.
 ```
 
 **Any required non-standard hardware**
 
 ```
-No special hardware for For Reviewer figure regeneration (no GPU, no network). Full model training / proteome-scale docking historically used HPC resources; reviewers can rely on packaged predictions and Zenodo extracts. Optional LLM agent demos need network access to provider APIs.
+No special hardware for For_Reviewer figure regeneration (no GPU, no network). Full model training / proteome-scale docking historically used HPC resources; reviewers can rely on packaged predictions and Zenodo extracts. Optional LLM agent demos need network access to provider APIs.
 ```
 
 #### 2. Installation guide
@@ -128,7 +128,7 @@ No special hardware for For Reviewer figure regeneration (no GPU, no network). F
 
 ```
 Figure reproduction (recommended for reviewers of Results figures):
-  cd "For Reviewer"
+  cd For_Reviewer
   python3 -m venv .venv && source .venv/bin/activate
   pip install -r requirements-repro.txt
   jupyter notebook notebooks/00_Setup_and_Data_Check.ipynb
@@ -150,7 +150,7 @@ Data for the full app: python scripts/download_data.py (Zenodo) or manual extrac
 
 ```
 [TENTATIVE desktop estimates]
-For Reviewer venv + pip install: ~10 minutes (network-dependent).
+For_Reviewer venv + pip install: ~10 minutes (network-dependent).
 Full app (Python + npm build) without downloading the ~16 GB Zenodo bundle: ~30 minutes.
 Zenodo data download/extract (~16 GB): typically ~30–120 minutes depending on bandwidth.
 ```
@@ -160,7 +160,7 @@ Zenodo data download/extract (~16 GB): typically ~30–120 minutes depending on 
 **Instructions to run on data**
 
 ```
-1) Figure panels: from For Reviewer/, run python execute_all.py (or open individual Figure*.ipynb notebooks). Outputs: outputs/figures/ and outputs/source_data/.
+1) Figure panels: from For_Reviewer/, run python execute_all.py (or open individual Figure*.ipynb notebooks). Outputs: outputs/figures/ and outputs/source_data/.
 
 2) Agent skill CLI examples (repository):
   .claude/skills/linkd/scripts/linkd target-info EGFR
@@ -172,7 +172,7 @@ Zenodo data download/extract (~16 GB): typically ~30–120 minutes depending on 
 **Expected output**
 
 ```
-For Reviewer: PDF/PNG panels under outputs/figures/ and CSV source data under outputs/source_data/; optional validation via python validation/validate_claims.py.
+For_Reviewer: PDF/PNG panels under outputs/figures/ and CSV source data under outputs/source_data/; optional validation via python validation/validate_claims.py.
 Agent/web: structured multi-evidence summaries (binding, selectivity, CRISPR concordance, EHR odds ratios) for queried drug–target–disease entities.
 ```
 
@@ -180,7 +180,7 @@ Agent/web: structured multi-evidence summaries (binding, selectivity, CRISPR con
 
 ```
 [TENTATIVE desktop estimates]
-For Reviewer execute_all.py on packaged extracts: ~15–45 minutes (no GPU). Single-notebook panels usually complete faster.
+For_Reviewer execute_all.py on packaged extracts: ~15–45 minutes (no GPU). Single-notebook panels usually complete faster.
 Live website queries: seconds to ~2 minutes depending on LLM backend.
 ```
 
@@ -189,15 +189,15 @@ Live website queries: seconds to ~2 minutes depending on LLM backend.
 **How to run the software on your data**
 
 ```
-See repository README.md (Quick Start, Data, Agent Skill) and For Reviewer/README.md, ENVIRONMENT.md, DATA_AVAILABILITY.md, REPRODUCIBILITY.md, MANUSCRIPT_MAP.md.
+See repository README.md (Quick Start, Data, Agent Skill) and For_Reviewer/README.md, ENVIRONMENT.md, DATA_AVAILABILITY.md, REPRODUCIBILITY.md, MANUSCRIPT_MAP.md.
 
-To analyse new queries against the shipped LinkD tables, use LinkD-Agent (web or CLI) after placing Zenodo extracts in the expected directories. To regenerate manuscript figures from the reviewer package, use only For Reviewer/source_data/ paths (enforced by linkd_repro.paths). Custom docking or full model retraining requires the SI pipeline and training code/data beyond the reviewer extracts.
+To analyse new queries against the shipped LinkD tables, use LinkD-Agent (web or CLI) after placing Zenodo extracts in the expected directories. To regenerate manuscript figures from the reviewer package, use only For_Reviewer/source_data/ paths (enforced by linkd_repro.paths). Custom docking or full model retraining requires the SI pipeline and training code/data beyond the reviewer extracts.
 ```
 
 **(OPTIONAL) Reproduction instructions**
 
 ```
-We encourage reproduction of quantitative figure panels via For Reviewer notebooks and validation/validate_claims.py. Manuscript Methods describe LinkD-Bind training/evaluation, selectivity scoring, CRISPR concordance, EHR logistic regression with propensity-score matching, and agent architecture. SI details the docking pipeline. Packaged panels are numerically aligned with source tables (not necessarily pixel-identical to publication composites).
+We encourage reproduction of quantitative figure panels via For_Reviewer notebooks and validation/validate_claims.py. Manuscript Methods describe LinkD-Bind training/evaluation, selectivity scoring, CRISPR concordance, EHR logistic regression with propensity-score matching, and agent architecture. SI details the docking pipeline. Packaged panels are numerically aligned with source tables (not necessarily pixel-identical to publication composites).
 ```
 
 ---
@@ -237,7 +237,7 @@ LinkD source code is released under the MIT License (see LICENSE in https://gith
 
 ## Additional notes (not formal checklist fields)
 
-- Nature guidelines ask for a single zip **or** a link where editors/reviewers can access all required content. Prefer the GitHub + Zenodo + For Reviewer package links above rather than uploading a huge zip if editors accept URLs.
+- Nature guidelines ask for a single zip **or** a link where editors/reviewers can access all required content. Prefer the GitHub + Zenodo + For_Reviewer package links above rather than uploading a huge zip if editors accept URLs.
 - Code availability statement already in the manuscript (GitHub + linkd-agent.net; LLM keys/weights excluded) — add MIT once the LICENSE file is on GitHub.
 - Colleague install test: record name/date in Gaps item 4 when done.
 - Examples of well-structured packages cited on the form (for author reference only): neurodata MGC/LOL GitHub repos; Nature/NBT software supplements listed on the PDF.
@@ -250,4 +250,4 @@ LinkD source code is released under the MIT License (see LICENSE in https://gith
 2. Enter corresponding author.
 3. Tick / describe each Required content item using the blocks above.
 4. Paste repository URL, Methods/SI location, and MIT license text (after LICENSE exists on GitHub).
-5. Optionally attach or link the `For Reviewer/` tree as the peer-review demo bundle.
+5. Optionally attach or link the `For_Reviewer/` tree as the peer-review demo bundle.

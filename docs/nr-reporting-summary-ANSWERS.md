@@ -1,7 +1,7 @@
 # Nature Portfolio Reporting Summary — draft answers
 
 Paste into [`nr-reporting-summary-ChengWang.pdf`](nr-reporting-summary-ChengWang.pdf) in **Adobe Reader**.  
-Source: `docs/Submit/Manuscript_Submission.pdf`, SI, and `For Reviewer/`.  
+Source: `docs/Submit/Manuscript_Submission.pdf`, SI, and `For_Reviewer/`.  
 Do **not** enter “n/a” in free-text boxes; use the wording below (or Nature help-text equivalents).
 
 ---
@@ -26,7 +26,7 @@ ChemBERTa (Hugging Face / DeepChem pretrained SMILES encoder as used for LinkD-B
 ESM2 (Meta protein LM; confirm size, e.g. esm2_t33_650M_UR50D);
 RDKit ≥2022.09 (confirm exact); Open Babel ≥3.1; AutoDockTools / MGLTools as installed for PDBQT prep;
 PDB2PQR ≥3.x; FPocket; P2Rank; Smina (AutoDock Vina fork; confirm build);
-Python 3.12; pandas≥2.0, numpy≥1.24, scipy≥1.11, matplotlib≥3.7, seaborn≥0.13 (For Reviewer/requirements-repro.txt).
+Python 3.12; pandas≥2.0, numpy≥1.24, scipy≥1.11, matplotlib≥3.7, seaborn≥0.13 (For_Reviewer/requirements-repro.txt).
 ```
 
 ### 3. Corresponding author / last-updated date — tentative
@@ -83,7 +83,7 @@ No custom software was used to generate primary experimental measurements. Publi
 ### Data analysis
 
 ```
-Custom LinkD and LinkD-Agent code (https://github.com/Huang-lab/LinkD) was used for diffusion-based drug–target affinity prediction (ChemBERTa drug embeddings — confirm checkpoint, e.g. seyonec/ChemBERTa-zinc-base-v1 or equivalent; ESM2 protein embeddings — confirm size, e.g. esm2_t33_650M_UR50D; denoising diffusion + MLP/Random Forest prediction head), proteome-scale selectivity scoring, CRISPR–drug concordance analyses, EHR association and propensity-score matching analyses, and multi-evidence agent orchestration. Molecular docking (Supplementary Information) used RDKit ≥2022.09 (MMFF94 conformers; confirm exact version), Open Babel ≥3.1, AutoDockTools/MGLTools, PDB2PQR ≥3.x, FPocket, P2Rank, and Smina (AutoDock Vina fork; confirm build). Statistical and figure analyses used Python 3.12 with pandas≥2.0, numpy≥1.24, scipy≥1.11, matplotlib≥3.7, seaborn≥0.13, and related packages (see For Reviewer/requirements-repro.txt and repository requirements.txt). LLM APIs (OpenAI / Google Gemini / Anthropic Claude as configured) support agent planning/interpretation only; model weights and API keys are not redistributed. Figure-panel regeneration for review uses the For Reviewer notebooks (no GPU or network required for packaged panels). [TENTATIVE — confirm checkpoint IDs and exact docking tool versions]
+Custom LinkD and LinkD-Agent code (https://github.com/Huang-lab/LinkD) was used for diffusion-based drug–target affinity prediction (ChemBERTa drug embeddings — confirm checkpoint, e.g. seyonec/ChemBERTa-zinc-base-v1 or equivalent; ESM2 protein embeddings — confirm size, e.g. esm2_t33_650M_UR50D; denoising diffusion + MLP/Random Forest prediction head), proteome-scale selectivity scoring, CRISPR–drug concordance analyses, EHR association and propensity-score matching analyses, and multi-evidence agent orchestration. Molecular docking (Supplementary Information) used RDKit ≥2022.09 (MMFF94 conformers; confirm exact version), Open Babel ≥3.1, AutoDockTools/MGLTools, PDB2PQR ≥3.x, FPocket, P2Rank, and Smina (AutoDock Vina fork; confirm build). Statistical and figure analyses used Python 3.12 with pandas≥2.0, numpy≥1.24, scipy≥1.11, matplotlib≥3.7, seaborn≥0.13, and related packages (see For_Reviewer/requirements-repro.txt and repository requirements.txt). LLM APIs (OpenAI / Google Gemini / Anthropic Claude as configured) support agent planning/interpretation only; model weights and API keys are not redistributed. Figure-panel regeneration for review uses the For_Reviewer notebooks (no GPU or network required for packaged panels). [TENTATIVE — confirm checkpoint IDs and exact docking tool versions]
 ```
 
 ---
@@ -158,7 +158,7 @@ Drug–target pairs lacking unambiguous target mapping or valid chemical structu
 ### Replication
 
 ```
-LinkD-Bind benchmark results are reported as means over five independent runs with different random seeds. Cell growth (MTT) experiments were performed in biological duplicates with eight technical wells per condition. EHR associations that passed FDR thresholds were further assessed with 10-fold permutation of exposure labels within matched cohorts. Computational figure panels can be regenerated from packaged extracts in the For Reviewer package (execute_all.py).
+LinkD-Bind benchmark results are reported as means over five independent runs with different random seeds. Cell growth (MTT) experiments were performed in biological duplicates with eight technical wells per condition. EHR associations that passed FDR thresholds were further assessed with 10-fold permutation of exposure labels within matched cohorts. Computational figure panels can be regenerated from packaged extracts in the For_Reviewer package (execute_all.py).
 ```
 
 ### Randomization

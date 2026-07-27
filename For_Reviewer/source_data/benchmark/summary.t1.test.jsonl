@@ -1,0 +1,4 @@
+{"scenario": "t1_dti", "condition": "linkd_cli", "model": "tools-only", "n": 78, "answered": 78, "abstained": 0, "pearson": 0.754, "spearman": 0.764, "rmse": 0.838, "c_index": 0.819, "binary_acc": 0.846, "errors": 0, "lat_s/item": 0.75}
+{"scenario": "t1_dti", "condition": "closed_book", "model": "gpt-4o-mini", "n": 78, "answered": 0, "abstained": 78, "binary_acc": 0.679, "errors": 0, "lat_s/item": 0.82}
+{"scenario": "t1_dti", "condition": "closed_book", "model": "gpt-4o", "n": 78, "answered": 1, "abstained": 77, "binary_acc": 0.692, "errors": 0, "lat_s/item": 0.76}
+{"scenario": "t1_dti", "condition": "closed_book", "model": "gpt-4.1", "n": 78, "answered": 78, "abstained": 0, "pearson": 0.365, "spearman": 0.211, "rmse": 1.498, "c_index": 0.628, "binary_acc": 0.462, "errors": 0, "lat_s/item": 1.03}

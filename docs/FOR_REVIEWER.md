@@ -1,30 +1,52 @@
 # Figure reproduction for reviewers
 
-The full **For Reviewer** notebook package (figure regeneration from packaged extracts) is **not** stored in this GitHub repository because several input tables exceed GitHub file-size limits (e.g. CRISPR concordance ~166 MB, docking extract ~40 MB).
+The **`For_Reviewer/`** package regenerates manuscript figure panels from packaged extracts.
 
-## Where to get it
+## Layout
 
-1. **Primary data products (LinkD predictions + aggregate EHR summaries):**  
-   Zenodo DOI [10.5281/zenodo.19241152](https://doi.org/10.5281/zenodo.19241152)  
-   https://zenodo.org/records/19241152
+| Location | Contents |
+|----------|----------|
+| **GitHub** `For_Reviewer/` | Notebooks, helpers, small `source_data/` tables, illustrations, docs |
+| **Zenodo** `For_Reviewer_large_data.zip` | Oversized CSVs that exceed GitHub’s 100 MB limit |
 
-2. **Figure-panel package:** distributed to editors/reviewers as a companion archive (or updated Zenodo deposit) containing:
-   - `notebooks/` — one notebook per main/supplementary figure
-   - `source_data/` — panel-ready CSVs/XLSX (checksums in `manifest.csv`)
-   - `linkd_repro/` — shared helpers
-   - `requirements-repro.txt`, `environment.yml`
-   - `README.md`, `DATA_AVAILABILITY.md`, `REPRODUCIBILITY.md`, `MANUSCRIPT_MAP.md`, `ENVIRONMENT.md`
+Large files (not in git):
 
-Authors keep the complete tree locally under `For Reviewer/` (gitignored).
+- `known_drug_rank_crispr_cancer_driver_role.csv` (~166 MB)
+- `docking_scores_fig2fg.csv` (~40 MB)
 
-## Quick check (when you have the package)
+## Reviewer quick start
 
 ```bash
-cd "For Reviewer"
+git clone https://github.com/Huang-lab/LinkD.git
+cd LinkD/For_Reviewer
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements-repro.txt
+
+# Fetch oversized tables from Zenodo (skips if already present)
+python setup/download_source_data.py
+
 python execute_all.py
 # optional: python validation/validate_claims.py
 ```
 
-No GPU or network is required for packaged figure panels. Individual-level EHR are never included—only aggregate statistics.
+Or open individual notebooks under `notebooks/` after the download step.
+
+No GPU is required. Individual-level EHR are never included — only aggregate statistics.
+
+## Authors: publish the large zip
+
+```bash
+bash scripts/prepare_for_reviewer_zenodo.sh
+# → zenodo_upload/For_Reviewer_large_data.zip
+# Upload that file to Zenodo record 19241152 (new version), then confirm
+# the URL in For_Reviewer/setup/download_source_data.py
+```
+
+This zip is **independent of the web server**. The app still uses `scripts/download_data.py` and the 15 main dataset zips only.
+
+## Related docs
+
+- [`For_Reviewer/README.md`](../For_Reviewer/README.md)
+- [`For_Reviewer/DATA_AVAILABILITY.md`](../For_Reviewer/DATA_AVAILABILITY.md)
+- [`For_Reviewer/REPRODUCIBILITY.md`](../For_Reviewer/REPRODUCIBILITY.md)
+- Main dataset: [Zenodo DOI 10.5281/zenodo.19241152](https://doi.org/10.5281/zenodo.19241152)

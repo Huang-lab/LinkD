@@ -1,0 +1,1 @@
+{"scenario": "t5_concordance", "condition": "linkd_fusion_pair", "model": "tools-only", "n": 120, "answered": 120, "pos": 60, "neg": 60, "auroc": 0.708, "auprc": 0.746, "auroc_ci": [0.609, 0.79], "errors": 0, "lat_s/item": 0.15}

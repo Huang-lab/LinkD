@@ -1,0 +1,2 @@
+{"scenario": "c1_validate", "condition": "linkd_evidence", "model": "tools-only", "n": 144, "answered": 144, "pos": 72, "neg": 72, "auroc": 0.392, "auprc": 0.435, "auroc_ci": [0.305, 0.483], "errors": 0, "lat_s/item": 0.27}
+{"scenario": "c1_validate", "condition": "ot_assoc", "model": "opentargets", "n": 144, "answered": 144, "pos": 72, "neg": 72, "auroc": 0.705, "auprc": 0.734, "auroc_ci": [0.624, 0.788], "errors": 0, "lat_s/item": 0.0}

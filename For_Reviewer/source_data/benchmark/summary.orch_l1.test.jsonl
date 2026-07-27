@@ -1,0 +1,2 @@
+{"scenario": "t1_dti", "condition": "orchestrator", "model": "claude-sonnet-4-6", "n": 78, "answered": 78, "abstained": 0, "pearson": -0.098, "spearman": 0.481, "rmse": 345019.799, "c_index": 0.692, "binary_acc": 0.795, "errors": 0, "lat_s/item": 6.11}
+{"scenario": "t1_dti", "condition": "orchestrator", "model": "gpt-5.4", "n": 78, "answered": 78, "abstained": 0, "pearson": 0.753, "spearman": 0.764, "rmse": 0.838, "c_index": 0.819, "binary_acc": 0.821, "errors": 0, "lat_s/item": 3.05}
