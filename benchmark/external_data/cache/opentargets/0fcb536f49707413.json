@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL995", "name": "LOSARTAN POTASSIUM", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Type-1 angiotensin II receptor antagonist", "actionType": "ANTAGONIST", "targetName": "Type-1 angiotensin II receptor", "targets": [{"id": "ENSG00000144891", "approvedSymbol": "AGTR1"}]}]}}}}

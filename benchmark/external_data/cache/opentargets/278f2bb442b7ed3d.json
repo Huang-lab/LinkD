@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL1789843", "name": "BELIMUMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Tumor necrosis factor ligand superfamily member 13B inhibitor", "actionType": "INHIBITOR", "targetName": "Tumor necrosis factor ligand superfamily member 13B", "targets": [{"id": "ENSG00000102524", "approvedSymbol": "TNFSF13B"}]}]}}}}

@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL3301612", "name": "ENCORAFENIB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Serine/threonine-protein kinase B-raf inhibitor", "actionType": "INHIBITOR", "targetName": "Serine/threonine-protein kinase B-raf", "targets": [{"id": "ENSG00000157764", "approvedSymbol": "BRAF"}]}]}}}}

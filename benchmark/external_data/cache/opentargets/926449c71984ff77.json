@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL259571", "name": "TAPINAROF", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Aryl hydrocarbon receptor agonist", "actionType": "AGONIST", "targetName": "Aryl hydrocarbon receptor", "targets": [{"id": "ENSG00000106546", "approvedSymbol": "AHR"}]}]}}}}

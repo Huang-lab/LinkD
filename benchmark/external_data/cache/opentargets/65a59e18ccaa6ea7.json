@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL415606", "name": "DEGARELIX", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Gonadotropin-releasing hormone receptor antagonist", "actionType": "ANTAGONIST", "targetName": "Gonadotropin-releasing hormone receptor", "targets": [{"id": "ENSG00000109163", "approvedSymbol": "GNRHR"}]}]}}}}

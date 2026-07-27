@@ -1,7 +1,20 @@
-# Focused benchmark: external-gold, head-to-head agent comparison on cancer.
+# enabled scenarios — manuscript T1–T7 (+ SI diagnostics)
+#
+# Manuscript ID map: see ../TASK_CATALOG.md
+#   T1=t1_dti  T2=a2_target_id  T3=a3_priority  T4=l4_crispr_moa
+#   T5=c1_validate  T6=l2_binding_moa  T7=l3_selectivity
+#   D1=t2_repurpose  D2=l9_safety
+
 enabled:
-  - a2_target_id    # target identification vs OpenTargets approved-drug targets (25 cancers)
-  - t1_dti          # drug-target binding affinity vs TDC DAVIS experimental Kd
-# scoped follow-ups (data prepared, not yet run):
-# - t2_repurposing  # repoDB approved/failed — needs UMLS-CUI -> ICD crosswalk
+  - t1_dti           # T1 binding affinity (TDC DAVIS)
+  - a2_target_id     # T2 target identification (OpenTargets approved)
+  - a3_priority      # T3 target prioritization
+  - l4_crispr_moa    # T4 CRISPR → MoA
+  - c1_validate      # T5 evidence fusion
+  - l2_binding_moa   # T6 binding → MoA
+  - l3_selectivity   # T7 selectivity
+  # SI diagnostics (excluded from headline means):
+  - t2_repurpose     # D1 EHR repurposing (gold-limited)
+  - l9_safety        # D2 FAERS safety (gold-limited)
+
 n_items_per_scenario: 0   # 0 = all available

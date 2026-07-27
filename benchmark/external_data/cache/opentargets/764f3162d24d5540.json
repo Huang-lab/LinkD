@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL2107067", "name": "TESTOSTERONE UNDECANOATE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Androgen Receptor agonist", "actionType": "AGONIST", "targetName": "Androgen receptor", "targets": [{"id": "ENSG00000169083", "approvedSymbol": "AR"}]}]}}}}

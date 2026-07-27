@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL1200764", "name": "METHACHOLINE CHLORIDE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Muscarinic acetylcholine receptor M3 agonist", "actionType": "AGONIST", "targetName": "Muscarinic acetylcholine receptor M3", "targets": [{"id": "ENSG00000133019", "approvedSymbol": "CHRM3"}]}]}}}}

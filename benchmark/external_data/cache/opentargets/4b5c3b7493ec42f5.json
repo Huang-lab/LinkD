@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL93", "name": "ZILEUTON", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Arachidonate 5-lipoxygenase inhibitor", "actionType": "INHIBITOR", "targetName": "Polyunsaturated fatty acid 5-lipoxygenase", "targets": [{"id": "ENSG00000012779", "approvedSymbol": "ALOX5"}]}]}}}}

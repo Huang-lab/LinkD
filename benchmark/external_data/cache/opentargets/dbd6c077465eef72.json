@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL1200500", "name": "BECLOMETHASONE DIPROPIONATE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Glucocorticoid receptor agonist", "actionType": "AGONIST", "targetName": "Glucocorticoid receptor", "targets": [{"id": "ENSG00000113580", "approvedSymbol": "NR3C1"}]}]}}}}

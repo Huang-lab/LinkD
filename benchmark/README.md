@@ -1,57 +1,65 @@
 # LinkD Drug-Discovery Agent Benchmark
 
-A reproducible, external-gold benchmark that compares LinkD **head-to-head with other
-open-source agents** on **cancer** indications — LinkD's strongest use case. All gold
-comes from independent public datasets (never LinkD's own tables). Methodology and
-metric names follow TxAgent/CURE-Bench, BixBench, and MedAgentBench; see
-[AGENT_BENCHMARK_PLAN.md](AGENT_BENCHMARK_PLAN.md) and [../METHODS.md](../METHODS.md).
-The pipeline + metrics are summarised in `results/figures/fig_workflow.png`.
+External-gold oncology agent benchmark for **Manuscript Figure 6c** and SI Tables S1–S5:
+seven headline tasks (**T1–T7**) plus two gold-limited diagnostics (D1/D2).
 
-## Tasks (external gold)
-- **T1 · drug-target binding affinity** — predict pKd for a drug-target pair, scored
-  against **TDC DAVIS** experimental Kd (4,399 LinkD∩DAVIS pairs; 78-pair held-out test).
-- **A2 · target identification** — rank gene targets for a disease, scored against
-  **OpenTargets disease-approved drug targets** over **25 cancer indications**.
+Full ID map, legacy aliases, and numeric-freeze notes:
+[TASK_CATALOG.md](TASK_CATALOG.md). End-to-end re-run: [RERUN.md](RERUN.md).
+SI draft: [`docs/FIG6_BENCHMARK_SI.md`](../docs/FIG6_BENCHMARK_SI.md).
 
-## Agents compared (A2)
-- **linkd** — LinkD multi-evidence database ranker (deterministic, no LLM).
-- **tooluniverse** — OpenTargets *overall* association (ToolUniverse, 2,524 tools).
-- **ot_genetics** — OpenTargets *genetics-only* (genetic_association via direct GraphQL).
-- **pubmed** — keyless NCBI E-utilities literature-mining agent (no install).
-- **closed_book** — base LLMs (gpt-4o-mini / gpt-4o / gpt-4.1).
+## Manuscript ↔ code (headline)
 
-For T1 the deterministic **linkd_cli** (predicted-pKd lookup) is compared with the base LLMs.
+| Manuscript | Code scenario | Metric |
+|---|---|---|
+| T1 binding | `t1_dti` | C-Index |
+| T2 target-ID | `a2_target_id` | nDCG@20 |
+| T3 priority | `a3_priority` | nDCG@20 |
+| T4 CRISPR→MoA | `l4_crispr_moa` | nDCG@20 |
+| T5 fusion | `c1_validate` | AUROC |
+| T6 MoA recall | `l2_binding_moa` | nDCG@20 |
+| T7 selectivity | `l3_selectivity` | AUROC |
 
-## Quick start
+Fig 6c methods: LinkD · closed-book LLM (**gpt-5.4** lock) · ToolUniverse/OT · Combined · Orchestrator.
+
+## Numeric freeze
+
+Submission / SI scores (orchestrator mean **0.734**; T5 **0.467→0.806**, n **152**) are the
+manuscript freeze. Current `results/` / `For_Reviewer/source_data/benchmark/` regenerations
+use T5 n=144 / orch mean **0.740** — see [TASK_CATALOG.md](TASK_CATALOG.md). Reviewer Fig 6
+panels should match **Submission** numbers, not the later auto-regen, until inputs are restored.
+
+## Quick start (deterministic slice)
+
+From the repository root:
+
 ```bash
-# Build / refresh the external gold (cached; A2 needs network once, then offline):
-python3 benchmark/external_data/a2_prefetch.py        # OpenTargets approved-target gold
-python3 benchmark/datasets/a2_target_id.py            # -> tasks/a2_target_id.test.jsonl
-python3 benchmark/datasets/t1_dti.py                  # -> tasks/t1_dti.test.jsonl (TDC DAVIS)
+export DATABASE_DIR="${DATABASE_DIR:-$PWD/Database}"
+# If LinkD tables are missing: python3 scripts/download_data.py  # DOI 10.5281/zenodo.21615191
 
-# A2: all five agent strategies (deterministic agents are zero-cost; LLMs need OPENAI_API_KEY):
-python3 benchmark/run_benchmark.py --scenarios a2_target_id \
-    --conditions linkd,tooluniverse,ot_genetics,pubmed,closed_book --models gpt-4.1 \
-    --out benchmark/results --tag a2
+python3 benchmark/external_data/a2_prefetch.py
+python3 benchmark/datasets/a2_target_id.py
+python3 benchmark/datasets/t1_dti.py
 
-# T1: LinkD predicted pKd vs DAVIS (deterministic, zero API cost):
+# Zero-cost deterministic runs
 python3 benchmark/run_benchmark.py --scenarios t1_dti --conditions linkd_cli \
     --out benchmark/results --tag t1
+python3 benchmark/run_benchmark.py --scenarios a2_target_id \
+    --conditions linkd,tooluniverse,ot_genetics,pubmed \
+    --out benchmark/results --tag a2
 
-# Leaderboard + figures (incl. fig_workflow):
 python3 benchmark/report/leaderboard.py
-python3 benchmark/report/figures.py
-python3 benchmark/report/workflow_figure.py
-
-# Standalone smoke test (zero cost; skips gracefully without data/keys):
+python3 benchmark/report/fig6_cell.py          # Fig 6c heatmap/bars
 python3 benchmark/tests/test_benchmark_smoke.py
 ```
 
-## Layout
-`schema.py` (Item/Prediction + JSONL) · `datasets/` (builders → `tasks/*.jsonl`) ·
-`external_data/` (TDC DAVIS, OpenTargets, PubMed, UniChem — all cached) ·
-`conditions/` (agent adapters) · `scoring/` (ranking, regression) · `run_benchmark.py` ·
-`report/` (leaderboard, figures, workflow_figure) · `tests/test_benchmark_smoke.py`.
+Full LLM/orchestrator grid and PERFORMANCE_REPORT: [RERUN.md](RERUN.md).
+Frozen reviewer copies: `For_Reviewer/source_data/benchmark/`.
 
-Everything is key-gated and skips gracefully: with no keys, the four deterministic agents +
-scoring + figures still run end-to-end at zero API cost from cached gold.
+## Layout
+
+`schema.py` · `datasets/` (T1–T7 + D1/D2 builders) · `tasks/*.jsonl` ·
+`external_data/` (fetchers in git; caches under `cache/`) · `conditions/` · `scoring/` ·
+`run_benchmark.py` · `report/{fig6_cell,performance_report,leaderboard,audit_results}.py` ·
+`archive/` (historical plans + non-headline extras).
+
+Everything is key-gated and skips gracefully when API keys are absent.

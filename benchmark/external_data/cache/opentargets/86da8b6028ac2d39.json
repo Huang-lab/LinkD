@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL2107333", "name": "DIMETHYL FUMARATE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Kelch-like ECH-associated protein 1 inhibitor", "actionType": "INHIBITOR", "targetName": "Kelch-like ECH-associated protein 1", "targets": [{"id": "ENSG00000079999", "approvedSymbol": "KEAP1"}]}]}}}}

@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL5095030", "name": "MOTIXAFORTIDE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "C-X-C chemokine receptor type 4 antagonist", "actionType": "ANTAGONIST", "targetName": "C-X-C chemokine receptor type 4", "targets": [{"id": "ENSG00000121966", "approvedSymbol": "CXCR4"}]}]}}}}

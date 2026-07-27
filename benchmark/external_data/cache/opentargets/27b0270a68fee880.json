@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL2220442", "name": "FLUVASTATIN", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "HMG-CoA reductase inhibitor", "actionType": "INHIBITOR", "targetName": "3-hydroxy-3-methylglutaryl-coenzyme A reductase", "targets": [{"id": "ENSG00000113161", "approvedSymbol": "HMGCR"}]}]}}}}

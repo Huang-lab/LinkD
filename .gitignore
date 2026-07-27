@@ -59,11 +59,10 @@ docs/nr-reporting-summary*.pdf
 docs/nr-software-policy.pdf
 docs/*.docx
 
-# Benchmark caches / run outputs (regenerate locally)
-benchmark/external_data/
-benchmark/results/
+# Benchmark caches are tracked when present (Fig 6 / agent eval).
+# Oversized LinkD DB tables stay on Zenodo (see Database/ rules above).
 
-# Local Davis extract (use TDC / Zenodo instead)
+# Local Davis extract duplicate (prefer TDC cache under benchmark/external_data/cache/)
 data/
 
 # For_Reviewer: track code + small data; ignore oversized CSVs (Zenodo) and regenerable outputs

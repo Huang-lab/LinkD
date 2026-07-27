@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL1743081", "name": "TRALOKINUMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Interleukin-13 inhibitor", "actionType": "INHIBITOR", "targetName": "Interleukin-13", "targets": [{"id": "ENSG00000169194", "approvedSymbol": "IL13"}]}]}}}}

@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL4297973", "name": "HEPATITIS B VIRUS HBSAG SURFACE PROTEIN ANTIGEN", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Surface antigen (HBsAg) vaccine antigen", "actionType": "VACCINE ANTIGEN", "targetName": "Surface antigen (HBsAg)"}]}}}}

@@ -1,5 +1,5 @@
 """
-Standalone smoke test for the focused benchmark (A2 target-ID + T1 binding).
+Standalone smoke test for the manuscript T1–T7 harness (exercises T1/A2 scorers + builders).
 Zero API cost: exercises the scorers, the A2 builder (cancer-only), the stats,
 and the graceful no-provider path.
 

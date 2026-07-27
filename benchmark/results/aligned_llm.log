@@ -1,0 +1,22 @@
+scenarios=['t7_sel_retrieval', 't4_crispr_conc', 't5_concordance'] conditions=['closed_book', 'combined', 'orchestrator'] models=['gpt-5.4', 'claude-sonnet-4-6'] split=test
+
+  t7_sel_retrieval closed_book gpt-5.4                   n=144  answered=144  pos=48  neg=96  auroc=0.882  auprc=0.803  auroc_ci=[0.815, 0.933]  errors=0  lat_s/item=0.95
+  t7_sel_retrieval closed_book claude-sonnet-4-6         n=144  answered=144  pos=48  neg=96  auroc=0.949  auprc=0.786  auroc_ci=[0.902, 0.99]  errors=0  lat_s/item=1.96
+  t7_sel_retrieval combined    gpt-5.4                   n=144  answered=144  pos=48  neg=96  auroc=0.878  auprc=0.817  auroc_ci=[0.808, 0.939]  errors=0  lat_s/item=1.46
+  t7_sel_retrieval combined    claude-sonnet-4-6         n=144  answered=144  pos=48  neg=96  auroc=0.901  auprc=0.775  auroc_ci=[0.84, 0.958]  errors=0  lat_s/item=2.02
+  t7_sel_retrieval orchestrator gpt-5.4                   n=144  answered=144  pos=48  neg=96  auroc=0.901  auprc=0.853  auroc_ci=[0.839, 0.949]  errors=0  lat_s/item=5.43
+  t7_sel_retrieval orchestrator claude-sonnet-4-6         n=144  answered=144  pos=48  neg=96  auroc=0.425  auprc=0.325  auroc_ci=[0.323, 0.524]  errors=0  lat_s/item=12.33
+  t4_crispr_conc closed_book gpt-5.4                   n=120  answered=120  pos=60  neg=60  auroc=0.98  auprc=0.988  auroc_ci=[0.946, 1.0]  errors=0  lat_s/item=1.0
+  t4_crispr_conc closed_book claude-sonnet-4-6         n=120  answered=120  pos=60  neg=60  auroc=0.971  auprc=0.931  auroc_ci=[0.932, 0.999]  errors=0  lat_s/item=1.74
+  t4_crispr_conc combined    gpt-5.4                   n=120  answered=120  pos=60  neg=60  auroc=0.965  auprc=0.974  auroc_ci=[0.931, 0.992]  errors=0  lat_s/item=1.25
+  t4_crispr_conc combined    claude-sonnet-4-6         n=120  answered=120  pos=60  neg=60  auroc=0.941  auprc=0.945  auroc_ci=[0.895, 0.981]  errors=0  lat_s/item=1.89
+  t4_crispr_conc orchestrator gpt-5.4                   n=120  answered=120  pos=60  neg=60  auroc=0.985  auprc=0.987  auroc_ci=[0.967, 0.997]  errors=0  lat_s/item=2.68
+  t4_crispr_conc orchestrator claude-sonnet-4-6         n=120  answered=120  pos=60  neg=60  auroc=0.533  auprc=0.537  auroc_ci=[0.432, 0.623]  errors=0  lat_s/item=10.99
+  t5_concordance closed_book gpt-5.4                   n=120  answered=120  pos=60  neg=60  auroc=0.965  auprc=0.983  auroc_ci=[0.917, 0.997]  errors=0  lat_s/item=0.94
+  t5_concordance closed_book claude-sonnet-4-6         n=120  answered=120  pos=60  neg=60  auroc=0.98  auprc=0.99  auroc_ci=[0.951, 0.998]  errors=0  lat_s/item=1.56
+  t5_concordance combined    gpt-5.4                   n=120  answered=120  pos=60  neg=60  auroc=0.955  auprc=0.972  auroc_ci=[0.9, 0.994]  errors=0  lat_s/item=1.23
+  t5_concordance combined    claude-sonnet-4-6         n=120  answered=120  pos=60  neg=60  auroc=0.963  auprc=0.973  auroc_ci=[0.925, 0.989]  errors=0  lat_s/item=1.66
+  t5_concordance orchestrator gpt-5.4                   n=120  answered=120  pos=60  neg=60  auroc=0.988  auprc=0.994  auroc_ci=[0.97, 0.999]  errors=0  lat_s/item=1.0
+  t5_concordance orchestrator claude-sonnet-4-6         n=120  answered=120  pos=60  neg=60  auroc=0.507  auprc=0.705  auroc_ci=[0.398, 0.608]  errors=0  lat_s/item=11.58
+
+wrote summary (18 rows) to benchmark/results/summary.aligned_llm.test.jsonl

@@ -50,7 +50,7 @@ See [`docs/FOR_REVIEWER.md`](../docs/FOR_REVIEWER.md) for the full reviewer + au
 | `Figure3_LinkD_Pheno.ipynb` | 3a (illustrate), 3b–3h |
 | `Figure4_EHR_Validation.ipynb` | 4a (illustrate), 4b |
 | `Figure5_BetaBlocker_ADRB2.ipynb` | 5a, 5b–c (illustrate), 5d–k |
-| `Figure6_LinkD_Agent.ipynb` | 6a–b (illustrate), 6c |
+| `Figure6_LinkD_Agent.ipynb` | 6a–b (illustrate), 6c (from `source_data/benchmark/`) |
 | `FigureS2_Bind_Quantitative.ipynb` | S2 |
 | `FigureS3_S4_Tissue_Resolved.ipynb` | S3, S4 |
 | `FigureS5_EHR_Volcano.ipynb` | S5 |

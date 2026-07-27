@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL2181927", "name": "FINERENONE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Mineralocorticoid receptor antagonist", "actionType": "ANTAGONIST", "targetName": "Mineralocorticoid receptor", "targets": [{"id": "ENSG00000151623", "approvedSymbol": "NR3C2"}]}]}}}}

@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL1201174", "name": "SITAGLIPTIN PHOSPHATE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Dipeptidyl peptidase IV inhibitor", "actionType": "INHIBITOR", "targetName": "Dipeptidyl peptidase 4", "targets": [{"id": "ENSG00000197635", "approvedSymbol": "DPP4"}]}]}}}}

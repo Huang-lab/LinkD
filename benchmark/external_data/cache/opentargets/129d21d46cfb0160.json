@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL88055", "name": "RIMITEROL", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Beta-2 adrenergic receptor agonist", "actionType": "AGONIST", "targetName": "Beta-2 adrenergic receptor", "targets": [{"id": "ENSG00000169252", "approvedSymbol": "ADRB2"}]}]}}}}

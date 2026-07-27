@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL481", "name": "IRINOTECAN", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "DNA topoisomerase I inhibitor", "actionType": "INHIBITOR", "targetName": "DNA topoisomerase 1", "targets": [{"id": "ENSG00000198900", "approvedSymbol": "TOP1"}]}]}}}}

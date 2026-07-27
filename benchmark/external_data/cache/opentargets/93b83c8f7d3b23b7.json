@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL1201587", "name": "ALEMTUZUMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "CAMPATH-1 antigen inhibitor", "actionType": "INHIBITOR", "targetName": "CAMPATH-1 antigen", "targets": [{"id": "ENSG00000169442", "approvedSymbol": "CD52"}]}]}}}}

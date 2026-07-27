@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL223228", "name": "EFAVIRENZ", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Human immunodeficiency virus type 1 reverse transcriptase inhibitor", "actionType": "INHIBITOR", "targetName": "Human immunodeficiency virus type 1 reverse transcriptase"}]}}}}

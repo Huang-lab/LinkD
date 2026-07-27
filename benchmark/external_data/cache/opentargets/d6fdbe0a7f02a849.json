@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL4297840", "name": "TISLELIZUMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Programmed cell death protein 1 inhibitor", "actionType": "INHIBITOR", "targetName": "Programmed cell death protein 1", "targets": [{"id": "ENSG00000188389", "approvedSymbol": "PDCD1"}]}]}}}}

@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL3990044", "name": "RELATLIMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Lymphocyte activation gene 3 protein inhibitor", "actionType": "INHIBITOR", "targetName": "Lymphocyte activation gene 3 protein", "targets": [{"id": "ENSG00000089692", "approvedSymbol": "LAG3"}]}]}}}}

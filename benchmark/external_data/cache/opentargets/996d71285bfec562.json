@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL4298025", "name": "ZENOCUTUZUMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "ErbB-2/ErbB-3 heterodimer inhibitor", "actionType": "INHIBITOR", "targetName": "ErbB-2/ErbB-3 heterodimer", "targets": [{"id": "ENSG00000141736", "approvedSymbol": "ERBB2"}, {"id": "ENSG00000065361", "approvedSymbol": "ERBB3"}]}]}}}}

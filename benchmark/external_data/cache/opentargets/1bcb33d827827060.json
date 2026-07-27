@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL1201202", "name": "FONDAPARINUX", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Antithrombin-III activator", "actionType": "ACTIVATOR", "targetName": "Antithrombin-III", "targets": [{"id": "ENSG00000117601", "approvedSymbol": "SERPINC1"}]}]}}}}

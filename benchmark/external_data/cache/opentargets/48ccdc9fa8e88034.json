@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL5483015", "name": "ARSENIC TRIOXIDE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Thioredoxin reductase 1 inhibitor", "actionType": "INHIBITOR", "targetName": "Thioredoxin reductase 1, cytoplasmic", "targets": [{"id": "ENSG00000198431", "approvedSymbol": "TXNRD1"}]}]}}}}

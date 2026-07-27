@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL2007641", "name": "PERTUZUMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Receptor protein-tyrosine kinase erbB-2 inhibitor", "actionType": "INHIBITOR", "targetName": "Receptor tyrosine-protein kinase erbB-2", "targets": [{"id": "ENSG00000141736", "approvedSymbol": "ERBB2"}]}]}}}}

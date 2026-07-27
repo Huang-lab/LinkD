@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL964", "name": "DISULFIRAM", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Aldehyde dehydrogenase inhibitor", "actionType": "INHIBITOR", "targetName": "Aldehyde dehydrogenase, mitochondrial", "targets": [{"id": "ENSG00000111275", "approvedSymbol": "ALDH2"}]}]}}}}

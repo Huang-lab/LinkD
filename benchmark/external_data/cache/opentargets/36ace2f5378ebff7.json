@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL398435", "name": "TICAGRELOR", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Purinergic receptor P2Y12 negative allosteric modulator", "actionType": "NEGATIVE ALLOSTERIC MODULATOR", "targetName": "P2Y purinoceptor 12", "targets": [{"id": "ENSG00000169313", "approvedSymbol": "P2RY12"}]}]}}}}

@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL4303525", "name": "OMAVELOXOLONE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Nuclear factor erythroid 2-related factor 2 activator", "actionType": "ACTIVATOR", "targetName": "Nuclear factor erythroid 2-related factor 2", "targets": [{"id": "ENSG00000116044", "approvedSymbol": "NFE2L2"}]}]}}}}

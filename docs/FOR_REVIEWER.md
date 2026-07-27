@@ -33,6 +33,9 @@ Or open individual notebooks under `notebooks/` after the download step.
 
 No GPU is required. Individual-level EHR are never included — only aggregate statistics.
 
+Figure 6c (LinkD-Agent benchmark panel) uses the frozen summaries under
+`For_Reviewer/source_data/benchmark/` (see notebook `Figure6_LinkD_Agent.ipynb`).
+
 ## Authors: publish the large zip
 
 ```bash

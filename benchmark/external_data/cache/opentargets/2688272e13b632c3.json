@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL6068478", "name": "LAZERTINIB MESYLATE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Epidermal growth factor receptor erbB1 inhibitor", "actionType": "INHIBITOR", "targetName": "Epidermal growth factor receptor", "targets": [{"id": "ENSG00000146648", "approvedSymbol": "EGFR"}]}]}}}}

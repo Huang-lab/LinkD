@@ -102,8 +102,8 @@ export default function About() {
         <h3 className="text-lg font-bold text-gray-800 mb-3">Contact & Support</h3>
         <div className="space-y-2 text-sm text-gray-600">
           <p><strong>Institution:</strong> Icahn School of Medicine at Mount Sinai</p>
-          <p><strong>Email:</strong> <a href="mailto:cheng.wang@mssm.edu" className="text-[#2171B5] hover:underline">cheng.wang@mssm.edu</a></p>
-          <p><strong>GitHub:</strong> <a href="https://github.com/mmetalab/LinkD" target="_blank" rel="noopener noreferrer" className="text-[#2171B5] hover:underline">github.com/mmetalab/LinkD</a></p>
+          <p><strong>Email:</strong> <a href="mailto:chengwangosu@gmail.com" className="text-[#2171B5] hover:underline">chengwangosu@gmail.com</a></p>
+          <p><strong>GitHub:</strong> <a href="https://github.com/Huang-lab/LinkD" target="_blank" rel="noopener noreferrer" className="text-[#2171B5] hover:underline">github.com/Huang-lab/LinkD</a></p>
           <p><strong>Hosting:</strong> This web server is maintained and will remain accessible for at least 5 years following publication.</p>
         </div>
       </div>

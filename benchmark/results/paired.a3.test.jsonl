@@ -1,0 +1,7 @@
+{"scenario": "a3_priority", "a": "linkd", "b": "linkd_tpi:tools-only", "linkd_only_right": 3, "other_only_right": 0, "n_discordant": 3, "mcnemar_p": 0.25}
+{"scenario": "a3_priority", "a": "linkd", "b": "tooluniverse:opentargets", "linkd_only_right": 0, "other_only_right": 3, "n_discordant": 3, "mcnemar_p": 0.25}
+{"scenario": "a3_priority", "a": "linkd", "b": "ot_genetics:ot-genetics", "linkd_only_right": 11, "other_only_right": 1, "n_discordant": 12, "mcnemar_p": 0.00635}
+{"scenario": "a3_priority", "a": "linkd", "b": "pubmed:literature", "linkd_only_right": 5, "other_only_right": 2, "n_discordant": 7, "mcnemar_p": 0.45312}
+{"scenario": "a3_priority", "a": "linkd", "b": "closed_book:gpt-4o-mini", "linkd_only_right": 3, "other_only_right": 3, "n_discordant": 6, "mcnemar_p": 1.0}
+{"scenario": "a3_priority", "a": "linkd", "b": "closed_book:gpt-4o", "linkd_only_right": 3, "other_only_right": 2, "n_discordant": 5, "mcnemar_p": 1.0}
+{"scenario": "a3_priority", "a": "linkd", "b": "closed_book:gpt-4.1", "linkd_only_right": 0, "other_only_right": 2, "n_discordant": 2, "mcnemar_p": 0.5}

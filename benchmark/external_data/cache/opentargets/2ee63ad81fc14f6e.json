@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL1200681", "name": "MONTELUKAST SODIUM", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Cysteinyl leukotriene receptor 1 antagonist", "actionType": "ANTAGONIST", "targetName": "Cysteinyl leukotriene receptor 1", "targets": [{"id": "ENSG00000173198", "approvedSymbol": "CYSLTR1"}]}]}}}}

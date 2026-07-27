@@ -24,7 +24,7 @@ See `source_data/manifest.csv` for per-file `sha256`, byte size, and originating
 | `Propranolol_growth.csv` / `Carvedilol_growth.csv` | <1 KB | Fig 5e, 5f |
 | `vct/propranolol/*.csv`, `vct/carvedilol/*.csv` | small | Fig 5g–k |
 | `good_drug_ehr_scatter_1110.csv`, `ukb_drug_ehr_scatter_1110.csv` | small | Fig S5 (alt) |
-| `benchmark/*` | variable | Fig 6c |
+| `source_data/benchmark/*` | variable | Fig 6c (LinkD-Agent) |
 
 ## Not packaged (with reason)
 

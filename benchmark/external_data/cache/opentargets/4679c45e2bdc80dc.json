@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL595", "name": "PIOGLITAZONE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Peroxisome proliferator-activated receptor gamma agonist", "actionType": "AGONIST", "targetName": "Peroxisome proliferator-activated receptor gamma", "targets": [{"id": "ENSG00000132170", "approvedSymbol": "PPARG"}]}]}}}}

@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL1201567", "name": "FILGRASTIM", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Granulocyte colony stimulating factor receptor agonist", "actionType": "AGONIST", "targetName": "Granulocyte colony-stimulating factor receptor", "targets": [{"id": "ENSG00000119535", "approvedSymbol": "CSF3R"}]}]}}}}

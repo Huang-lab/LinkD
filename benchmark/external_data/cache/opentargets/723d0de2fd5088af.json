@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL1373", "name": "MODAFINIL", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Dopamine transporter inhibitor", "actionType": "INHIBITOR", "targetName": "Sodium-dependent dopamine transporter", "targets": [{"id": "ENSG00000142319", "approvedSymbol": "SLC6A3"}]}]}}}}

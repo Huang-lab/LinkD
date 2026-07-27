@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL3707246", "name": "OZANIMOD HYDROCHLORIDE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Sphingosine 1-phosphate receptor Edg-1 modulator", "actionType": "MODULATOR", "targetName": "Sphingosine 1-phosphate receptor 1", "targets": [{"id": "ENSG00000170989", "approvedSymbol": "S1PR1"}]}]}}}}

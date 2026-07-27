@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL65375", "name": "TIPIRACIL HYDROCHLORIDE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Thymidine phosphorylase inhibitor", "actionType": "INHIBITOR", "targetName": "Thymidine phosphorylase", "targets": [{"id": "ENSG00000025708", "approvedSymbol": "TYMP"}]}]}}}}

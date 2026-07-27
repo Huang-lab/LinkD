@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL2364648", "name": "GUSELKUMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Interleukin-23 inhibitor", "actionType": "INHIBITOR", "targetName": "Interleukin-23", "targets": [{"id": "ENSG00000113302", "approvedSymbol": "IL12B"}, {"id": "ENSG00000110944", "approvedSymbol": "IL23A"}]}]}}}}

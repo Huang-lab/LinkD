@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL473417", "name": "VISMODEGIB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Smoothened homolog inhibitor", "actionType": "INHIBITOR", "targetName": "Protein smoothened", "targets": [{"id": "ENSG00000128602", "approvedSymbol": "SMO"}]}]}}}}

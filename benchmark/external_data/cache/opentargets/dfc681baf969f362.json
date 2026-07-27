@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL374478", "name": "RIFAMPIN", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Bacterial DNA-directed RNA polymerase inhibitor", "actionType": "INHIBITOR", "targetName": "Bacterial DNA-directed RNA polymerase"}]}}}}

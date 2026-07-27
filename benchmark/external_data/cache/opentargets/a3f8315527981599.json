@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL846", "name": "CALCITRIOL", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Vitamin D receptor agonist", "actionType": "AGONIST", "targetName": "Vitamin D3 receptor", "targets": [{"id": "ENSG00000111424", "approvedSymbol": "VDR"}]}]}}}}

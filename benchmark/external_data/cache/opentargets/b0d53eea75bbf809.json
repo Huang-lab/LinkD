@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL1743062", "name": "RAMUCIRUMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Vascular endothelial growth factor receptor 2 inhibitor", "actionType": "INHIBITOR", "targetName": "Vascular endothelial growth factor receptor 2", "targets": [{"id": "ENSG00000128052", "approvedSymbol": "KDR"}]}]}}}}

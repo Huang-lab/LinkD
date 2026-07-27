@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL1201581", "name": "INFLIXIMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "TNF-alpha inhibitor", "actionType": "INHIBITOR", "targetName": "Tumor necrosis factor", "targets": [{"id": "ENSG00000232810", "approvedSymbol": "TNF"}]}]}}}}

@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL973", "name": "TERIFLUNOMIDE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Dihydroorotate dehydrogenase inhibitor", "actionType": "INHIBITOR", "targetName": "Dihydroorotate dehydrogenase (quinone), mitochondrial", "targets": [{"id": "ENSG00000102967", "approvedSymbol": "DHODH"}]}]}}}}

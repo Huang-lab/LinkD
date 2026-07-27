@@ -25,19 +25,14 @@ from benchmark.scoring.regression import aggregate_dti  # noqa: E402
 from benchmark.scoring.ranking import aggregate_target_rank  # noqa: E402
 from benchmark.aggregate import mcnemar, correct_of  # noqa: E402
 
-# Focused benchmark: external-gold agent comparison only.
-#   A2 = target identification (LinkD vs ToolUniverse / OT-genetics / PubMed / LLM)
-#   T1 = drug-target binding affinity vs experimental DAVIS
-# Feature-coordinated benchmark: L1 t1_dti, L2 l2_binding_moa, L3 l3_selectivity,
-# L4 l4_crispr_moa, L5 a2_target_id, L6/L7 a3_priority, L8 t2_repurpose, L9 l9_safety,
-# L10 c1_validate.
+# Manuscript T1–T7 (+ SI diagnostics D1/D2). ID map: benchmark/TASK_CATALOG.md
+#   T1=t1_dti T2=a2_target_id T3=a3_priority T4=l4_crispr_moa
+#   T5=c1_validate T6=l2_binding_moa T7=l3_selectivity
+#   D1=t2_repurpose D2=l9_safety
 ALL_SCENARIOS = ["t1_dti", "l2_binding_moa", "l3_selectivity", "l4_crispr_moa",
                  "a2_target_id", "a3_priority", "t2_repurpose", "l9_safety", "c1_validate"]
-# Refined, manuscript-aligned tasks (replace the misaligned selectivity/fusion/CRISPR/EHR gold):
-#   t7_sel_retrieval = LinkD-Select target-centric binder retrieval (Fig 5a)
-#   t5_concordance   = multi-evidence drug-target recovery (Fig 3 fusion)
-#   t4_crispr_conc   = CRISPR drug-response↔dependency concordance (LinkD-Pheno)
-REFINED_SCENARIOS = ["t7_sel_retrieval", "t5_concordance", "t4_crispr_conc"]
+# Redesign diagnostics archived under benchmark/archive/ (not Fig 6c).
+REFINED_SCENARIOS = []  # was t7_sel_retrieval, t5_concordance, t4_crispr_conc
 # deterministic (no-LLM) conditions -> their fixed model label
 DETERMINISTIC = {"linkd_cli": "tools-only", "linkd": "tools-only", "linkd_tpi": "tools-only",
                  "linkd_evidence": "tools-only", "linkd_rwe": "tools-only",

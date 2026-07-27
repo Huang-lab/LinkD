@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL1201583", "name": "BEVACIZUMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Vascular endothelial growth factor A inhibitor", "actionType": "INHIBITOR", "targetName": "Vascular endothelial growth factor A, long form", "targets": [{"id": "ENSG00000112715", "approvedSymbol": "VEGFA"}]}]}}}}

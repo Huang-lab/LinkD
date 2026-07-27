@@ -288,7 +288,8 @@ def render():
         "Per-task detail below shows each model's behavior.\n",
         "\n**Recommendation:** ship the **LLM-as-orchestrator** (LLM calls LinkD tools, cross-checks, "
         "answers) as the production interface — it captures LinkD's prediction edge *and* the LLM's "
-        "breadth, and is robust to which source is stronger per query. See `figures/fig_nature.png`.\n",
+        "breadth, and is robust to which source is stronger per query. See Fig 6c (`fig6_cell.py`). "
+        "Numeric freeze notes: `TASK_CATALOG.md`.\n",
     ]
     diag = []
     if diag_md:

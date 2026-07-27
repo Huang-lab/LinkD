@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL4594581", "name": "INSULIN ICODEC", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Insulin receptor agonist", "actionType": "AGONIST", "targetName": "Insulin receptor", "targets": [{"id": "ENSG00000171105", "approvedSymbol": "INSR"}]}]}}}}

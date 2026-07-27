@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL1200976", "name": "IDARUBICIN HYDROCHLORIDE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "DNA topoisomerase II alpha inhibitor", "actionType": "INHIBITOR", "targetName": "DNA topoisomerase 2-alpha", "targets": [{"id": "ENSG00000131747", "approvedSymbol": "TOP2A"}]}]}}}}

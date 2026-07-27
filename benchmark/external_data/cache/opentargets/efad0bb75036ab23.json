@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL1237022", "name": "TOCILIZUMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Interleukin-6 receptor alpha subunit inhibitor", "actionType": "INHIBITOR", "targetName": "Interleukin-6 receptor subunit alpha", "targets": [{"id": "ENSG00000160712", "approvedSymbol": "IL6R"}]}]}}}}

@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL1282", "name": "IMIQUIMOD", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Toll-like receptor 7 agonist", "actionType": "AGONIST", "targetName": "Toll-like receptor 7", "targets": [{"id": "ENSG00000196664", "approvedSymbol": "TLR7"}]}]}}}}

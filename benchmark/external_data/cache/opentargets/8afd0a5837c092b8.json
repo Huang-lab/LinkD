@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL960", "name": "LEFLUNOMIDE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Dihydroorotate dehydrogenase inhibitor", "actionType": "INHIBITOR", "targetName": "Dihydroorotate dehydrogenase (quinone), mitochondrial", "targets": [{"id": "ENSG00000102967", "approvedSymbol": "DHODH"}]}]}}}}

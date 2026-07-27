@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL1152", "name": "PREDNISOLONE ACETATE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Glucocorticoid receptor agonist", "actionType": "AGONIST", "targetName": "Glucocorticoid receptor", "targets": [{"id": "ENSG00000113580", "approvedSymbol": "NR3C1"}]}]}}}}

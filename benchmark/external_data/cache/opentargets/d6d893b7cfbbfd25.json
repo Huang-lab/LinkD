@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL551466", "name": "ACLIDINIUM BROMIDE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Muscarinic acetylcholine receptor M3 antagonist", "actionType": "ANTAGONIST", "targetName": "Muscarinic acetylcholine receptor M3", "targets": [{"id": "ENSG00000133019", "approvedSymbol": "CHRM3"}]}]}}}}

@@ -1,0 +1,1 @@
+{"scenario": "t7_sel_retrieval", "condition": "linkd_target_aff", "model": "tools-only", "n": 144, "answered": 144, "pos": 48, "neg": 96, "auroc": 0.769, "auprc": 0.621, "auroc_ci": [0.684, 0.84], "errors": 0, "lat_s/item": 0.06}

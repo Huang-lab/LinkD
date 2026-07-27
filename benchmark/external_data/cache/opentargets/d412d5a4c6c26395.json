@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL1237023", "name": "DENOSUMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Tumor necrosis factor ligand superfamily member 11 inhibitor", "actionType": "INHIBITOR", "targetName": "Tumor necrosis factor ligand superfamily member 11", "targets": [{"id": "ENSG00000120659", "approvedSymbol": "TNFSF11"}]}]}}}}

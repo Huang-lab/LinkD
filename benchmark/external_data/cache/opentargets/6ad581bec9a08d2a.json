@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL252164", "name": "LUMINESPIB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Heat shock protein HSP90 inhibitor", "actionType": "INHIBITOR", "targetName": "Heat shock protein HSP90", "targets": [{"id": "ENSG00000080824", "approvedSymbol": "HSP90AA1"}, {"id": "ENSG00000096384", "approvedSymbol": "HSP90AB1"}]}]}}}}

@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL4298150", "name": "SIPONIMOD FUMARIC ACID", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Sphingosine 1-phosphate receptor Edg-1 agonist", "actionType": "AGONIST", "targetName": "Sphingosine 1-phosphate receptor 1", "targets": [{"id": "ENSG00000170989", "approvedSymbol": "S1PR1"}]}]}}}}

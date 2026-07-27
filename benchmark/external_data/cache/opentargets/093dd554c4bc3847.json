@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL135", "name": "ESTRADIOL", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Estrogen receptor alpha agonist", "actionType": "AGONIST", "targetName": "Estrogen receptor", "targets": [{"id": "ENSG00000091831", "approvedSymbol": "ESR1"}]}]}}}}

@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL1743078", "name": "TEPLIZUMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "T-cell surface glycoprotein CD3 epsilon chain other", "actionType": "OTHER", "targetName": "T-cell surface glycoprotein CD3 epsilon chain", "targets": [{"id": "ENSG00000198851", "approvedSymbol": "CD3E"}]}]}}}}

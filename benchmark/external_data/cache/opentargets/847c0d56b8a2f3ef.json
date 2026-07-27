@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL157101", "name": "KETOCONAZOLE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Cytochrome P450 51 inhibitor", "actionType": "INHIBITOR", "targetName": "Lanosterol 14-alpha demethylase"}]}}}}

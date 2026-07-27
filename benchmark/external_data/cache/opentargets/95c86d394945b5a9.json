@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL4113131", "name": "ENSARTINIB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "ALK tyrosine kinase receptor inhibitor", "actionType": "INHIBITOR", "targetName": "ALK tyrosine kinase receptor", "targets": [{"id": "ENSG00000171094", "approvedSymbol": "ALK"}]}]}}}}

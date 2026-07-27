@@ -23,7 +23,7 @@ Status: **compute** = regenerated from `source_data/`; **illustrate** = process 
 | 5e–f | Figure5… | Panels e–f | compute | growth CSVs |
 | 5g–k | Figure5… | Panels g–k | compute | `vct/*/results_*.csv` |
 | 6a–b | Figure6… | Panels a–b | illustrate | `illustrations/fig6_*` |
-| 6c | Figure6… | Panel c | compute | `benchmark/` |
+| 6c | Figure6… | Panel c | compute | `source_data/benchmark/` |
 | S2 | FigureS2… | — | compute | TableS2 |
 | S3–S4 | FigureS3_S4… | — | compute | CRISPR concordance |
 | S5 | FigureS5… | — | compute | TableS3 / TableS4 |

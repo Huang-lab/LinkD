@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL1201565", "name": "EPOETIN ALFA", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Erythropoietin receptor agonist", "actionType": "AGONIST", "targetName": "Erythropoietin receptor", "targets": [{"id": "ENSG00000187266", "approvedSymbol": "EPOR"}]}]}}}}

@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL3989887", "name": "TACROLIMUS", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "FK506-binding protein 1A inhibitor", "actionType": "INHIBITOR", "targetName": "Peptidyl-prolyl cis-trans isomerase FKBP1A", "targets": [{"id": "ENSG00000088832", "approvedSymbol": "FKBP1A"}]}]}}}}

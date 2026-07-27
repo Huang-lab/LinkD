@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL409", "name": "BICALUTAMIDE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Androgen Receptor antagonist", "actionType": "ANTAGONIST", "targetName": "Androgen receptor", "targets": [{"id": "ENSG00000169083", "approvedSymbol": "AR"}]}]}}}}

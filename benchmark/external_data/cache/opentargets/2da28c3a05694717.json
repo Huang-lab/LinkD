@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL3809489", "name": "BEMCENTINIB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Tyrosine-protein kinase receptor UFO inhibitor", "actionType": "INHIBITOR", "targetName": "Tyrosine-protein kinase receptor UFO", "targets": [{"id": "ENSG00000167601", "approvedSymbol": "AXL"}]}]}}}}

@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL1201834", "name": "CANAKINUMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Interleukin-1 beta inhibitor", "actionType": "INHIBITOR", "targetName": "Interleukin-1 beta", "targets": [{"id": "ENSG00000125538", "approvedSymbol": "IL1B"}]}]}}}}

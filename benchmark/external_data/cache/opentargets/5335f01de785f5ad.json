@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL1201190", "name": "LEVOCETIRIZINE DIHYDROCHLORIDE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Histamine H1 receptor antagonist", "actionType": "ANTAGONIST", "targetName": "Histamine H1 receptor", "targets": [{"id": "ENSG00000196639", "approvedSymbol": "HRH1"}]}]}}}}

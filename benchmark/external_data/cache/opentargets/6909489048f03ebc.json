@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL4594406", "name": "LUTETIUM LU-177 VIPIVOTIDE TETRAXETAN", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Glutamate carboxypeptidase II binding agent", "actionType": "BINDING AGENT", "targetName": "Glutamate carboxypeptidase 2", "targets": [{"id": "ENSG00000086205", "approvedSymbol": "FOLH1"}]}]}}}}

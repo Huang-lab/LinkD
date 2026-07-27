@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL2103794", "name": "ANAMORELIN HYDROCHLORIDE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Ghrelin receptor agonist", "actionType": "AGONIST", "targetName": "Growth hormone secretagogue receptor type 1", "targets": [{"id": "ENSG00000121853", "approvedSymbol": "GHSR"}]}]}}}}

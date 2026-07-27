@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL1201631", "name": "INSULIN HUMAN", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Insulin receptor agonist", "actionType": "AGONIST", "targetName": "Insulin receptor", "targets": [{"id": "ENSG00000171105", "approvedSymbol": "INSR"}]}]}}}}

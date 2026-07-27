@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL119385", "name": "NEFLAMAPIMOD", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "MAP kinase p38 alpha inhibitor", "actionType": "INHIBITOR", "targetName": "Mitogen-activated protein kinase 14", "targets": [{"id": "ENSG00000112062", "approvedSymbol": "MAPK14"}]}]}}}}

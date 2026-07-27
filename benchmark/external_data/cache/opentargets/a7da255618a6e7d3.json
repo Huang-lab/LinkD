@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL2105737", "name": "SONIDEGIB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Smoothened homolog inhibitor", "actionType": "INHIBITOR", "targetName": "Protein smoothened", "targets": [{"id": "ENSG00000128602", "approvedSymbol": "SMO"}]}]}}}}

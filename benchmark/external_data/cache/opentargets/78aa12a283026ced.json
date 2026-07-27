@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL4297610", "name": "OLUTASIDENIB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Isocitrate dehydrogenase [NADP] cytoplasmic inhibitor", "actionType": "INHIBITOR", "targetName": "Isocitrate dehydrogenase [NADP] cytoplasmic", "targets": [{"id": "ENSG00000138413", "approvedSymbol": "IDH1"}]}]}}}}

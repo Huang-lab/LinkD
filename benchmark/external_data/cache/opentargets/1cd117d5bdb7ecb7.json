@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL1201081", "name": "METHYLPREDNISOLONE SODIUM SUCCINATE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Glucocorticoid receptor agonist", "actionType": "AGONIST", "targetName": "Glucocorticoid receptor", "targets": [{"id": "ENSG00000113580", "approvedSymbol": "NR3C1"}]}]}}}}

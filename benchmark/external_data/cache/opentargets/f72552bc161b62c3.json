@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL4297829", "name": "SINTILIMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Programmed cell death protein 1 antagonist", "actionType": "ANTAGONIST", "targetName": "Programmed cell death protein 1", "targets": [{"id": "ENSG00000188389", "approvedSymbol": "PDCD1"}]}]}}}}

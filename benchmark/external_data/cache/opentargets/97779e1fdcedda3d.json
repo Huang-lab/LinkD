@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL1742991", "name": "BENRALIZUMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Interleukin-5 receptor subunit alpha inhibitor", "actionType": "INHIBITOR", "targetName": "Interleukin-5 receptor subunit alpha", "targets": [{"id": "ENSG00000091181", "approvedSymbol": "IL5RA"}]}]}}}}

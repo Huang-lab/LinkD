@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL1237024", "name": "SIPULEUCEL-T", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Prostatic acid phosphatase binding agent", "actionType": "BINDING AGENT", "targetName": "Prostatic acid phosphatase", "targets": [{"id": "ENSG00000014257", "approvedSymbol": "ACP3"}]}]}}}}

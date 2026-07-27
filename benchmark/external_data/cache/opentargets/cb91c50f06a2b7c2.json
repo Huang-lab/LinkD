@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL2095206", "name": "BOSUTINIB MONOHYDRATE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Bcr/Abl fusion protein inhibitor", "actionType": "INHIBITOR", "targetName": "Bcr/Abl fusion protein", "targets": [{"id": "ENSG00000097007", "approvedSymbol": "ABL1"}, {"id": "ENSG00000186716", "approvedSymbol": "BCR"}]}]}}}}

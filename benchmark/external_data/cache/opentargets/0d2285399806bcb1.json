@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL571948", "name": "Y-39983", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Rho-associated protein kinase inhibitor", "actionType": "INHIBITOR", "targetName": "Rho-associated protein kinase", "targets": [{"id": "ENSG00000134318", "approvedSymbol": "ROCK2"}, {"id": "ENSG00000067900", "approvedSymbol": "ROCK1"}]}]}}}}

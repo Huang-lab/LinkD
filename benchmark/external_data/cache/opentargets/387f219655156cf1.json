@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL2216870", "name": "IDELALISIB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "PI3-kinase p110-delta subunit inhibitor", "actionType": "INHIBITOR", "targetName": "Phosphatidylinositol 4,5-bisphosphate 3-kinase catalytic subunit delta isoform", "targets": [{"id": "ENSG00000171608", "approvedSymbol": "PIK3CD"}]}]}}}}

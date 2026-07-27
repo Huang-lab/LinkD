@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL3545369", "name": "EPACADOSTAT", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Indoleamine 2,3-dioxygenase inhibitor", "actionType": "INHIBITOR", "targetName": "Indoleamine 2,3-dioxygenase 1", "targets": [{"id": "ENSG00000131203", "approvedSymbol": "IDO1"}]}]}}}}

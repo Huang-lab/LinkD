@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL3137309", "name": "VENETOCLAX", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Apoptosis regulator Bcl-2 inhibitor", "actionType": "INHIBITOR", "targetName": "Apoptosis regulator Bcl-2", "targets": [{"id": "ENSG00000171791", "approvedSymbol": "BCL2"}]}]}}}}

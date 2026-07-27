@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL300138", "name": "ENZASTAURIN", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Protein kinase C beta inhibitor", "actionType": "INHIBITOR", "targetName": "Protein kinase C beta type", "targets": [{"id": "ENSG00000166501", "approvedSymbol": "PRKCB"}]}]}}}}

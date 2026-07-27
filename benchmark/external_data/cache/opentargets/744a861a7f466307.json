@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL225071", "name": "RALTITREXED", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Thymidylate synthase inhibitor", "actionType": "INHIBITOR", "targetName": "Thymidylate synthase", "targets": [{"id": "ENSG00000176890", "approvedSymbol": "TYMS"}]}]}}}}

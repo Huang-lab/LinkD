@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL3989989", "name": "AXICABTAGENE CILOLEUCEL", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "B-lymphocyte antigen CD19 binding agent", "actionType": "BINDING AGENT", "targetName": "B-lymphocyte antigen CD19", "targets": [{"id": "ENSG00000177455", "approvedSymbol": "CD19"}]}]}}}}

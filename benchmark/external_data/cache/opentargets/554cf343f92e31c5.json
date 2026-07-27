@@ -1,0 +1,1 @@
+{"status": "success", "data": {"drug": {"id": "CHEMBL1389", "name": "LEVONORGESTREL", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Progesterone receptor agonist", "actionType": "AGONIST", "targetName": "Progesterone receptor", "targets": [{"id": "ENSG00000082175", "approvedSymbol": "PGR"}]}]}}}}
