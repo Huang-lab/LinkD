@@ -26,7 +26,7 @@ For_Reviewer: pandas≥2.0, numpy≥1.24, matplotlib≥3.7, seaborn≥0.13, open
 Full app (requirements.txt): fastapi≥0.100, uvicorn≥0.23, gradio≥4, openai≥1, google-generativeai≥0.4, anthropic≥0.20, plus core data/viz packages.
 Docking (SI): RDKit ≥2022.09, Open Babel ≥3.1, AutoDockTools/MGLTools, PDB2PQR ≥3.x, FPocket, P2Rank, Smina (confirm builds).
 OS tested [TENTATIVE]: macOS 15 (darwin) and/or Ubuntu 22.04.
-Submission code version: git commit `49d511b563d417009d1a51a41281d5bcea2dfdf7` (short: `49d511b`) on local `main` (history rewritten to remove AI Co-authored-by trailers; current tip after rewrite: `e09dc0354e53e3f4e18198ae6d285e259215833e`). Force-push `main` to https://github.com/Huang-lab/LinkD (`git push --force-with-lease origin main`), then confirm the tip SHA is visible on GitHub and that Contributors lists only the human author.
+Submission code version: git commit `49d511b563d417009d1a51a41281d5bcea2dfdf7` (short: `49d511b`) on local `main` (history rewritten to remove AI Co-authored-by trailers; tip = `git rev-parse HEAD` on `main` after force-push). Force-push `main` to https://github.com/Huang-lab/LinkD (`git push --force-with-lease origin main`), then confirm the tip SHA is visible on GitHub and that Contributors lists only the human author.
 Node.js and browser versions: record from author machine when pasting (frontend build + https://linkd-agent.net/).
 ```
 
