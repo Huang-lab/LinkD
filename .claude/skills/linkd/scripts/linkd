@@ -1,0 +1,294 @@
+#!/usr/bin/env python3
+"""
+linkd -- command-line interface to the LinkD multi-evidence drug-discovery data.
+
+A thin JSON wrapper over agent/database_query_module.py. It loads ONLY the data
+layers a given subcommand needs (lazy load) so calls stay fast even though the
+full corpus is ~16 GB. Every subcommand prints a JSON object to stdout.
+
+Examples:
+    linkd binding CHEMBL553 EGFR
+    linkd target-info EGFR
+    linkd drug-response --drug CHEMBL553 --gene EGFR --sig
+    linkd ehr --drug CHEMBL553 --icd C34
+    linkd evidence CHEMBL553 EGFR --disease "lung cancer" --icd C34 --drug-name Erlotinib
+    linkd deep-dive CHEMBL553 EGFR --disease "lung cancer" --icd C34 --drug-name Erlotinib
+    linkd evidence CHEMBL553 EGFR --aggregator penalize_missing
+
+Data location: set DATABASE_DIR to the "Database" folder (its parent holds the
+other data folders), exactly like the web app. Defaults to <repo>/Database.
+"""
+import argparse
+import json
+import os
+import sys
+from pathlib import Path
+
+def _find_repo_root(start: Path) -> Path:
+    """Walk up until we find the dir containing the `agent` package."""
+    for p in [start, *start.parents]:
+        if (p / "agent" / "database_query_module.py").exists():
+            return p
+    return start.parents[4]  # .claude/skills/linkd/scripts/linkd -> repo root
+
+
+REPO_ROOT = _find_repo_root(Path(__file__).resolve())
+sys.path.insert(0, str(REPO_ROOT))
+
+from agent.database_query_module import load_database_subset  # noqa: E402
+from agent.evidence_scoring import load_config  # noqa: E402
+
+# which datasets each "logical layer" needs (keys from SUBSET_DATASETS)
+_BINDING = {"target_binding_stats"}          # + parquet index (always loaded)
+_EVIDENCE = {"drug_target_disease", "causal_gene_disease", "target_binding_stats",
+             "drug_selectivity", "drug_umap", "ehr_mount_sinai", "ehr_uk_biobank",
+             "drug_response"}
+
+
+def build_db(needed):
+    """DrugDiseaseTargetDB with only `needed` datasets loaded (+ Parquet indexes)."""
+    db_dir = os.getenv("DATABASE_DIR") or str(REPO_ROOT / "Database")
+    return load_database_subset(needed, database_dir=db_dir)
+
+
+def _slim(df, cols, limit):
+    """Select available columns and cap rows -> list of dict records."""
+    if df is None or df.empty:
+        return []
+    use = [c for c in cols if c in df.columns] or list(df.columns)[:8]
+    return df[use].head(limit).to_dict("records")
+
+
+def _json_default(o):
+    try:
+        import numpy as np
+        if isinstance(o, (np.integer,)):
+            return int(o)
+        if isinstance(o, (np.floating,)):
+            return float(o)
+        if isinstance(o, np.ndarray):
+            return o.tolist()
+    except Exception:
+        pass
+    if isinstance(o, float) and (o != o):
+        return None
+    return str(o)
+
+
+def emit(obj):
+    print(json.dumps(obj, indent=2, default=_json_default))
+
+
+# --------------------------------------------------------------------------- #
+# subcommands
+# --------------------------------------------------------------------------- #
+def cmd_binding(a):
+    db = build_db(_BINDING)
+    res = db.get_drug_target_binding_affinity(a.drug, a.gene)
+    emit({"query": {"drug": a.drug, "gene": a.gene}, "result": res})
+
+
+def cmd_drugs_for_target(a):
+    db = build_db(_BINDING)
+    df = db.get_drugs_for_target_with_affinity(a.gene, limit=a.limit)
+    emit({"query": {"gene": a.gene}, "count": int(len(df)),
+          "drugs": _slim(df, ["Drug", "Target", "aff_local", "Selectivity_Score"], a.limit)})
+
+
+def cmd_targets_for_drug(a):
+    db = build_db(set())  # parquet only
+    df = db.get_targets_for_drug_with_affinity(a.drug, min_affinity=a.min_affinity, limit=a.limit)
+    emit({"query": {"drug": a.drug}, "count": int(len(df)),
+          "targets": _slim(df, ["Drug", "Target", "aff_local", "Selectivity_Score", "Rank_Select"], a.limit)})
+
+
+def cmd_target_info(a):
+    db = build_db({"target_binding_stats", "onco_genes"})
+    stats = db.get_target_binding_stats(gene=a.gene) or {}
+    keep = {k: stats.get(k) for k in ("Gene", "Target", "Entry", "Role", "Avg_pKd",
+                                      "Max_pKd", "N_hit", "TPI", "Avg_Selectivity_Score")}
+    emit({"query": {"gene": a.gene}, "found": bool(stats), "target": keep})
+
+
+def cmd_drug_info(a):
+    db = build_db({"drug_selectivity", "drug_umap"})
+    info = db.get_drug_selectivity_info(drug_id=a.drug, drug_name=a.name) or {}
+    keep = {k: info.get(k) for k in ("Drug", "Drug Name", "Selectivity_Score",
+                                     "n_targets_measured", "drug_type", "Clinical Trial Phase")}
+    emit({"query": {"drug": a.drug, "name": a.name}, "found": bool(info), "drug": keep})
+
+
+def cmd_drug_response(a):
+    db = build_db({"drug_response"})
+    df = db.get_drug_response_associations(drug_id=a.drug, drug_name=a.name, gene=a.gene,
+                                           significant_only=a.sig)
+    cols = ["drugs", "genes", "AUC_corr", "AUC_FDR", "IC50_corr", "IC50_FDR", "source", "n_shared_celllines"]
+    emit({"query": {"drug": a.drug, "name": a.name, "gene": a.gene, "significant_only": a.sig},
+          "count": int(len(df)), "rows": _slim(df, cols, a.limit)})
+
+
+def cmd_ehr(a):
+    db = build_db({"ehr_mount_sinai", "ehr_uk_biobank"})
+    df = db.get_ehr_drug_disease_associations(drug_id=a.drug, drug_name=a.name,
+                                              icd_code=a.icd, disease_name=a.disease)
+    cols = ["Drug Chembl ID", "Drug Name", "ICD10", "Disease Description",
+            "logit_or", "odds_ratio", "logit_p", "cox_hr", "ehr_source"]
+    emit({"query": {"drug": a.drug, "name": a.name, "icd": a.icd, "disease": a.disease},
+          "count": int(len(df)), "rows": _slim(df, cols, a.limit)})
+
+
+def cmd_causal(a):
+    db = build_db({"causal_gene_disease"})
+    df = db.get_causal_gene_disease_associations(gene=a.gene, disease_name=a.disease)
+    cols = ["Gene", "ICD_Code", "Source", "CausalType", "Disease Name"]
+    emit({"query": {"gene": a.gene, "disease": a.disease},
+          "count": int(len(df)), "rows": _slim(df, cols, a.limit)})
+
+
+def cmd_targets_for_disease(a):
+    """Rank gene targets for a disease: drug_target_disease (max clinical phase, #drugs)
+    then causal genes appended. Mirrors the benchmark LinkdTargetsCondition ranking."""
+    import pandas as pd
+    db = build_db({"drug_target_disease", "causal_gene_disease", "onco_genes"})
+    dtd = db.dfs.get("drug_target_disease")
+    ranked = []
+    if dtd is not None:
+        m = pd.Series(False, index=dtd.index)
+        if a.icd and "ICD_Code" in dtd.columns:
+            m |= dtd["ICD_Code"].astype(str).str.upper() == str(a.icd).upper()
+        if a.disease and "subject_label" in dtd.columns:
+            m |= dtd["subject_label"].astype(str).str.contains(a.disease, case=False, na=False)
+        sub = dtd[m]
+        if not sub.empty:
+            sub = sub.assign(phase=pd.to_numeric(sub["phase"], errors="coerce"))
+            agg = (sub.groupby("Gene").agg(maxphase=("phase", "max"), n=("drugId", "nunique"))
+                   .reset_index().sort_values(["maxphase", "n"], ascending=False))
+            ranked = agg["Gene"].astype(str).tolist()
+    causal = db.dfs.get("causal_gene_disease")
+    if causal is not None:
+        cm = pd.Series(False, index=causal.index)
+        if a.icd and "ICD_Code" in causal.columns:
+            cm |= causal["ICD_Code"].astype(str).str.upper().str.startswith(str(a.icd).upper())
+        if a.disease and "Disease Name" in causal.columns:
+            cm |= causal["Disease Name"].astype(str).str.contains(a.disease, case=False, na=False)
+        have = set(ranked)
+        ranked += [g for g in causal[cm]["Gene"].astype(str).unique().tolist() if g not in have]
+    emit({"query": {"disease": a.disease, "icd": a.icd}, "count": len(ranked),
+          "ranked_genes": ranked[:a.limit]})
+
+
+def _scoring_config(a):
+    cfg = load_config(a.weights) if getattr(a, "weights", None) else load_config()
+    if getattr(a, "aggregator", None):
+        cfg = dict(cfg)
+        cfg["aggregator"] = a.aggregator
+    return cfg
+
+
+def cmd_evidence(a):
+    db = build_db(_EVIDENCE)
+    ev = db.get_comprehensive_drug_target_evidence(
+        a.drug, a.gene, disease=a.disease, icd_code=a.icd,
+        drug_name=a.drug_name, config=_scoring_config(a))
+    emit(ev)
+
+
+def cmd_deep_dive(a):
+    """Full multi-evidence report for one drug-target-disease triad."""
+    db = build_db(_EVIDENCE)
+    ev = db.get_comprehensive_drug_target_evidence(
+        a.drug, a.gene, disease=a.disease, icd_code=a.icd,
+        drug_name=a.drug_name, config=_scoring_config(a))
+    competitors = db.get_drugs_for_target_with_affinity(a.gene, limit=10)
+    causal = db.get_causal_gene_disease_associations(gene=a.gene)
+    emit({
+        "triad": {"drug": a.drug, "gene": a.gene,
+                  "disease": a.disease or a.icd, "drug_name": a.drug_name},
+        "evidence": ev,
+        "other_drugs_for_target": _slim(competitors, ["Drug", "aff_local", "Selectivity_Score"], 10),
+        "gene_causal_diseases": sorted(
+            {r for r in (causal["Disease Name"].dropna().unique().tolist() if not causal.empty else [])}
+        )[:25],
+    })
+
+
+def cmd_config(a):
+    emit(_scoring_config(a))
+
+
+# --------------------------------------------------------------------------- #
+def build_parser():
+    p = argparse.ArgumentParser(prog="linkd", description="LinkD multi-evidence data CLI")
+    sub = p.add_subparsers(dest="cmd", required=True)
+
+    def add_scoring_opts(sp):
+        sp.add_argument("--aggregator", choices=["strength_coverage", "penalize_missing"],
+                        help="override scoring aggregator")
+        sp.add_argument("--weights", help="path to a weights .yaml/.json override")
+
+    sp = sub.add_parser("binding", help="pKd for a drug-target pair")
+    sp.add_argument("drug"); sp.add_argument("gene"); sp.set_defaults(func=cmd_binding)
+
+    sp = sub.add_parser("drugs-for-target", help="top drugs binding a gene")
+    sp.add_argument("gene"); sp.add_argument("--limit", type=int, default=20)
+    sp.set_defaults(func=cmd_drugs_for_target)
+
+    sp = sub.add_parser("targets-for-drug", help="top targets bound by a drug")
+    sp.add_argument("drug"); sp.add_argument("--limit", type=int, default=20)
+    sp.add_argument("--min-affinity", type=float, default=None, dest="min_affinity")
+    sp.set_defaults(func=cmd_targets_for_drug)
+
+    sp = sub.add_parser("target-info", help="role, TPI, binding stats for a gene")
+    sp.add_argument("gene"); sp.set_defaults(func=cmd_target_info)
+
+    sp = sub.add_parser("drug-info", help="selectivity / type for a drug")
+    sp.add_argument("drug"); sp.add_argument("--name", default=None)
+    sp.set_defaults(func=cmd_drug_info)
+
+    sp = sub.add_parser("drug-response", help="CRISPR drug-response correlations")
+    sp.add_argument("--drug", default=None); sp.add_argument("--name", default=None)
+    sp.add_argument("--gene", default=None); sp.add_argument("--sig", action="store_true")
+    sp.add_argument("--limit", type=int, default=20); sp.set_defaults(func=cmd_drug_response)
+
+    sp = sub.add_parser("ehr", help="EHR drug-disease associations")
+    sp.add_argument("--drug", default=None); sp.add_argument("--name", default=None)
+    sp.add_argument("--icd", default=None); sp.add_argument("--disease", default=None)
+    sp.add_argument("--limit", type=int, default=20); sp.set_defaults(func=cmd_ehr)
+
+    sp = sub.add_parser("causal", help="causal gene-disease links")
+    sp.add_argument("gene"); sp.add_argument("--disease", default=None)
+    sp.add_argument("--limit", type=int, default=50); sp.set_defaults(func=cmd_causal)
+
+    sp = sub.add_parser("targets-for-disease", help="ranked gene targets for a disease")
+    sp.add_argument("--disease", default=None); sp.add_argument("--icd", default=None)
+    sp.add_argument("--limit", type=int, default=40); sp.set_defaults(func=cmd_targets_for_disease)
+
+    sp = sub.add_parser("evidence", help="weighted multi-evidence score for a drug-target(-disease)")
+    sp.add_argument("drug"); sp.add_argument("gene")
+    sp.add_argument("--disease", default=None); sp.add_argument("--icd", default=None)
+    sp.add_argument("--drug-name", default=None, dest="drug_name")
+    add_scoring_opts(sp); sp.set_defaults(func=cmd_evidence)
+
+    sp = sub.add_parser("deep-dive", help="full multi-evidence report for a triad")
+    sp.add_argument("drug"); sp.add_argument("gene")
+    sp.add_argument("--disease", default=None); sp.add_argument("--icd", default=None)
+    sp.add_argument("--drug-name", default=None, dest="drug_name")
+    add_scoring_opts(sp); sp.set_defaults(func=cmd_deep_dive)
+
+    sp = sub.add_parser("config", help="print the resolved scoring config")
+    add_scoring_opts(sp); sp.set_defaults(func=cmd_config)
+
+    return p
+
+
+def main():
+    args = build_parser().parse_args()
+    try:
+        args.func(args)
+    except Exception as e:  # noqa: BLE001
+        emit({"error": f"{type(e).__name__}: {e}"})
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

@@ -11,18 +11,22 @@ import json
 # Provider registry: models and defaults
 PROVIDERS = {
     "openai": {
-        "models": ["gpt-4o-mini", "gpt-4o", "gpt-4.1-mini", "gpt-4.1"],
+        # any "gpt-*"/"o*" id also routes here via prefix fallback (see _llm.provider_of),
+        # so new ids (e.g. gpt-5.4) work even if not listed.
+        "models": ["gpt-4o-mini", "gpt-4o", "gpt-4.1-mini", "gpt-4.1",
+                   "gpt-5", "gpt-5-mini", "gpt-5.4"],
         "default": "gpt-4o-mini",
         "env_key": "OPENAI_API_KEY",
     },
     "gemini": {
         "models": ["gemini-2.0-flash", "gemini-2.5-flash", "gemini-2.5-pro"],
-        "default": "gemini-2.0-flash",
+        "default": "gemini-2.5-pro",
         "env_key": "GOOGLE_API_KEY",
     },
     "claude": {
-        "models": ["claude-sonnet-4-20250514", "claude-haiku-4-5-20251001"],
-        "default": "claude-sonnet-4-20250514",
+        # Most recent Claude tiers (2026): Opus 4.8 ($5/$25), Sonnet 4.6 ($3/$15), Haiku 4.5 ($1/$5)
+        "models": ["claude-opus-4-8", "claude-sonnet-4-6", "claude-haiku-4-5"],
+        "default": "claude-haiku-4-5",
         "env_key": "ANTHROPIC_API_KEY",
     },
 }
@@ -58,14 +62,18 @@ class LLMClient:
                 from openai import OpenAI
             except ImportError:
                 raise ImportError("openai package required. Install with: pip install openai")
-            self._client = OpenAI(api_key=self.api_key)
+            # timeout + bounded retries so a stalled proxy connection fails fast instead of
+            # hanging a whole batch forever (the default client has no request timeout).
+            self._client = OpenAI(api_key=self.api_key, timeout=90.0, max_retries=2)
 
         elif self.provider == "gemini":
             try:
                 import google.generativeai as genai
             except ImportError:
                 raise ImportError("google-generativeai package required. Install with: pip install google-generativeai")
-            genai.configure(api_key=self.api_key)
+            # REST transport (HTTPS) instead of the default gRPC — gRPC's ipv6 path fails
+            # in restricted/sandboxed networks.
+            genai.configure(api_key=self.api_key, transport="rest")
             self._client = genai  # store module ref; model created per-call for system instruction support
 
         elif self.provider == "claude":
@@ -73,7 +81,7 @@ class LLMClient:
                 from anthropic import Anthropic
             except ImportError:
                 raise ImportError("anthropic package required. Install with: pip install anthropic")
-            self._client = Anthropic(api_key=self.api_key)
+            self._client = Anthropic(api_key=self.api_key, timeout=90.0, max_retries=2)
 
     def chat(self, messages: List[Dict[str, str]], temperature: float = 0.3,
              json_mode: bool = False) -> str:
@@ -94,15 +102,95 @@ class LLMClient:
         elif self.provider == "claude":
             return self._chat_claude(messages, temperature, json_mode)
 
+    def run_tools(self, system, user, tools, executor, max_rounds: int = 6,
+                  max_tokens: int = 1024, temperature: float = 0.0):
+        """Native function-calling loop. The model decides which tools to call; `executor(name,
+        args) -> str` runs them; loop until the model returns a final text answer.
+
+        tools: provider-agnostic list of {"name", "description", "parameters": <JSON schema>}.
+        Returns (final_text, trace) where trace = [{"name", "args", "result"}].
+        OpenAI + Anthropic only (Gemini geo-blocked here). Falls back to plain chat on others.
+        """
+        if self.provider == "openai":
+            return self._run_tools_openai(system, user, tools, executor, max_rounds, temperature)
+        if self.provider == "claude":
+            return self._run_tools_claude(system, user, tools, executor, max_rounds, max_tokens, temperature)
+        # no tool support -> single plain answer, empty trace
+        return self.chat([{"role": "system", "content": system},
+                          {"role": "user", "content": user}], temperature=temperature), []
+
+    def _run_tools_openai(self, system, user, tools, executor, max_rounds, temperature):
+        oai_tools = [{"type": "function", "function": {
+            "name": t["name"], "description": t["description"],
+            "parameters": t.get("parameters", {"type": "object", "properties": {}})}} for t in tools]
+        messages = [{"role": "system", "content": system}, {"role": "user", "content": user}]
+        reasoning = self.model.startswith(("gpt-5", "o1", "o3", "o4"))
+        trace = []
+        for _ in range(max_rounds):
+            kw = {"model": self.model, "messages": messages, "tools": oai_tools, "tool_choice": "auto"}
+            if not reasoning:
+                kw["temperature"] = temperature
+            try:
+                resp = self._client.chat.completions.create(**kw)
+            except Exception:
+                kw.pop("temperature", None)
+                resp = self._client.chat.completions.create(**kw)
+            msg = resp.choices[0].message
+            if not getattr(msg, "tool_calls", None):
+                return (msg.content or ""), trace
+            messages.append({"role": "assistant", "content": msg.content or "", "tool_calls": [
+                {"id": tc.id, "type": "function",
+                 "function": {"name": tc.function.name, "arguments": tc.function.arguments}}
+                for tc in msg.tool_calls]})
+            for tc in msg.tool_calls:
+                try:
+                    args = json.loads(tc.function.arguments or "{}")
+                except Exception:
+                    args = {}
+                result = str(executor(tc.function.name, args))
+                trace.append({"name": tc.function.name, "args": args, "result": result[:300]})
+                messages.append({"role": "tool", "tool_call_id": tc.id, "content": result})
+        # ran out of rounds -> force a final answer
+        final = self._client.chat.completions.create(model=self.model, messages=messages)
+        return (final.choices[0].message.content or ""), trace
+
+    def _run_tools_claude(self, system, user, tools, executor, max_rounds, max_tokens, temperature):
+        cl_tools = [{"name": t["name"], "description": t["description"],
+                     "input_schema": t.get("parameters", {"type": "object", "properties": {}})}
+                    for t in tools]
+        messages = [{"role": "user", "content": user}]
+        trace = []
+        for _ in range(max_rounds):
+            resp = self._client.messages.create(model=self.model, max_tokens=max_tokens,
+                                                system=system, messages=messages, tools=cl_tools)
+            messages.append({"role": "assistant", "content": resp.content})
+            tool_uses = [b for b in resp.content if getattr(b, "type", None) == "tool_use"]
+            if resp.stop_reason != "tool_use" or not tool_uses:
+                return "".join(b.text for b in resp.content if getattr(b, "type", None) == "text"), trace
+            results = []
+            for tu in tool_uses:
+                result = str(executor(tu.name, tu.input or {}))
+                trace.append({"name": tu.name, "args": tu.input, "result": result[:300]})
+                results.append({"type": "tool_result", "tool_use_id": tu.id, "content": result})
+            messages.append({"role": "user", "content": results})
+        final = self._client.messages.create(model=self.model, max_tokens=max_tokens,
+                                              system=system, messages=messages)
+        return "".join(b.text for b in final.content if getattr(b, "type", None) == "text"), trace
+
     def _chat_openai(self, messages, temperature, json_mode):
-        kwargs = {
-            "model": self.model,
-            "messages": messages,
-            "temperature": temperature,
-        }
+        kwargs = {"model": self.model, "messages": messages}
+        # GPT-5 / o-series reasoning models reject a custom temperature (only default=1).
+        reasoning = self.model.startswith(("gpt-5", "o1", "o3", "o4"))
+        if not reasoning:
+            kwargs["temperature"] = temperature
         if json_mode:
             kwargs["response_format"] = {"type": "json_object"}
-        response = self._client.chat.completions.create(**kwargs)
+        try:
+            response = self._client.chat.completions.create(**kwargs)
+        except Exception:
+            # robust fallback: drop temperature, swap max_tokens naming for reasoning models
+            kwargs.pop("temperature", None)
+            response = self._client.chat.completions.create(**kwargs)
         return response.choices[0].message.content
 
     def _chat_gemini(self, messages, temperature, json_mode):
@@ -150,9 +238,12 @@ class LLMClient:
         kwargs = {
             "model": self.model,
             "messages": api_messages,
-            "temperature": temperature,
             "max_tokens": 4096,
         }
+        # Opus 4.7/4.8 and Fable/Mythos reject sampling params (temperature/top_p) -> 400.
+        if not (self.model.startswith(("claude-opus-4-7", "claude-opus-4-8",
+                                       "claude-fable", "claude-mythos"))):
+            kwargs["temperature"] = temperature
         if system_msg:
             kwargs["system"] = system_msg
 

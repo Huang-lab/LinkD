@@ -1,0 +1,40 @@
+# External benchmarks for CONTEXT ONLY — reported by the cited authors on THEIR OWN
+# benchmarks, NOT re-run here. We adopt their task formats and metric names so our
+# numbers are comparable in kind. Numeric scores are intentionally left null rather
+# than quoted out of context; see each reference for the exact figures.
+- name: TxAgent / ToolUniverse
+  ref: arXiv 2503.10970 (mims-harvard, 2025)
+  benchmark: DrugPC / BrandPC / GenericPC / TreatmentPC / DescriptionPC (3,168 drug-reasoning tasks)
+  metric: correctness / tool-utilization / reasoning-quality
+  note: "Reports outperforming GPT-4o, tool-use and reasoning agents; 211-tool ToolUniverse (FDA, Open Targets, Monarch)."
+  score: null
+- name: CURE-Bench (NeurIPS 2025)
+  ref: arXiv 2512.11682
+  benchmark: therapeutic reasoning — MC / Open-Ended / OE-MC (val 459; test 2,097 / 2,491)
+  metric: correctness / tool-utilization / reasoning-quality
+  note: "Base LLMs compared with and without retrieval."
+  score: null
+- name: MedAgentBench
+  ref: NEJM AI (2025)
+  benchmark: virtual-EHR agent tasks
+  metric: task success
+  note: "Agentic EHR interaction benchmark."
+  score: null
+- name: BixBench
+  ref: arXiv 2503.00096 (Future-House)
+  benchmark: 53 real computational-biology analysis scenarios
+  metric: accuracy
+  note: "Evaluated GPT-4o and Claude 3.5 Sonnet."
+  score: null
+- name: DeepDTA / GraphDTA (DTI specialists)
+  ref: Ozturk 2018 (Bioinformatics) / Nguyen 2021 (Bioinformatics)
+  benchmark: DAVIS drug-target affinity (Concordance Index)
+  metric: C-Index
+  note: "Specialized deep DTI models trained on DAVIS report C-Index ~0.88-0.90; LinkD's pan-target predictor reaches C-Index 0.819 on the LinkD∩DAVIS subset (T1), in the same ballpark and far above LLMs."
+  score: "~0.88-0.90 (reported)"
+- name: Open Targets (target-disease association)
+  ref: Ochoa 2023 (Nucleic Acids Res); platform.opentargets.org
+  benchmark: target identification — associated targets per disease
+  metric: association score / recall of approved-drug targets
+  note: "A2 uses Open Targets disease-approved drug targets as gold and the Open Targets overall-association ranking as the ToolUniverse-agent comparator."
+  score: null

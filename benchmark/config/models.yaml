@@ -1,0 +1,15 @@
+# Models for the closed_book (base-LLM) condition.
+# Env-key gated: any model whose provider key is absent is skipped automatically.
+# Cross-vendor rows activate when their key is set (provider-agnostic by construction).
+openai:
+  - gpt-4o-mini        # cheap grid default
+  - gpt-4o
+  - gpt-4.1-mini
+  - gpt-4.1            # strongest tier
+# claude:              # uncomment when ANTHROPIC_API_KEY is set (most recent tiers)
+#   - claude-haiku-4-5    # $1/$5 per 1M   (mirrors gpt-4o-mini)
+#   - claude-sonnet-4-6   # $3/$15 per 1M  (mirrors gpt-4o)
+#   - claude-opus-4-8     # $5/$25 per 1M  (most capable; mirrors gpt-4.1)
+# gemini:              # uncomment when GOOGLE_API_KEY / GEMINI_FREE_KEY is set
+#   - gemini-2.5-pro
+#   - gemini-2.0-flash

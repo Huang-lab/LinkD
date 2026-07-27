@@ -1,6 +1,8 @@
 # Environment and secrets
 .env
+*.env
 *.env.local
+config/api_keys.env
 
 # Python
 __pycache__/
@@ -48,3 +50,27 @@ Thumbs.db
 
 # Gradio
 flagged/
+
+# Local manuscript submission package (not software)
+docs/Submit/
+docs/Figures_Tables/
+docs/nr-reporting-summary*.pdf
+docs/nr-software-policy.pdf
+docs/*.docx
+
+# Benchmark caches / run outputs (regenerate locally)
+benchmark/external_data/
+benchmark/results/
+
+# Local Davis extract (use TDC / Zenodo instead)
+data/
+
+# Full figure-reproduction tree is large; see docs/FOR_REVIEWER.md + Zenodo
+For Reviewer/
+
+# Claude skill only (ignore other local Claude state)
+.claude/*
+!.claude/skills/
+.claude/skills/*
+!.claude/skills/linkd/
+!.claude/skills/linkd/**

@@ -56,7 +56,7 @@ def _format_result(result) -> str:
                         parts.append(f"{k}: {count} records")
                 else:
                     summary_keys = [sk for sk in v if isinstance(v[sk], (int, float, str)) and sk not in ('Sequence', 'Entry', 'Entry Name')]
-                    items = [f"{sk}: {v[sk]}" for sk in summary_keys[:6]]
+                    items = [f"{sk}: {v[sk]}" for sk in summary_keys[:10]]
                     if items:
                         parts.append(f"{k}: {', '.join(items)}")
                     else:

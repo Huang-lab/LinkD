@@ -1,0 +1,37 @@
+# LinkD weighted multi-evidence scoring configuration.
+#
+# This file is OPTIONAL. If absent, agent/evidence_scoring.py uses the same
+# values baked into DEFAULT_CONFIG. To activate overrides, point the env var at
+# this file (or any .yaml/.json with the same shape):
+#
+#   export LINKD_EVIDENCE_WEIGHTS=config/evidence_weights.yaml
+#
+# Reading YAML requires PyYAML; a .json copy works with no extra dependency.
+
+# Aggregator: how missing layers are handled.
+#   strength_coverage : strength is renormalised over PRESENT layers (missing data
+#                       does NOT lower strength); coverage is reported separately and
+#                       gently discounts the final score. Fair to sparsely-covered
+#                       diseases. [default]
+#   penalize_missing  : Open Targets style -- missing layers contribute 0 and the
+#                       sum is normalised over ALL layers (presence == confidence).
+aggregator: strength_coverage
+
+# Per-layer reliability weights (relative; need not sum to 1).
+# Literature-informed defaults -- see docs/feature_plan.md.
+weights:
+  genetic_causality: 1.0   # causal gene-disease / Open Targets score  (highest reliability)
+  clinical_phase:    1.0   # ChEMBL max clinical trial phase           (real outcomes)
+  real_world_ehr:    0.7   # Mount Sinai / UK Biobank odds ratio       (population, confounded)
+  functional_crispr: 0.8   # CRISPR drug-response correlation          (mechanistic, experimental)
+  predicted_binding: 0.6   # predicted pKd                             (model output)
+  target_priority:   0.6   # Target Priority Index (TPI)               (tractability / safety)
+  drug_selectivity:  0.3   # drug selectivity score                    (supporting context)
+
+# strength_coverage tuning: final = strength * (gamma + (1 - gamma) * coverage)
+gamma_confidence_floor: 0.5   # 0.0 = coverage fully gates the score; 1.0 = coverage ignored
+
+# Verdict tier thresholds (applied to `final`).
+strong_threshold: 0.6
+moderate_threshold: 0.35
+min_coverage_for_strong: 0.4   # require >=~2 substantive layers before calling it "strong"

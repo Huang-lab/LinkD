@@ -1,0 +1,7 @@
+# Focused benchmark: external-gold, head-to-head agent comparison on cancer.
+enabled:
+  - a2_target_id    # target identification vs OpenTargets approved-drug targets (25 cancers)
+  - t1_dti          # drug-target binding affinity vs TDC DAVIS experimental Kd
+# scoped follow-ups (data prepared, not yet run):
+# - t2_repurposing  # repoDB approved/failed — needs UMLS-CUI -> ICD crosswalk
+n_items_per_scenario: 0   # 0 = all available

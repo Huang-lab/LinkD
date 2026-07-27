@@ -1,0 +1,17 @@
+{
+  "_comment": "JSON copy of evidence_weights.yaml for environments without PyYAML. Point LINKD_EVIDENCE_WEIGHTS at this file to override defaults. See evidence_weights.yaml for documentation.",
+  "aggregator": "strength_coverage",
+  "weights": {
+    "genetic_causality": 1.0,
+    "clinical_phase": 1.0,
+    "real_world_ehr": 0.7,
+    "functional_crispr": 0.8,
+    "predicted_binding": 0.6,
+    "target_priority": 0.6,
+    "drug_selectivity": 0.3
+  },
+  "gamma_confidence_floor": 0.5,
+  "strong_threshold": 0.6,
+  "moderate_threshold": 0.35,
+  "min_coverage_for_strong": 0.4
+}

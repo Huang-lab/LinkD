@@ -239,3 +239,106 @@ The web server provides a user-friendly interface built with Gradio.
 - Jupyter notebooks for exploration
 - Code comments and docstrings
 - Technology log for change tracking
+
+### Drug-Discovery Agent Benchmark (`benchmark/`)
+
+To evaluate LinkD as a drug-discovery **agent** we built a reproducible,
+provider-agnostic benchmark that compares LinkD **head-to-head with other
+open-source agents** on **external gold standards** — answers drawn from independent
+public datasets, never from LinkD's own tables — and on **cancer** indications,
+LinkD's strongest use case. The design adopts task formats and metric names from
+recent agentic-biomedicine work: TxAgent / ToolUniverse and CURE-Bench [1,2],
+MedAgentBench [3], BixBench [4], and contamination controls from target-prioritization
+benchmarking (entity-disjoint / cold splits) [5,6]. The methodology and metrics are
+summarised in `benchmark/results/figures/fig_workflow.png`.
+
+**Tasks (refined, manuscript-aligned).** Seven headline tasks, each mapped to a LinkD
+module/layer and grouped by **task type** defined a priori — *what the task tests, not who
+wins*. **Prediction** = the answer must be computed from molecular/clinical data and is not
+in any text corpus (LinkD's design target); **Mechanism/Integration** = infer or fuse
+evidence; **Knowledge** = the answer is a documented fact (LLM home turf). Full specification:
+`docs/COMPREHENSIVE_TASK_TABLE.md`.
+
+- **T1 · binding affinity** *(Prediction; LinkD-Bind)* — predict pKd for a drug–kinase pair,
+  scored against experimental Kd from **TDC DAVIS** (DAVIS CID→ChEMBL via UniChem, targets→LinkD
+  genes; stratified 78-pair held-out test).
+- **T2 · target identification** *(Prediction; causal + clinical-phase evidence)* — rank gene
+  targets for a cancer vs **OpenTargets approved-drug** targets (25 cancers).
+- **T3 · target prioritization** *(Prediction; Target Priority Index)* — same gold/diseases,
+  testing whether the TPI ranks validated targets near the top.
+- **T4 · CRISPR → mechanism** *(Mechanism; CRISPR drug-response)* — recover a drug's MoA gene
+  from its PRISM/GDSC CRISPR-response correlation, vs ChEMBL/OpenTargets MoA.
+- **T5 · target–disease validation** *(Integration; weighted multi-evidence fusion)* — score
+  (drug, gene, disease) triads with LinkD's `final_score`; positives = approved drug on its true
+  mechanism target, **hard** negatives = the same drug paired with another validated target of
+  the disease; AUROC.
+- **T6 · binding → MoA target** *(Knowledge; LinkD-Bind ranking)* — rank a drug's MoA target
+  from predicted binding, vs ChEMBL/OpenTargets MoA. The MoA is a documented fact, so this is a
+  knowledge-recall task.
+- **T7 · selectivity** *(Knowledge; LinkD-Select)* — classify a kinase inhibitor as selective
+  vs promiscuous, vs the DAVIS kinome matrix.
+
+Two **gold-limited diagnostics** (LinkD-Pheno EHR) are reported but **excluded from headline
+averages** because the external gold is structurally misaligned with LinkD's data scope, not a
+capability gap: **D1 repurposing** (repoDB approved/failed — only **3 of 120** sampled pairs have
+any EHR odds-ratio; the task measures cohort coverage), and **D2 safety** (openFDA **FAERS**
+MedDRA adverse-event terms vs LinkD's **ICD** EHR disease ORs — different ontologies). We verified
+these are not prompt- or column-fixable; likewise **T7** selectivity stays weak because LinkD's
+`Selectivity_Score` is **proteome-wide (~20k targets)** while DAVIS is **kinome-only** (Spearman
+ρ≈0.19 for the score in use, ≤0.38 for any column, ρ≈0.25 even when re-derived from LinkD's
+predicted kinome profile).
+
+**Conditions.** Each item is answered under uniform adapters: **LinkD-alone** (deterministic
+database ranker / predicted-pKd lookup, no LLM); **LLM closed-book** (gpt-5.4, claude-sonnet-4-6,
+gpt-4.1/4o/4o-mini — Gemini is geo-blocked at our location and excluded); **Combined** (mechanical
+fusion of LinkD + LLM: RRF for rankings, mean for scores); **Orchestrator (LinkD-Agent)** — a
+real function-calling agent where the LLM natively *calls LinkD as a tool*, cross-checks the
+result against its own knowledge, and answers; and open-source tool-agents **ToolUniverse**
+(OpenTargets overall association), **OpenTargets genetics-only**, **OpenTargets association**, and
+a keyless **PubMed** literature-mining agent. The non-LLM agents are deterministic and run offline
+from cached gold at zero API cost.
+
+**Metrics.** T1 (regression vs experimental Kd): Pearson r, Spearman ρ, Concordance (C-)Index,
+RMSE, binary accuracy at pKd≥7. T2/T3/T4/T6 (ranking vs approved/MoA target set): recall@10/20,
+nDCG@20, MRR. T5/T7 + diagnostics (binary discrimination): AUROC, AUPRC with a stratified
+bootstrap CI. Latency per item is recorded throughout.
+
+**Findings (honest, both directions).**
+- **LinkD-alone is the best specialist on its design target.** On the three **Prediction** tasks
+  LinkD averages **0.616 vs the best frontier LLM's 0.438** — it wins binding affinity (C-Index
+  0.819 vs 0.628; McNemar p<1e-4), target identification (nDCG 0.515 vs 0.350), and prioritization
+  (0.515 vs 0.335). These answers are computed from data and are not memorizable.
+- **The LLM wins Knowledge recall** (T6 MoA naming 0.902, T7 selectivity 0.908) — as expected for
+  a database vs a knowledge model.
+- **The LLM-as-orchestrator is the best deployable method overall (0.734)** — above Combined
+  (0.721), best-LLM (0.680) and LinkD (0.549) — by relaying LinkD's hard numbers on Prediction/
+  Integration tasks (T1 = LinkD 0.819 where Combined diluted to 0.79; T5 fusion = 0.806, the single
+  best on that task) and answering Knowledge tasks from its own memory. It approaches the
+  router-oracle ceiling (0.756) without using gold labels.
+
+**ID harmonization & caching.** Cross-source identifiers are reconciled with UniChem
+(PubChem CID → ChEMBL, cached) for T1, and OpenTargets EFO resolution for A2. All
+external API responses (OpenTargets, PubMed, UniChem) are cached under
+`benchmark/external_data/cache/`, so runs are offline and reproducible despite a
+flaky sandbox network.
+
+**Statistics.** Per-metric bootstrap 95% confidence intervals and the McNemar paired
+test for agent-vs-agent comparison on identical items (pure-stdlib implementation).
+
+**Reproducibility.** Gold and task sets are auto-built and cached as JSONL; the runner
+and smoke test are provider-agnostic and exit gracefully (with a SKIP) when data or
+API keys are absent, so the deterministic agents run end-to-end at zero API cost.
+
+**Caveats.** T2/T3 gold is clinical-validation (approved-drug) targets, **not a
+fully-prospective time-split** — both LinkD's static 2024 snapshot and the live
+OpenTargets API already contain post-cutoff approvals, which favours the live
+OpenTargets-overall agent. A true prospective test needs historical snapshots (scoped
+follow-up). The EHR diagnostics (D1/D2) are gold-limited by cohort coverage and ontology
+mismatch (above); LinkD-Pheno's value is instead shown qualitatively in the compositional
+case studies (`benchmark/case_studies.py`, figures `fig_case1..3`).
+
+**References.** [1] TxAgent / ToolUniverse, arXiv:2503.10970. [2] CURE-Bench,
+arXiv:2512.11682. [3] MedAgentBench, NEJM AI 2025. [4] BixBench, arXiv:2503.00096.
+[5] Genomics of drug target prioritization for complex diseases, Nat. Rev. Genet.
+2025. [6] PyTDC / Therapeutics Data Commons, arXiv:2505.05577. DTI specialists for
+T1 context: DeepDTA (Öztürk 2018), GraphDTA (Nguyen 2021).

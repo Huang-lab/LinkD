@@ -26,3 +26,4 @@ anthropic>=0.20.0
 duckduckgo-search>=3.0.0
 seaborn>=0.12.0
 jupyter>=1.0.0
+pyyaml>=6.0          # optional: YAML evidence-weights config (JSON fallback works without it)

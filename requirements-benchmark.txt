@@ -1,0 +1,5 @@
+-r requirements.txt
+
+# Benchmark rebuild/test helpers
+pytest>=8.0.0
+PyTDC>=1.1.0

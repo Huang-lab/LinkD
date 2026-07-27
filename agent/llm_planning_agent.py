@@ -495,13 +495,19 @@ Return ONLY valid JSON:
                             print(f"  ✓ Found drug information")
             
             if "comprehensive" in step.data_sources or len(step.data_sources) > 2:
-                # Comprehensive evidence
+                # Comprehensive, weighted evidence (disease-aware when available)
                 if drug_id and gene:
-                    evidence = self.db.get_comprehensive_drug_target_evidence(drug_id, gene)
+                    evidence = self.db.get_comprehensive_drug_target_evidence(
+                        drug_id, gene, disease=disease, icd_code=icd_code, drug_name=drug_name)
                     if evidence:
                         result_data["comprehensive_evidence"] = evidence
+                        missing = evidence.get('missing', [])
                         print(f"  ✓ Generated comprehensive evidence")
-                        print(f"    Overall evidence strength: {evidence.get('overall_strength', 'unknown')}")
+                        print(f"    Verdict: {evidence.get('verdict', 'unknown')} "
+                              f"(strength={evidence.get('strength_score')}, "
+                              f"coverage={evidence.get('coverage')})")
+                        if missing:
+                            print(f"    Missing layers: {', '.join(missing)}")
             
             # If no specific entities but query mentions targets, try to get target info
             if "target_info" in step.data_sources and not gene:
@@ -656,6 +662,8 @@ Total response under 300 words."""
             "N_hit": "Drug Hits", "TPI": "Target Priority Index",
             "Selectivity_Score": "Selectivity Score",
             "overall_strength": "Overall Evidence",
+            "verdict": "Evidence Verdict", "strength_score": "Evidence Strength",
+            "coverage": "Evidence Coverage", "final_score": "Final Score",
         }
 
         def _clean_val(v):
@@ -739,8 +747,12 @@ Total response under 300 words."""
                                 if v is not None and k not in ("Sequence", "data") and not isinstance(v, (list, dict)):
                                     display_key = FIELD_NAMES.get(k, k)
                                     items.append(f"{display_key}: {v}")
+                            # Surface which evidence layers were missing (transparency)
+                            miss = value.get("missing")
+                            if isinstance(miss, list) and miss:
+                                items.append("Missing Layers: " + ", ".join(miss))
                             if items:
-                                results_detail.append(f"  {key}: {', '.join(items[:8])}")
+                                results_detail.append(f"  {key}: {', '.join(items[:12])}")
             elif step.status == "failed":
                 results_detail.append(f"\nStep {step.step_number} — FAILED: {step.error}")
 
@@ -759,6 +771,7 @@ INSTRUCTIONS:
 - Write in scientific style, like a results section in a research paper
 - Use SPECIFIC drug names, odds ratios, p-values, and pKd values from the LinkD data
 - Interpret values: OR < 1 = protective/reduced risk, OR > 1 = increased risk, pKd > 7 = strong binding
+- For weighted evidence, distinguish Evidence Strength (how strong the available evidence is, 0-1) from Evidence Coverage (what fraction of evidence layers had data, 0-1). LOW coverage means some layers are MISSING for this drug/target/disease — it does NOT mean the evidence is weak. If "Missing Layers" are listed, state them as gaps to fill, not as negative findings.
 - Integrate the Clinical Context to explain WHY these drugs show these associations
 - Round numbers to 2-3 significant figures
 - Do NOT write generic templates or ask for more data

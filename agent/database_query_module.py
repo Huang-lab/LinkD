@@ -17,6 +17,12 @@ try:
 except ImportError:
     PYARROW_AVAILABLE = False
 
+from .evidence_scoring import (
+    score_evidence, load_config,
+    normalize_binding, normalize_crispr, normalize_ehr,
+    normalize_genetic, normalize_clinical_phase, normalize_unit,
+)
+
 
 class DrugDiseaseTargetDB:
     """Database class for querying drug, disease, and target information."""
@@ -1021,99 +1027,247 @@ class DrugDiseaseTargetDB:
             return df[mask]
         return pd.DataFrame()
     
-    def get_comprehensive_drug_target_evidence(self, drug_id: str, gene: str) -> Dict:
+    def get_comprehensive_drug_target_evidence(self, drug_id: str, gene: str,
+                                               disease: Optional[str] = None,
+                                               icd_code: Optional[str] = None,
+                                               drug_name: Optional[str] = None,
+                                               config: Optional[Dict] = None) -> Dict:
         """
-        Get comprehensive evidence for a drug-target association from multiple sources.
-        
+        Get comprehensive, WEIGHTED evidence for a drug-target(-disease) association.
+
+        Gathers up to seven evidence layers, normalises each to a [0,1] sub-score
+        (or None when absent), and delegates to evidence_scoring.score_evidence()
+        which applies per-layer weights and returns a strength + coverage + verdict.
+        Missing layers reduce *coverage*, not *strength* (default aggregator), so a
+        triad is not penalised just because some layers have no data for it.
+
         Args:
             drug_id: ChEMBL drug ID
             gene: Gene symbol
-        
+            disease: optional disease name (for disease-specific clinical / EHR evidence)
+            icd_code: optional ICD-10 code (for disease-specific EHR evidence)
+            drug_name: optional drug name (EHR fallback when ID match fails)
+            config: optional scoring config override (see evidence_scoring.load_config)
+
         Returns:
-            Dictionary with comprehensive evidence summary
+            Dict with per-source detail plus weighted scores. Backward compatible:
+            the legacy key ``overall_strength`` now holds the weighted verdict tier.
         """
-        evidence = {
+        def _num(v):
+            try:
+                f = float(v)
+                return None if (f != f or f in (float('inf'), float('-inf'))) else f
+            except (TypeError, ValueError):
+                return None
+
+        cfg = config or getattr(self, '_evidence_config', None)
+        if cfg is None:
+            cfg = load_config()
+            self._evidence_config = cfg
+
+        sources: Dict[str, Dict] = {}
+        raw = {}  # layer -> normalized sub-score
+
+        # 1. Predicted binding affinity (drug-target pKd)
+        binding = self.get_drug_target_binding_affinity(drug_id, gene)
+        pkd = _num(binding.get('binding_affinity')) if binding else None
+        raw['predicted_binding'] = normalize_binding(pkd)
+        sources['binding_affinity'] = {
+            'found': binding is not None,
+            'pkd': pkd,
+            'selectivity_score': _num(binding.get('selectivity_score')) if binding else None,
+            'rank': _num(binding.get('rank_select')) if binding else None,
+            'sub_score': raw['predicted_binding'],
+        }
+
+        # 2. Functional genomics (CRISPR drug-response correlation)
+        drug_response = self.get_drug_response_associations(drug_id=drug_id, gene=gene, significant_only=True)
+        auc_corr = fdr = None
+        if not drug_response.empty and 'AUC_corr' in drug_response.columns:
+            dr = drug_response.sort_values('AUC_FDR') if 'AUC_FDR' in drug_response.columns else drug_response
+            best = dr.iloc[0]
+            auc_corr = _num(best.get('AUC_corr'))
+            fdr = _num(best.get('AUC_FDR'))
+        raw['functional_crispr'] = normalize_crispr(auc_corr, fdr)
+        sources['drug_response'] = {
+            'found': not drug_response.empty,
+            'count': int(len(drug_response)),
+            'best_auc_corr': auc_corr,
+            'best_auc_fdr': fdr,
+            'sub_score': raw['functional_crispr'],
+        }
+
+        # 3. Target priority (TPI) + binding statistics
+        target_stats = self.get_target_binding_stats(gene=gene)
+        tpi = _num(target_stats.get('TPI')) if target_stats else None
+        raw['target_priority'] = normalize_unit(tpi)
+        sources['target_stats'] = {
+            'found': target_stats is not None,
+            'avg_pkd': _num(target_stats.get('Avg_pKd')) if target_stats else None,
+            'max_pkd': _num(target_stats.get('Max_pKd')) if target_stats else None,
+            'n_hit': _num(target_stats.get('N_hit')) if target_stats else None,
+            'tpi': tpi,
+            'sub_score': raw['target_priority'],
+        }
+
+        # 4. Drug selectivity
+        drug_sel = self.get_drug_selectivity_info(drug_id=drug_id, drug_name=drug_name)
+        sel_score = _num(drug_sel.get('Selectivity_Score')) if drug_sel else None
+        raw['drug_selectivity'] = normalize_unit(sel_score)
+        sources['drug_selectivity'] = {
+            'found': drug_sel is not None,
+            'selectivity_score': sel_score,
+            'drug_type': drug_sel.get('drug_type') if drug_sel else None,
+            'sub_score': raw['drug_selectivity'],
+        }
+
+        # 5. Clinical (ChEMBL max trial phase for this drug, disease/gene-aware)
+        phase = None
+        dtd = self.dfs.get('drug_target_disease')
+        if dtd is not None and 'drugId' in dtd.columns:
+            sub = dtd[dtd['drugId'].astype(str).str.upper() == str(drug_id).upper()]
+            if gene and 'Gene' in sub.columns:
+                sub_g = sub[sub['Gene'].astype(str).str.upper() == str(gene).upper()]
+                if not sub_g.empty:
+                    sub = sub_g
+            if not sub.empty and 'phase' in sub.columns:
+                phase = _num(pd.to_numeric(sub['phase'], errors='coerce').max())
+        raw['clinical_phase'] = normalize_clinical_phase(phase)
+        sources['clinical_phase'] = {
+            'found': phase is not None, 'max_phase': phase, 'sub_score': raw['clinical_phase'],
+        }
+
+        # 6. Genetic causality (causal gene-disease; gene-level presence)
+        has_causal = False
+        try:
+            causal = self.get_causal_gene_disease_associations(gene=gene)
+            has_causal = causal is not None and not causal.empty
+        except Exception:
+            pass
+        raw['genetic_causality'] = normalize_genetic(score=None, has_causal_mutation=has_causal)
+        sources['genetic_causality'] = {
+            'found': has_causal, 'has_causal_mutation': has_causal, 'sub_score': raw['genetic_causality'],
+        }
+
+        # 7. Real-world EHR (disease-specific odds ratio + p-value)
+        or_val = p_val = None
+        try:
+            ehr = self.get_ehr_drug_disease_associations(
+                drug_id=drug_id, drug_name=drug_name, icd_code=icd_code, disease_name=disease)
+            if ehr is not None and not ehr.empty:
+                or_cols = [c for c in ('logit_or', 'odds_ratio') if c in ehr.columns]
+                cands = []  # (p_for_ranking, or, p_or_None)
+                for _, row in ehr.iterrows():
+                    o = next((_num(row.get(c)) for c in or_cols if _num(row.get(c)) is not None), None)
+                    if o is None or o <= 0:
+                        continue
+                    p = _num(row.get('logit_p'))
+                    cands.append((p if p is not None else 1.0, o, p))
+                if cands:
+                    cands.sort(key=lambda t: (t[0], -abs(__import__('math').log(t[1]))))
+                    _, or_val, p_val = cands[0]
+        except Exception:
+            pass
+        raw['real_world_ehr'] = normalize_ehr(or_val, p_val)
+        sources['ehr'] = {
+            'found': or_val is not None, 'odds_ratio': or_val, 'p_value': p_val,
+            'sub_score': raw['real_world_ehr'],
+        }
+
+        # ----- weighted aggregation -----
+        scored = score_evidence(raw, cfg)
+        return {
             'drug_id': drug_id,
             'gene': gene,
-            'sources': {},
-            'overall_strength': 'unknown'
+            'disease': disease or icd_code,
+            'sources': sources,
+            'sub_scores': scored['sub_scores'],
+            'present': scored['present'],
+            'missing': scored['missing'],
+            'weights': scored['weights'],
+            'aggregator': scored['aggregator'],
+            'strength_score': scored['strength'],   # [0,1] over present layers
+            'coverage': scored['coverage'],         # [0,1] fraction of weighted layers present
+            'final_score': scored['final'],         # [0,1] confidence-discounted
+            'verdict': scored['verdict'],           # strong / moderate / weak / none
+            'overall_strength': scored['verdict'],  # BACKWARD COMPAT (legacy key)
         }
-        
-        # 1. Binding affinity (direct binding evidence)
-        binding = self.get_drug_target_binding_affinity(drug_id, gene)
-        if binding:
-            evidence['sources']['binding_affinity'] = {
-                'found': True,
-                'aff_local': binding.get('binding_affinity'),
-                'selectivity_score': binding.get('selectivity_score'),
-                'rank': binding.get('rank_select'),
-                'strength': 'strong' if binding.get('binding_affinity', 0) > 7 else 'moderate'
-            }
-        else:
-            evidence['sources']['binding_affinity'] = {'found': False}
-        
-        # 2. Drug response correlations (functional evidence)
-        drug_response = self.get_drug_response_associations(drug_id=drug_id, gene=gene, significant_only=True)
-        if not drug_response.empty:
-            evidence['sources']['drug_response'] = {
-                'found': True,
-                'count': len(drug_response),
-                'avg_auc_corr': drug_response['AUC_corr'].mean() if 'AUC_corr' in drug_response.columns else None,
-                'avg_ic50_corr': drug_response['IC50_corr'].mean() if 'IC50_corr' in drug_response.columns else None
-            }
-        else:
-            evidence['sources']['drug_response'] = {'found': False}
-        
-        # 3. Target binding statistics
-        target_stats = self.get_target_binding_stats(gene=gene)
-        if target_stats:
-            evidence['sources']['target_stats'] = {
-                'found': True,
-                'avg_pkd': target_stats.get('Avg_pKd'),
-                'max_pkd': target_stats.get('Max_pKd'),
-                'n_hit': target_stats.get('N_hit'),
-                'tpi': target_stats.get('TPI')
-            }
-        else:
-            evidence['sources']['target_stats'] = {'found': False}
-        
-        # 4. Drug selectivity info
-        drug_sel = self.get_drug_selectivity_info(drug_id=drug_id)
-        if drug_sel:
-            evidence['sources']['drug_selectivity'] = {
-                'found': True,
-                'selectivity_score': drug_sel.get('Selectivity_Score'),
-                'drug_type': drug_sel.get('drug_type'),
-                'n_targets_measured': drug_sel.get('n_targets_measured')
-            }
-        else:
-            evidence['sources']['drug_selectivity'] = {'found': False}
-        
-        # Calculate overall evidence strength
-        found_sources = sum(1 for s in evidence['sources'].values() if s.get('found', False))
-        if found_sources >= 3:
-            evidence['overall_strength'] = 'strong'
-        elif found_sources >= 2:
-            evidence['overall_strength'] = 'moderate'
-        elif found_sources >= 1:
-            evidence['overall_strength'] = 'weak'
-        else:
-            evidence['overall_strength'] = 'none'
-        
-        return evidence
 
 
 # Convenience function to create a database instance
 def load_database(database_dir: str = "Database", load_full_data: bool = True) -> DrugDiseaseTargetDB:
     """
     Load and return a database instance.
-    
+
     Args:
         database_dir: Path to the directory containing CSV files
         load_full_data: If True, load full data even for large files (>200MB).
                        If False, sample large files to 100,000 rows for performance.
-    
+
     Returns:
         DrugDiseaseTargetDB instance
     """
     return DrugDiseaseTargetDB(database_dir, load_full_data=load_full_data)
+
+
+# Datasets used by evidence scoring / the linkd CLI, keyed to their (folder, file)
+# relative to the data root (the parent of `database_dir`). Deliberately excludes
+# the multi-GB disease_target_overall / disease_target_by_source / target_priority
+# tables, which the comprehensive-evidence path does not need.
+SUBSET_DATASETS = {
+    "drug_target_disease":  ("Target_Disease_Association", "drug_target_disease.csv"),
+    "causal_gene_disease":  ("Target_Disease_Association", "causal_gene_disease.csv"),
+    "onco_genes":           ("Database", "onco_genes.csv"),
+    "target_binding_stats": ("DrugTargetMetrics", "target_binding_stats.csv"),
+    "drug_selectivity":     ("DrugTargetMetrics", "drug_selectivity_metrics.csv"),
+    "drug_umap":            ("DrugTargetMetrics", "drug_umap_clustering.csv"),
+    "ehr_mount_sinai":      ("EHR_Results", "mount_sinai_drug_disease.csv"),
+    "ehr_uk_biobank":       ("EHR_Results", "uk_biobank_drug_disease.csv"),
+    "drug_response":        ("DrugResponse", "drug_response_crispr_correlation.csv"),
+}
+
+
+def load_database_subset(datasets=None, database_dir: str = "Database") -> DrugDiseaseTargetDB:
+    """
+    Build a DrugDiseaseTargetDB with only the requested CSV datasets loaded, plus
+    the (cheap) Parquet binding indexes. This keeps memory/startup low for callers
+    that don't need the full ~16 GB corpus (the linkd CLI, the comprehensive
+    evidence path, tests). Parquet binding affinity remains on-demand.
+
+    Args:
+        datasets: iterable of dataset keys from SUBSET_DATASETS. None = all of them.
+                  An empty iterable loads no CSVs (Parquet-only, e.g. targets-for-drug).
+        database_dir: path to the `Database` folder; its parent is the data root.
+
+    Returns:
+        A partially-initialised DrugDiseaseTargetDB (skips the heavy _load_databases).
+    """
+    db = DrugDiseaseTargetDB.__new__(DrugDiseaseTargetDB)
+    db.database_dir = Path(database_dir)
+    db.load_full_data = True
+    db.dfs = {}
+    root = db.database_dir.parent
+
+    keys = list(SUBSET_DATASETS) if datasets is None else list(datasets)
+    for key in keys:
+        spec = SUBSET_DATASETS.get(key)
+        if not spec:
+            continue
+        folder, fname = spec
+        path = (db.database_dir if folder == "Database" else root / folder) / fname
+        if path.exists():
+            db.dfs[key] = pd.read_csv(path, low_memory=False)
+
+    # Parquet binding affinity: on-demand reads, but load the small indexes now.
+    db.parquet_dir = root / "DrugTargetMetrics" / "target_centric_pan"
+    db._parquet_drug_index = {}
+    db._parquet_target_index = {}
+    for attr, fn in (("_parquet_drug_index", "drug_index.json"),
+                     ("_parquet_target_index", "target_index.json")):
+        p = db.parquet_dir / fn
+        if p.exists():
+            with open(p) as f:
+                setattr(db, attr, _json.load(f))
+
+    db._evidence_config = None
+    return db

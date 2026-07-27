@@ -2,11 +2,17 @@
 
 LinkD is an integrated platform that combines drug-target interaction binding affinity, electronic health records, CRISPR drug response, and clinical trial data into a unified system with AI-powered natural language analysis. It provides four interconnected modules for comprehensive drug discovery research.
 
+**License:** [MIT](LICENSE)  
+**Code:** [https://github.com/Huang-lab/LinkD](https://github.com/Huang-lab/LinkD)  
+**Interactive:** [https://linkd-agent.net/](https://linkd-agent.net/)
+
 ## Live Demo
 
-> **URL**: [https://linkd-agent.onrender.com](https://linkd-agent.onrender.com) *(available after deployment)*
+> **URL**: [https://linkd-agent.net/](https://linkd-agent.net/) (also deployed via Render when configured)
 >
-> **Data**: [Zenodo DOI: [10.5281/zenodo.19241152](https://doi.org/10.5281/zenodo.19241152)](https://doi.org/10.5281/zenodo.19241152) (~16 GB)
+> **Data**: [Zenodo DOI 10.5281/zenodo.19241152](https://doi.org/10.5281/zenodo.19241152) (~16 GB)
+>
+> **Figure reproduction for reviewers:** see [docs/FOR_REVIEWER.md](docs/FOR_REVIEWER.md) (large extracts live on Zenodo / reviewer archive, not in git)
 
 ## Modules
 
@@ -79,6 +85,26 @@ python scripts/download_data.py
 | UK Biobank | 2024-11 |
 | PRISM/GDSC | 2024-Q4 |
 | Open Targets | 24.09 |
+
+## Agent Skill (`linkd`) + Weighted Evidence
+
+LinkD ships an **Agent Skill** at [`.claude/skills/linkd/`](.claude/skills/linkd/) — a JSON
+CLI over the data layers that any Claude agent (Code / Desktop / SDK) can drive:
+
+```bash
+.claude/skills/linkd/scripts/linkd target-info EGFR
+.claude/skills/linkd/scripts/linkd evidence CHEMBL553 EGFR --disease "lung cancer" --icd C34 --drug-name Erlotinib
+.claude/skills/linkd/scripts/linkd deep-dive CHEMBL553 EGFR --icd C34 --drug-name Erlotinib
+```
+
+The `evidence`/`deep-dive` commands use **weighted, coverage-aware multi-evidence
+scoring** ([`agent/evidence_scoring.py`](agent/evidence_scoring.py)). Each evidence layer is
+normalized to [0,1] and combined with per-layer reliability weights, reporting
+**strength** (over present layers) and **coverage** (fraction of layers with data)
+separately — so diseases missing from some layers are not unfairly penalised.
+Weights and the aggregator (`strength_coverage` default, or `penalize_missing`)
+are user-adjustable in [`config/evidence_weights.yaml`](config/evidence_weights.yaml). Design and
+literature basis: [`docs/feature_plan.md`](docs/feature_plan.md).
 
 ## Deployment
 

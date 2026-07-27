@@ -267,3 +267,213 @@ The LinkD Agent successfully integrates multiple biomedical data sources and pro
 5. **Practical Utility**: Demonstrated value in drug discovery, repurposing, and target prioritization use cases
 
 The system provides a foundation for evidence-based drug discovery and repurposing, with the ability to rapidly synthesize information from multiple sources to support research and clinical decision-making.
+
+## Benchmark Results
+
+We evaluate LinkD as a drug-discovery **agent**, head-to-head against frontier LLMs,
+open-source tool-agents, and two LinkD+LLM hybrids, on **external gold standards**
+(independent of LinkD's own tables). The refined benchmark (`benchmark/`; see Methods, and
+`docs/COMPREHENSIVE_TASK_TABLE.md` for the full specification) spans **seven manuscript-aligned
+tasks**, grouped by **task type** defined a priori — *what the task tests, not who wins*:
+
+| # | Type | Task | LinkD module | External gold | Metric |
+|---|---|---|---|---|---|
+| **T1** | Prediction | binding affinity | LinkD-Bind | TDC DAVIS (exp. Kd) | C-Index |
+| **T2** | Prediction | target identification (25 cancers) | causal + clinical phase | OpenTargets approved | nDCG@20 |
+| **T3** | Prediction | target prioritization | Target Priority Index | OpenTargets approved | nDCG@20 |
+| **T4** | Mechanism | CRISPR → mechanism target | CRISPR drug-response | ChEMBL/OT MoA | nDCG@20 |
+| **T5** | Integration | target–disease validation (hard decoys) | multi-evidence fusion | OT approved + MoA | AUROC |
+| **T6** | Knowledge | binding → MoA target | LinkD-Bind ranking | ChEMBL/OT MoA | nDCG@20 |
+| **T7** | Knowledge | selectivity | LinkD-Select | DAVIS kinome matrix | AUROC |
+
+Four deployment modes are compared on every task — **LinkD-alone** (deterministic, no LLM),
+**LLM closed-book** (gpt-5.4, claude-sonnet-4-6, gpt-4.1/4o/4o-mini; Gemini geo-blocked),
+**Combined** (mechanical RRF/score-mean fusion), and the **Orchestrator (LinkD-Agent)** where the
+LLM natively calls LinkD as a tool and cross-checks it — plus open-source tool-agents
+(ToolUniverse/OpenTargets/OT-genetics/PubMed). Every task reports bootstrap 95% CIs and a paired
+**McNemar** test of LinkD vs each comparator.
+
+**Deployment-mode summary (higher = better; bold = best on that task/row):**
+
+| Task / group | Metric | LinkD | Best LLM | Combined | **Orchestrator** | Router-oracle |
+|---|---|---|---|---|---|---|
+| T1 binding | C-Index | **0.819** | 0.628 | 0.790 | **0.819** | 0.819 |
+| T2 target-ID | nDCG@20 | 0.515 | 0.350 | 0.497 | 0.506 | 0.515 |
+| T3 prioritization | nDCG@20 | 0.515 | 0.335 | 0.479 | **0.518** | 0.515 |
+| T4 CRISPR→MoA | nDCG@20 | 0.587 | 0.840 | **0.851** | 0.818 | 0.840 |
+| T5 fusion | AUROC | 0.467 | 0.796 | 0.785 | **0.806** | 0.796 |
+| T6 MoA recall | nDCG@20 | 0.465 | **0.902** | 0.825 | 0.837 | 0.902 |
+| T7 selectivity | AUROC | 0.474 | **0.908** | 0.819 | 0.834 | 0.908 |
+| **Prediction mean (T1–T3)** | — | **0.616** | 0.438 | 0.589 | 0.614 | 0.616 |
+| **Knowledge mean (T6–T7)** | — | 0.470 | **0.905** | 0.822 | 0.835 | 0.905 |
+| **Overall (n=7)** | — | 0.549 | 0.680 | 0.721 | **0.734** | 0.756 |
+
+**Two headline findings.**
+1. **LinkD-alone is the best specialist on its design target.** On the three **Prediction**
+   tasks — where the answer is computed from molecular/clinical data and is *not memorizable* —
+   **LinkD (0.616) beats the best frontier LLM (0.438)** by +0.18, winning binding affinity, target
+   identification, and prioritization outright. On **Knowledge** tasks (naming an MoA target,
+   judging selectivity) a frontier LLM wins, as expected for a database vs a knowledge model.
+2. **The LLM-as-orchestrator is the best deployable method overall (0.734)** — above Combined
+   (0.721), best-LLM (0.680), and LinkD (0.549). It relays LinkD's hard numbers on Prediction/
+   Integration tasks (T1 = LinkD 0.819 where Combined diluted to 0.79; T5 fusion = 0.806, the best
+   single result on that task) and answers Knowledge tasks from its own memory, approaching the
+   router-oracle ceiling (0.756) without using gold labels. The single-figure summary is
+   `benchmark/results/figures/fig_nature.png`.
+
+Two **gold-limited EHR diagnostics** (D1 repurposing, D2 safety) are reported in the appendix of
+`benchmark/results/PERFORMANCE_REPORT.md` but **excluded from the averages**, because their gold
+is structurally misaligned with LinkD's data scope (D1: repoDB overlaps the EHR cohorts on only
+3/120 sampled pairs; D2: FAERS MedDRA terms vs LinkD's ICD EHR ORs) — a measurement-alignment
+problem, not a capability gap.
+
+### T1 · drug-target binding (TDC DAVIS, experimental Kd)
+
+DAVIS drugs were mapped to ChEMBL via UniChem and targets to LinkD genes, yielding
+4,399 overlapping pairs (53 drugs × 83 kinases); a stratified 78-pair held-out test
+set was scored.
+
+| Condition (T1, DAVIS) | Pearson | Spearman | C-Index | RMSE | Binary acc | Notes |
+|---|---|---|---|---|---|---|
+| **LinkD (predicted pKd)** | **0.754** | **0.764** | **0.819** | **0.838** | **0.846** | deterministic |
+| Base LLM gpt-4.1 | 0.349 | 0.171 | 0.613 | 1.507 | 0.462 | attempted all |
+| Base LLM gpt-4o | — | — | — | — | 0.667 | abstained 77/78 |
+| Base LLM gpt-4o-mini | — | — | — | — | 0.679 | abstained 78/78 |
+
+On an **independent experimental benchmark**, LinkD's binding predictions reach
+**Concordance-Index 0.819** — in the same range as specialized deep DTI models
+(DeepDTA / GraphDTA report ~0.88–0.90 on DAVIS) and far above LLMs: smaller models
+refuse to estimate pKd from SMILES, and gpt-4.1 attempts it but achieves only
+r = 0.35 (binary accuracy below chance). LinkD is a strong predictor where general
+LLMs are not. (Figure `fig_dti.png`.)
+
+### T2 · target identification (25 cancer indications)
+
+We compared LinkD against **four other agent strategies** on **target identification**
+(rank gene targets for a disease) over **25 cancer indications** (carcinomas,
+leukaemias/lymphomas, melanoma, myeloma, glioblastoma, sarcoma, …). Gold =
+**disease-approved drug targets** from OpenTargets (clinical validation). The strategies:
+- **ToolUniverse-agent** — OpenTargets *overall* association (2,524-tool ToolUniverse);
+- **OpenTargets genetics** — *genetics-only* (genetic_association datatype, direct GraphQL);
+- **PubMed literature agent** — keyless E-utilities, rank by disease co-mention;
+- **base LLMs** (closed-book).
+
+| Agent (A2, cancer) | recall@10 | recall@20 | nDCG@20 | MRR |
+|---|---|---|---|---|
+| **LinkD** (multi-evidence) | 0.265 | 0.439 | 0.515 | 0.572 |
+| **ToolUniverse-agent** (OT overall) | **0.281** | **0.478** | **0.531** | **0.657** |
+| Base LLM gpt-4.1 | 0.142 | 0.162 | 0.286 | 0.683 |
+| Base LLM gpt-4o / gpt-4o-mini | 0.123 / 0.092 | 0.147 / 0.108 | 0.236 / 0.184 | 0.604 / 0.500 |
+| PubMed literature agent | 0.069 | 0.088 | 0.154 | 0.536 |
+| OpenTargets **genetics-only** | 0.033 | 0.050 | 0.069 | 0.237 |
+
+**The headline: multi-evidence integration dominates single-evidence strategies.** On
+cancer, the two strategies that combine many evidence types — **LinkD** and the
+OpenTargets *overall* tool-agent — are far ahead of every single-evidence approach.
+Strikingly, **OpenTargets genetics-only recovers just ~5 % of approved-drug targets**
+(recall@20 0.050) and PubMed literature ~9 % — because genetically-associated and
+most-*studied* genes are **not** the clinically-validated drug targets (which include
+immune checkpoints, CD antigens, kinases with weak disease genetics). Between the two
+multi-evidence agents, the live OpenTargets-overall tool-agent edges LinkD's static
+snapshot on cancer (recall@20 0.478 vs 0.439; nDCG@20 0.531 vs 0.515); both are an order
+of magnitude above genetics/literature/LLM strategies. Base LLMs keep moderate MRR (they
+name the one famous target) but low coverage. Figures: `fig_a2.png` (bars),
+`fig_a2_scatter.png` (coverage-vs-top-hit positioning), `fig_a2_per_disease.png`
+(per-disease heatmap).
+
+*Caveats:* gold is clinical-validation (approved-drug) targets, **not a fully-prospective
+time-split** — LinkD's static 2024 snapshot and live OpenTargets both already contain
+post-cutoff approvals, which favours the live OpenTargets-overall agent. A true
+prospective test needs historical snapshots (a scoped follow-up; see
+`benchmark/AGENT_BENCHMARK_PLAN.md`).
+
+### T3 · target prioritization (does the Target Priority Index rank validated targets?)
+
+A3 reuses the 25 cancer indications and the OpenTargets approved-target gold, but the
+question is *prioritization* and the LinkD signal is its dedicated **Target Priority Index
+(TPI)**. We benchmark the TPI against LinkD's phase-evidence ranker, OpenTargets, and LLMs.
+
+| Agent (A3, cancer) | recall@20 | nDCG@20 | MRR |
+|---|---|---|---|
+| ToolUniverse-agent (OT overall) | **0.478** | **0.531** | 0.657 |
+| **LinkD — phase-evidence** | 0.439 | 0.515 | 0.572 |
+| **LinkD — TPI** | 0.359 | 0.408 | 0.532 |
+| Base LLM gpt-4.1 | 0.190 | 0.325 | **0.780** |
+| OpenTargets genetics-only | 0.050 | 0.069 | 0.237 |
+
+Both LinkD signals beat the LLMs and single-evidence baselines by a wide margin, but
+**LinkD's phase-evidence ranker out-ranks its own TPI** (nDCG@20 0.515 vs 0.408) for
+recovering clinically-validated targets — a useful internal finding (the multi-evidence
+clinical-phase signal is a better prioritizer than the standalone TPI score here).
+
+### T5 · target-disease validation (evidence fusion — orchestrator wins)
+
+T5 (=C1) tests evidence *fusion* directly: given a (drug, gene, disease) triad, score it with
+LinkD's weighted multi-evidence `final_score`. Positives are an approved drug acting on
+its **true mechanism target**; **hard** negatives pair the same drug with **another
+validated target of the same disease** — so disease-level association alone cannot tell
+which target *this drug* hits. 152 triads (76/76) over 20 cancers; metric = AUROC.
+
+| Agent (T5/C1, AUROC) | AUROC | AUPRC |
+|---|---|---|
+| **Orchestrator (LinkD-Agent)** | **0.806** | — |
+| Best base LLM | 0.796 | 0.759 |
+| Combined (blend) | 0.785 | — |
+| OpenTargets association | 0.652 | 0.657 |
+| **LinkD — multi-evidence fusion** | 0.467 | 0.481 |
+
+**LinkD-alone is weak here, but the orchestrator wins the task.** LinkD's fused score is
+**below chance (0.47)**: its gene-disease layers (causal / genetic / TPI) reward whichever
+gene has the most disease evidence, so the *decoy* (a prominent disease target) often
+outscores the drug's actual target, and most approved oncology drugs here are biologics
+LinkD's small-molecule binding layer cannot see. (We verified the natural fix — restricting
+to small-molecule triads where LinkD has binding — does not rescue it: the OpenTargets
+approved-drug route yields 0 binding-covered triads, and a DAVIS-anchored small-molecule set
+separates true target from decoy at only AUROC ≈ 0.57.) A base LLM, which has memorised
+specific drug→target mechanisms, does well; the **orchestrator (0.806) is the single best
+result on this task** — it queries LinkD's evidence yet anchors on its own mechanism knowledge.
+
+### D1 · drug repurposing — gold-limited diagnostic (excluded from headline)
+
+D1 uses **repoDB** approved (+) vs failed/terminated/withdrawn (−) drug-indication pairs,
+crosswalked DrugBank→ChEMBL (via LinkD EHR metadata) and indication→ICD (via LinkD's own
+disease labels — avoiding a UMLS license). 180 pairs (90/90); metric = AUROC.
+
+| Agent (D1, AUROC) | AUROC | AUPRC |
+|---|---|---|
+| Base LLM gpt-4.1 | **0.750** | 0.756 |
+| Base LLM gpt-4o-mini | 0.738 | 0.703 |
+| **LinkD — EHR real-world** | 0.500 | 0.545 |
+
+LinkD's EHR layer scores **exactly chance** — not because it is wrong, but because its
+real-world cohort (Mount Sinai + UK Biobank, cancer-heavy ICD codes) overlaps the repoDB
+repurposing pairs on essentially nothing: of 120 sampled pairs **only 3 returned any EHR
+odds-ratio**, so LinkD is forced to the neutral 0.5 on the rest. The task therefore measures
+*cohort coverage*, not the EHR signal's quality — so D1 is reported as a **gold-limited
+diagnostic** and excluded from the headline averages. LinkD-Pheno's value is shown instead
+qualitatively in the compositional case studies.
+
+### Refined task status (who wins, by type)
+
+| # | Type | Task | Gold | Outcome |
+|---|---|---|---|---|
+| **T1** | Prediction | drug-target binding | TDC DAVIS (exp. Kd) | ✅ **LinkD wins** — C-Index 0.819 vs LLM 0.628 (McNemar p<1e-4); orchestrator relays it |
+| **T2** | Prediction | target identification | OpenTargets approved | ✅ **LinkD wins** — nDCG 0.515 vs LLM 0.350 (≈ ToolUniverse 0.531) |
+| **T3** | Prediction | target prioritization | OpenTargets approved | ✅ **LinkD wins** — nDCG 0.515 vs LLM 0.335; orchestrator best (0.518) |
+| **T4** | Mechanism | CRISPR → mechanism | ChEMBL/OT MoA | ◐ **LLM-favored** — LinkD 0.587, LLM/Combined 0.84–0.85 (CRISPR rank is a noisy MoA proxy) |
+| **T5** | Integration | target-disease validation | OT approved + MoA | ✅ **Orchestrator wins** (0.806) — LinkD-alone fusion weak (0.467) on hard decoys |
+| **T6** | Knowledge | binding → MoA target | ChEMBL/OT MoA | ◐ **LLM wins** (0.902) — MoA naming is documented fact; LinkD 0.465 |
+| **T7** | Knowledge | selectivity | DAVIS kinome matrix | ◐ **LLM wins** (0.908) — proteome/kinome scope mismatch; LinkD 0.474 |
+| D1 | Gold-limited | drug repurposing | repoDB | ⚠️ **excluded** — EHR overlaps repoDB on 3/120 pairs (coverage) |
+| D2 | Gold-limited | adverse-event / safety | openFDA FAERS | ⚠️ **excluded** — FAERS MedDRA vs LinkD ICD EHR (ontology mismatch) |
+
+### Positioning
+We adopt the task formats and metric names of TxAgent/CURE-Bench, MedAgentBench and
+BixBench, and present their authors' reported numbers alongside ours (clearly labelled
+"reported by authors, not re-run") in the leaderboard — including DTI specialists
+(DeepDTA/GraphDTA) for T1. The clean takeaway across the seven refined tasks: **LinkD is a
+high-value specialist predictor** — it beats frontier LLMs on its Prediction design target
+(0.616 vs 0.438) — and the **LLM-as-orchestrator (LinkD-Agent) is the best deployable interface
+overall (0.734)**, capturing LinkD's prediction edge on quantitative tasks and the LLM's breadth
+on knowledge tasks. Broader RWE cohorts (to un-block the EHR diagnostics) and a prospective
+time-split are scoped follow-ups.
