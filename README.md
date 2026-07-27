@@ -10,7 +10,7 @@ LinkD is an integrated platform that combines drug-target interaction binding af
 
 > **URL**: [https://linkd-agent.net/](https://linkd-agent.net/) (also deployed via Render when configured)
 >
-> **Data**: [Zenodo DOI 10.5281/zenodo.19241152](https://doi.org/10.5281/zenodo.19241152) (~16 GB)
+> **Data**: [Zenodo DOI 10.5281/zenodo.21615191](https://doi.org/10.5281/zenodo.21615191) (~16 GB)
 >
 > **Figure reproduction for reviewers:** see [docs/FOR_REVIEWER.md](docs/FOR_REVIEWER.md) and [`For_Reviewer/`](For_Reviewer/) (code in git; oversized CSVs download from Zenodo)
 
@@ -155,16 +155,9 @@ Backend-only changes (Python under `backend/`, `agent/`) do **not** need a front
    bash scripts/prepare_for_reviewer_zenodo.sh
    # Creates zenodo_upload/For_Reviewer_large_data.zip (~32 MB compressed)
    ```
-3. Go to https://doi.org/10.5281/zenodo.19241152 → **New version** (or New Upload)
-4. Upload all zips from `zenodo_upload/` (the 15 dataset archives + optional `For_Reviewer_large_data.zip`)
-5. Fill metadata:
-   - **Title**: LinkD: Drug-Target-Disease Multi-Evidence Database
-   - **License**: CC BY 4.0
-   - **Type**: Dataset
-6. Publish → copy DOI / file URLs
-7. Update `scripts/download_data.py` with dataset file URLs if they changed
-8. Update `For_Reviewer/setup/download_source_data.py` with the `For_Reviewer_large_data.zip` URL if needed
-9. Update this README with DOI
+3. Current public deposit: [DOI 10.5281/zenodo.21615191](https://doi.org/10.5281/zenodo.21615191) (v2; includes `For_Reviewer_large_data.zip`)
+4. For updates: open that record → **New version** → upload zips from `zenodo_upload/`
+5. After publishing a new version, update `ZENODO_RECORD_ID` in `scripts/download_data.py` and `For_Reviewer/setup/download_source_data.py`, plus this README
 
 Legacy alias: `bash scripts/prepare_figshare.sh` still works and calls `prepare_zenodo.sh`.
 

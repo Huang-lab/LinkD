@@ -13,7 +13,7 @@ Tentative resolutions below. Items marked `[TENTATIVE — confirm]` need author 
 ### 1. LICENSE — tentative paste
 
 ```
-LinkD source code is released under the MIT License (see LICENSE in https://github.com/Huang-lab/LinkD). The interactive website https://linkd-agent.net/ is freely accessible in a modern web browser; authors will maintain public access for the foreseeable future. Third-party LLM APIs remain subject to provider terms; API keys and proprietary model weights are not redistributed. Aggregate research data are available under the Zenodo record terms (DOI 10.5281/zenodo.19241152). Individual-level EHR are not redistributable.
+LinkD source code is released under the MIT License (see LICENSE in https://github.com/Huang-lab/LinkD). The interactive website https://linkd-agent.net/ is freely accessible in a modern web browser; authors will maintain public access for the foreseeable future. Third-party LLM APIs remain subject to provider terms; API keys and proprietary model weights are not redistributed. Aggregate research data are available under the Zenodo record terms (DOI 10.5281/zenodo.21615191). Individual-level EHR are not redistributable.
 ```
 
 MIT `LICENSE` is in the repository root (commit `ef481b9`). After push, add one MIT sentence to manuscript Code availability.
@@ -48,7 +48,7 @@ Node.js and browser versions: record from author machine when pasting (frontend 
 
 ### 5. Public access — tentative confirmation
 
-GitHub `https://github.com/Huang-lab/LinkD`, Zenodo `https://zenodo.org/records/19241152`, and `https://linkd-agent.net/` are publicly reachable without institutional login. Local LLM agent features still require user-supplied API keys.
+GitHub `https://github.com/Huang-lab/LinkD`, Zenodo `https://zenodo.org/records/21615191`, and `https://linkd-agent.net/` are publicly reachable without institutional login. Local LLM agent features still require user-supplied API keys.
 
 ---
 
@@ -79,7 +79,7 @@ Version details: git commit `ef481b96318b2c87920c149d1a134d803095d7b4` (`ef481b9
 ```
 Yes — two tiers:
 
-1) Full redistributable prediction and summary tables: Zenodo DOI 10.5281/zenodo.19241152 (https://zenodo.org/records/19241152), including drug–protein affinity/selectivity products, processed drug-response summaries, and aggregate EHR statistics.
+1) Full redistributable prediction and summary tables: Zenodo DOI 10.5281/zenodo.21615191 (https://zenodo.org/records/21615191), including drug–protein affinity/selectivity products, processed drug-response summaries, and aggregate EHR statistics.
 
 2) Figure-panel demo extracts for peer review (no PHI, no GPU): For_Reviewer/source_data/ with checksums in For_Reviewer/source_data/manifest.csv. Run For_Reviewer/notebooks/00_Setup_and_Data_Check.ipynb or For_Reviewer/execute_all.py.
 
@@ -143,7 +143,7 @@ Full agent / web app (repository root):
   cd interactive_web_server && ./start.sh
   # Opens at http://localhost:8000
 
-Data for the full app: python scripts/download_data.py (Zenodo) or manual extract of DOI 10.5281/zenodo.19241152.
+Data for the full app: python scripts/download_data.py (Zenodo) or manual extract of DOI 10.5281/zenodo.21615191.
 ```
 
 **Typical install time on a “normal” desktop computer**
@@ -207,7 +207,7 @@ We encourage reproduction of quantitative figure panels via For_Reviewer noteboo
 ```
 https://github.com/Huang-lab/LinkD
 
-Frozen data products: https://doi.org/10.5281/zenodo.19241152
+Frozen data products: https://doi.org/10.5281/zenodo.21615191
 Interactive tool: https://linkd-agent.net/
 ```
 
@@ -230,7 +230,7 @@ Paste: Methods section (Materials and Methods) and Supplementary Information (do
 ## License of use
 
 ```
-LinkD source code is released under the MIT License (see LICENSE in https://github.com/Huang-lab/LinkD). The interactive website https://linkd-agent.net/ is freely accessible in a modern web browser; authors will maintain public access for the foreseeable future. Third-party LLM APIs remain subject to provider terms; API keys and proprietary model weights are not redistributed. Aggregate research data are available under the Zenodo record terms (DOI 10.5281/zenodo.19241152). Individual-level EHR are not redistributable.
+LinkD source code is released under the MIT License (see LICENSE in https://github.com/Huang-lab/LinkD). The interactive website https://linkd-agent.net/ is freely accessible in a modern web browser; authors will maintain public access for the foreseeable future. Third-party LLM APIs remain subject to provider terms; API keys and proprietary model weights are not redistributed. Aggregate research data are available under the Zenodo record terms (DOI 10.5281/zenodo.21615191). Individual-level EHR are not redistributable.
 ```
 
 ---

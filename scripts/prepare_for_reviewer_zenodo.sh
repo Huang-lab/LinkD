@@ -33,7 +33,7 @@ zip -j "$ZIP" "${FILES[@]}"
 
 ls -lh "$ZIP"
 echo ""
-echo "Next: upload $ZIP to Zenodo record 19241152 (new version),"
+echo "Next: upload $ZIP to Zenodo record 21615191 (new version),"
 echo "then set the file URL in For_Reviewer/setup/download_source_data.py"
 echo ""
 echo "NOTE: This zip is for figure notebooks only — not used by the web server."

@@ -38,8 +38,8 @@ No GPU is required. Individual-level EHR are never included — only aggregate s
 ```bash
 bash scripts/prepare_for_reviewer_zenodo.sh
 # → zenodo_upload/For_Reviewer_large_data.zip
-# Upload that file to Zenodo record 19241152 (new version), then confirm
-# the URL in For_Reviewer/setup/download_source_data.py
+# Already published on Zenodo v2 (record 21615191 / DOI 10.5281/zenodo.21615191);
+# download_source_data.py points at that record.
 ```
 
 This zip is **independent of the web server**. The app still uses `scripts/download_data.py` and the 15 main dataset zips only.
@@ -49,4 +49,4 @@ This zip is **independent of the web server**. The app still uses `scripts/downl
 - [`For_Reviewer/README.md`](../For_Reviewer/README.md)
 - [`For_Reviewer/DATA_AVAILABILITY.md`](../For_Reviewer/DATA_AVAILABILITY.md)
 - [`For_Reviewer/REPRODUCIBILITY.md`](../For_Reviewer/REPRODUCIBILITY.md)
-- Main dataset: [Zenodo DOI 10.5281/zenodo.19241152](https://doi.org/10.5281/zenodo.19241152)
+- Main dataset: [Zenodo DOI 10.5281/zenodo.21615191](https://doi.org/10.5281/zenodo.21615191)

@@ -22,9 +22,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]  # For_Reviewer/
 SRC = ROOT / "source_data"
 
-# Zenodo record hosting the main LinkD deposit. After uploading
-# For_Reviewer_large_data.zip as a new version, set the file URL below.
-ZENODO_RECORD_ID = "19241152"
+# Zenodo v2 deposit (includes For_Reviewer_large_data.zip).
+# DOI: https://doi.org/10.5281/zenodo.21615191
+ZENODO_RECORD_ID = "21615191"
 _BASE = f"https://zenodo.org/records/{ZENODO_RECORD_ID}/files"
 ZENODO_LARGE_URL = f"{_BASE}/For_Reviewer_large_data.zip?download=1"
 

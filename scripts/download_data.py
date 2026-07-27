@@ -15,7 +15,7 @@ import zipfile
 from pathlib import Path
 
 # Configuration — update after Zenodo publication
-ZENODO_RECORD_ID = "19241152"
+ZENODO_RECORD_ID = "21615191"  # DOI: 10.5281/zenodo.21615191
 
 # Individual file downloads from Zenodo
 _BASE = f"https://zenodo.org/records/{ZENODO_RECORD_ID}/files"
