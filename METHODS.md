@@ -112,9 +112,9 @@ The planning agent extends the LLM agent with multi-step analysis capabilities.
 - `AnalysisPlan`: Container for query and list of `PlanStep` objects
 - `PlanStep`: Individual step with description, data sources, status, and results
 
-#### 4. Interactive Web Server (`interactive_web_server/app.py`)
+#### 4. Interactive Web Server
 
-The web server provides a user-friendly interface built with Gradio.
+The current public web server uses a FastAPI backend and a React/TypeScript frontend. The original interface used Gradio; its exact historical version was not retained, and the Gradio application remains available as a legacy fallback in `interactive_web_server/app.py`.
 
 **Features:**
 
@@ -132,11 +132,10 @@ The web server provides a user-friendly interface built with Gradio.
 
 **Technical Implementation:**
 
-- Built with Gradio 6.0+ for web interface
-- Custom CSS for styling (Helvetica font, color-coded status)
-- Generator functions for real-time updates
-- Markdown-to-HTML conversion for formatted summaries
-- Configurable port and public link sharing
+- FastAPI backend in `interactive_web_server/backend/`
+- React and TypeScript frontend in `interactive_web_server/frontend/`
+- Interactive Plotly.js visualizations and downloadable result tables
+- Legacy Gradio fallback in `interactive_web_server/app.py` (historical version not recorded)
 
 ### Data Integration Pipeline
 
@@ -189,13 +188,15 @@ The web server provides a user-friendly interface built with Gradio.
 
 ### Technical Specifications
 
-**Programming Language**: Python 3.7+
+**Programming Language**: Python 3.12 for the archived analyses described in the reporting summary
 
 **Core Dependencies**:
 - pandas: Data manipulation and querying
 - numpy: Numerical computations
 - openai: GPT model integration
-- gradio: Web interface framework
+- fastapi: Current web API framework
+- react/typescript: Current web interface
+- gradio: Legacy fallback interface (exact historical version not recorded)
 
 **Data Formats**:
 - CSV: Primary data storage format

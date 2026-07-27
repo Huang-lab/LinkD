@@ -1,4 +1,0 @@
-{"scenario": "t2_repurpose", "condition": "linkd_rwe", "model": "tools-only", "n": 180, "answered": 180, "pos": 90, "neg": 90, "auroc": 0.5, "auprc": 0.545, "auroc_ci": [0.477, 0.522], "errors": 0, "lat_s/item": 0.03}
-{"scenario": "t2_repurpose", "condition": "closed_book", "model": "gpt-4o-mini", "n": 180, "answered": 180, "pos": 90, "neg": 90, "auroc": 0.738, "auprc": 0.703, "auroc_ci": [0.662, 0.807], "errors": 0, "lat_s/item": 0.84}
-{"scenario": "t2_repurpose", "condition": "closed_book", "model": "gpt-4o", "n": 180, "answered": 180, "pos": 90, "neg": 90, "auroc": 0.71, "auprc": 0.706, "auroc_ci": [0.637, 0.777], "errors": 0, "lat_s/item": 0.87}
-{"scenario": "t2_repurpose", "condition": "closed_book", "model": "gpt-4.1", "n": 180, "answered": 180, "pos": 90, "neg": 90, "auroc": 0.75, "auprc": 0.756, "auroc_ci": [0.682, 0.816], "errors": 0, "lat_s/item": 0.96}

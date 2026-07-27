@@ -1,74 +1,46 @@
-# For_Reviewer — LinkD manuscript figure reproduction
+# LinkD figure reproduction
 
-*LinkD: An Agentic Platform for Drug Repurposing Unified across Molecular, Phenotypic, and Clinical Scales*
+This folder is the complete reviewer workflow for the submitted main and
+supplementary figures. Every scientific assertion, pandas transformation,
+Matplotlib command, and export operation is visible in the notebooks. The
+notebooks do not import repository-owned analysis modules.
 
-> **Required before Fig 2f–g / Fig 3:** run `python setup/download_source_data.py`
-> (Zenodo [10.5281/zenodo.21615191](https://doi.org/10.5281/zenodo.21615191)).
-> Without it, ~206 MB of panel CSVs are missing and those notebooks will fail.
-
-Package for regenerating **Manuscript_VF** figure panels (Nature Cancer submission).
-
-## Quick start (reviewers)
+## Quick start
 
 ```bash
 cd For_Reviewer
 python3 -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
-pip install -r requirements-repro.txt
-
-# Oversized tables are on Zenodo (not in git) — skips if already present
-python setup/download_source_data.py
-
-jupyter notebook notebooks/00_Setup_and_Data_Check.ipynb
-# or
-python execute_all.py
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+jupyter lab notebooks
 ```
 
-Outputs land in:
+Run `notebooks/Data_Preparation.ipynb` first with **Restart Kernel and Run
+All**. It resolves the latest version of Zenodo concept DOI
+[10.5281/zenodo.19241151](https://doi.org/10.5281/zenodo.19241151), downloads
+`LinkD_Figure_Reproduction_Data.zip`, verifies all checksums and schemas, and
+installs the inputs under `data/` and `static/`.
 
-- `outputs/figures/` — PDF + PNG per panel
-- `outputs/source_data/` — CSV of plotted values (Source Data style)
+The live Zenodo record must contain both the ZIP and its `.sha256` companion
+before reviewer release. Until that version is published, the notebook can use
+`../zenodo_upload/` as a prominently labelled author-only testing fallback.
 
-## What is in git vs Zenodo
+## Figure notebooks
 
-| In GitHub | On Zenodo (`For_Reviewer_large_data.zip`) |
-|-----------|-------------------------------------------|
-| Notebooks, `linkd_repro/`, docs, illustrations | `known_drug_rank_crispr_cancer_driver_role.csv` (~166 MB) |
-| Small/medium `source_data/` tables | `docking_scores_fig2fg.csv` (~40 MB) |
+- `Figure1.ipynb` through `Figure6.ipynb`
+- `FigureS1.ipynb` through `FigureS6.ipynb`
 
-See [`docs/FOR_REVIEWER.md`](../docs/FOR_REVIEWER.md) for the full reviewer + author workflow.
+Each computational section loads its named CSV with `pd.read_csv()`, displays
+the input, checks manuscript invariants, prepares the plotted data, constructs
+the figure inline, and directly exports PDF, PNG, and CSV files. Submitted
+schematics and molecular-pose panels are displayed as static published assets
+with provenance notes.
 
-## Design
+Generated files are written to `outputs/figures/` and
+`outputs/source_data/`. The installed `data/`, `static/`, and generated
+`outputs/` directories can be recreated by rerunning the notebooks.
 
-| Rule | How it is enforced |
-|------|--------------------|
-| Data are inside this folder | Notebooks read only `source_data/` and `illustrations/` via `linkd_repro.paths` |
-| Produce data + figures | Each computable panel writes CSV + PDF/PNG |
-| Missing shareable data | Notebook section shows **process** (`PROCESS.md`) + **published illustration** |
-
-## Notebooks
-
-| Notebook | Panels |
-|----------|--------|
-| `00_Setup_and_Data_Check.ipynb` | Environment + manifest check |
-| `Figure1_LinkD_Bind_Benchmark.ipynb` | 1a (illustrate), 1b, 1c |
-| `Figure2_LinkD_Select.ipynb` | 2a–2g |
-| `Figure3_LinkD_Pheno.ipynb` | 3a (illustrate), 3b–3h |
-| `Figure4_EHR_Validation.ipynb` | 4a (illustrate), 4b |
-| `Figure5_BetaBlocker_ADRB2.ipynb` | 5a, 5b–c (illustrate), 5d–k |
-| `Figure6_LinkD_Agent.ipynb` | 6a–b (illustrate), 6c (from `source_data/benchmark/`) |
-| `FigureS2_Bind_Quantitative.ipynb` | S2 |
-| `FigureS3_S4_Tissue_Resolved.ipynb` | S3, S4 |
-| `FigureS5_EHR_Volcano.ipynb` | S5 |
-
-## Documentation
-
-- [`DATA_AVAILABILITY.md`](DATA_AVAILABILITY.md) — copied inputs, sizes, origins
-- [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md) — panel → notebook → status
-- [`MANUSCRIPT_MAP.md`](MANUSCRIPT_MAP.md) — caption ↔ regenerating section
-- [`ENVIRONMENT.md`](ENVIRONMENT.md) — Python environment notes
-
-## Authors only
-
-- Rebuild panel extracts: `python setup/copy_and_extract_data.py`
-- Publish large zip: `bash scripts/prepare_for_reviewer_zenodo.sh` → upload `zenodo_upload/For_Reviewer_large_data.zip`
+Figure 6 contains only submitted panels 6a–b; non-submitted panel 6c is
+intentionally excluded. All distributed EHR and virtual-clinical-trial inputs
+are aggregate and non-identifiable. Licensing, release identifiers,
+provenance, checksums, row counts, and schemas are installed under `data/`.

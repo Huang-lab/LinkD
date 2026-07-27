@@ -8,17 +8,15 @@ AI agent (**LinkD-Agent**) that plans and executes multi-step analyses from natu
 **Code:** [https://github.com/Huang-lab/LinkD](https://github.com/Huang-lab/LinkD)  
 **Submission release:** [v1.0-submission](https://github.com/Huang-lab/LinkD/releases/tag/v1.0-submission)  
 **Interactive:** [https://linkd-agent.net/](https://linkd-agent.net/)  
-**Data:** [Zenodo DOI 10.5281/zenodo.21615191](https://doi.org/10.5281/zenodo.21615191) (~16 GB)
+**Data:** [Zenodo concept DOI 10.5281/zenodo.19241151](https://doi.org/10.5281/zenodo.19241151)
 
 ## Live demo
 
 > **URL**: [https://linkd-agent.net/](https://linkd-agent.net/)
 >
 > **Manuscript figure reproduction (reviewers):** [`For_Reviewer/`](For_Reviewer/) — see
-> [docs/FOR_REVIEWER.md](docs/FOR_REVIEWER.md). Oversized panel tables download from Zenodo.
->
-> **Figure 6c (LinkD-Agent benchmark):** frozen inputs in
-> `For_Reviewer/source_data/benchmark/`; full harness in [`benchmark/`](benchmark/).
+> [docs/FOR_REVIEWER.md](docs/FOR_REVIEWER.md). All panel inputs download as one
+> checksum-verified Zenodo archive.
 
 ## Modules
 
@@ -95,7 +93,6 @@ A JSON CLI over the same layers is available at
 | Audience | Path |
 |----------|------|
 | Reviewers regenerating figures | [`For_Reviewer/`](For_Reviewer/) |
-| Fig 6c frozen scores / heat | `For_Reviewer/source_data/benchmark/` |
 | Full agent-eval harness (T1–T7) | [`benchmark/`](benchmark/) — see `benchmark/README.md` |
 
 ## Deployment (Render)
@@ -110,9 +107,9 @@ Frontend `dist/` is committed; Render installs Python deps and serves the prebui
 
 After frontend source changes, rebuild and commit `interactive_web_server/frontend/dist/`.
 
-Data deposit staging: `bash scripts/prepare_zenodo.sh` (and optionally
-`prepare_for_reviewer_zenodo.sh`) → upload to
-[DOI 10.5281/zenodo.21615191](https://doi.org/10.5281/zenodo.21615191). Staging folder
+Data deposit staging: `bash scripts/prepare_zenodo.sh` and
+`bash scripts/prepare_for_reviewer_zenodo.sh` → upload a new version under
+[concept DOI 10.5281/zenodo.19241151](https://doi.org/10.5281/zenodo.19241151). Staging folder
 `zenodo_upload/` is gitignored and never read by the web server.
 
 ## Architecture

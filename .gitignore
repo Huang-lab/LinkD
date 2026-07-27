@@ -73,10 +73,9 @@ docs/COMPREHENSIVE_TASK_TABLE.md
 # Local Davis extract duplicate (prefer TDC cache under benchmark/external_data/cache/)
 data/
 
-# For_Reviewer: track code + small data; ignore oversized CSVs (Zenodo) and regenerable outputs
-For_Reviewer/source_data/known_drug_rank_crispr_cancer_driver_role.csv
-For_Reviewer/source_data/docking_scores_fig2fg.csv
-For_Reviewer/source_data/For_Reviewer_large_data.zip
+# For_Reviewer: track notebooks; downloaded inputs and outputs are regenerated.
+For_Reviewer/data/
+For_Reviewer/static/
 For_Reviewer/outputs/
 For_Reviewer/.venv/
 For Reviewer/
