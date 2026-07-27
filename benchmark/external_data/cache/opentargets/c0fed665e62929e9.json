@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL1200374", "name": "EXEMESTANE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Cytochrome P450 19A1 inhibitor", "actionType": "INHIBITOR", "targetName": "Aromatase", "targets": [{"id": "ENSG00000137869", "approvedSymbol": "CYP19A1"}]}]}}}}

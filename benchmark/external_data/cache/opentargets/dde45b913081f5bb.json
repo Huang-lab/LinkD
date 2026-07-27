@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL91829", "name": "RUBOXISTAURIN", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Protein kinase C beta inhibitor", "actionType": "INHIBITOR", "targetName": "Protein kinase C beta type", "targets": [{"id": "ENSG00000166501", "approvedSymbol": "PRKCB"}]}]}}}}

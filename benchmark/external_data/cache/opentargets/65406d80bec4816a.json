@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL3188386", "name": "WNT-974", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Probable protein-cysteine N-palmitoyltransferase porcupine inhibitor", "actionType": "INHIBITOR", "targetName": "Protein-serine O-palmitoleoyltransferase porcupine", "targets": [{"id": "ENSG00000102312", "approvedSymbol": "PORCN"}]}]}}}}

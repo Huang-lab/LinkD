@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL259084", "name": "MLN-8054", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Serine/threonine-protein kinase Aurora-A inhibitor", "actionType": "INHIBITOR", "targetName": "Aurora kinase A", "targets": [{"id": "ENSG00000087586", "approvedSymbol": "AURKA"}]}]}}}}

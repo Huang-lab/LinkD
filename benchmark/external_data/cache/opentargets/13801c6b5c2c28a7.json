@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL1441059", "name": "ALBUTEROL SULFATE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Beta-2 adrenergic receptor agonist", "actionType": "AGONIST", "targetName": "Beta-2 adrenergic receptor", "targets": [{"id": "ENSG00000169252", "approvedSymbol": "ADRB2"}]}]}}}}

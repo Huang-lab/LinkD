@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL4297534", "name": "GLASDEGIB MALEATE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Smoothened homolog antagonist", "actionType": "ANTAGONIST", "targetName": "Protein smoothened", "targets": [{"id": "ENSG00000128602", "approvedSymbol": "SMO"}]}]}}}}

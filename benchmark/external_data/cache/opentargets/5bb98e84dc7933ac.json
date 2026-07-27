@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL1200554", "name": "TRIPTORELIN PAMOATE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Gonadotropin-releasing hormone receptor agonist", "actionType": "AGONIST", "targetName": "Gonadotropin-releasing hormone receptor", "targets": [{"id": "ENSG00000109163", "approvedSymbol": "GNRHR"}]}]}}}}

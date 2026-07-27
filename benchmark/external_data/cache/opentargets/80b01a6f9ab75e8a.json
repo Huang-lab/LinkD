@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL4594293", "name": "ACALABRUTINIB MALEATE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Tyrosine-protein kinase BTK inhibitor", "actionType": "INHIBITOR", "targetName": "Tyrosine-protein kinase BTK", "targets": [{"id": "ENSG00000010671", "approvedSymbol": "BTK"}]}]}}}}

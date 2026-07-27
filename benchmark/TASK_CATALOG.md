@@ -1,68 +1,37 @@
-# LinkD agent benchmark — task catalog (Manuscript / SI)
+# LinkD-Agent supplementary benchmark task catalog
 
-Canonical **7-task** oncology agent benchmark for Figure 6c and SI Tables S1–S5.
-Legacy code scenario IDs are kept as filenames; use the **Manuscript ID** column in prose.
+This is the canonical seven-task (T1–T7) supplementary evaluation. The labels
+are benchmark IDs, not submitted manuscript panel labels.
 
-## Headline tasks (Fig 6c)
+## Headline tasks
 
-| Manuscript | Code scenario | Task file | Metric | n (on disk) |
-|---|---|---|---|---|
-| **T1** binding affinity | `t1_dti` | `tasks/t1_dti.test.jsonl` | C-Index | 78 |
-| **T2** target identification | `a2_target_id` | `tasks/a2_target_id.test.jsonl` | nDCG@20 | 25 |
-| **T3** target prioritization | `a3_priority` | `tasks/a3_priority.test.jsonl` | nDCG@20 | 25 |
-| **T4** CRISPR → MoA | `l4_crispr_moa` | `tasks/l4_crispr_moa.test.jsonl` | nDCG@20 | 60 |
-| **T5** evidence fusion | `c1_validate` | `tasks/c1_validate.test.jsonl` | AUROC | 152 |
-| **T6** binding → MoA | `l2_binding_moa` | `tasks/l2_binding_moa.test.jsonl` | nDCG@20 | 44 |
-| **T7** selectivity | `l3_selectivity` | `tasks/l3_selectivity.test.jsonl` | AUROC | 35 |
+| ID | Code scenario | Task file | Primary metric | n |
+|---|---|---|---|---:|
+| T1 binding affinity | `t1_dti` | `tasks/t1_dti.test.jsonl` | C-index | 78 |
+| T2 target identification | `a2_target_id` | `tasks/a2_target_id.test.jsonl` | nDCG@20 | 25 |
+| T3 target prioritization | `a3_priority` | `tasks/a3_priority.test.jsonl` | nDCG@20 | 25 |
+| T4 CRISPR → MoA | `l4_crispr_moa` | `tasks/l4_crispr_moa.test.jsonl` | nDCG@20 | 60 |
+| T5 evidence fusion | `c1_validate` | `tasks/c1_validate.test.jsonl` | AUROC | 144 |
+| T6 binding → MoA | `l2_binding_moa` | `tasks/l2_binding_moa.test.jsonl` | nDCG@20 | 44 |
+| T7 selectivity | `l3_selectivity` | `tasks/l3_selectivity.test.jsonl` | AUROC | 35 |
 
-## SI diagnostics (excluded from headline means)
+## Diagnostics excluded from headline means
 
-| SI label | Code scenario | Task file | Note |
+| ID | Code scenario | Task file | Limitation |
 |---|---|---|---|
-| **D1** repurposing | `t2_repurpose` | `tasks/t2_repurpose.test.jsonl` | Gold-limited (repoDB ↔ EHR coverage) |
-| **D2** safety | `l9_safety` | `tasks/l9_safety.test.jsonl` | Gold-limited (FAERS MedDRA ↔ ICD) |
+| D1 repurposing | `t2_repurpose` | `tasks/t2_repurpose.test.jsonl` | repoDB–EHR coverage |
+| D2 safety | `l9_safety` | `tasks/l9_safety.test.jsonl` | FAERS MedDRA–ICD ontology mismatch |
 
-Do **not** call D1 “T2” — manuscript **T2** is target identification (`a2_target_id`).
+## Conditions
 
-## Legacy alias cheat-sheet
-
-| Alias in older docs | Manuscript |
+| Displayed method | Code condition(s) |
 |---|---|
-| A2 | T2 |
-| A3 | T3 |
-| C1 / `c1_validate` | T5 |
-| L2 / `l2_binding_moa` | T6 |
-| L3 / `l3_selectivity` | T7 |
-| L4 / `l4_crispr_moa` | T4 |
-| “T2 repurposing” (old catalog) | **D1** |
-
-## Conditions (Fig 6c)
-
-| Method (SI) | Code condition(s) |
-|---|---|
-| LinkD (tools-only) | `linkd_cli` (T1), `linkd` / `linkd_evidence` / layer agents |
-| LLM closed-book | `closed_book` (Fig 6 lock: **gpt-5.4**) |
-| ToolUniverse / OT | `tooluniverse`, `ot_genetics`, `ot_assoc` |
+| LinkD tools-only | `linkd_cli`, `linkd`, `linkd_evidence`, and layer-specific deterministic conditions |
+| Closed-book LLM | `closed_book` |
+| External tool baseline | `tooluniverse`, `ot_genetics`, `ot_assoc`, `pubmed` |
 | Combined | `combined` |
-| Orchestrator (LinkD-Agent) | `orchestrator` |
+| LinkD-Agent orchestrator | `orchestrator` |
 
-## Numeric freeze (Submission / SI)
-
-Authoritative manuscript numbers ([`docs/FIG6_BENCHMARK_SI.md`](../docs/FIG6_BENCHMARK_SI.md),
-METHODS/RESULTS):
-
-- Orchestrator overall mean **0.734**
-- T5 LinkD / Orchestrator **0.467 / 0.806**, T5 **n = 152**
-
-**Submission freeze restored (2026-07-27):** `results/summary.c1*.jsonl` and
-`For_Reviewer/source_data/benchmark/` match SI Table S5 (**T5 n = 152**,
-LinkD / Orchestrator **0.467 / 0.806**, overall orch **0.734**). The later
-n=144 item-level regen (orch **0.740**) is archived under
-[`archive/submission_regen_144/`](archive/submission_regen_144/).
-The on-disk `tasks/c1_validate.test.jsonl` harness file has 144 items; Fig 6c
-plots the submission summary freeze (152 triads), not the regen predictions.
-
-## Archived material
-
-Redesign diagnostics (T4′/T5′/T7′) and extra figure scripts:
-[`archive/`](archive/).
+The primary retained LLM identifier is `gpt-5.4`; other retained comparisons
+are listed in the result JSONL. Current values are generated from the on-disk
+fixtures and summaries. Do not combine them with values from superseded runs.

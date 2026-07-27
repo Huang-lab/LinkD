@@ -1,1 +1,0 @@
-{"scenario": "t4_crispr_conc", "condition": "linkd_crispr_pair", "model": "tools-only", "n": 120, "answered": 120, "pos": 60, "neg": 60, "auroc": 0.709, "auprc": 0.743, "auroc_ci": [0.619, 0.789], "errors": 0, "lat_s/item": 0.1}

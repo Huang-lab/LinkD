@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL316561", "name": "PROGLUMIDE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Cholecystokinin receptor antagonist", "actionType": "ANTAGONIST", "targetName": "Cholecystokinin receptor", "targets": [{"id": "ENSG00000110148", "approvedSymbol": "CCKBR"}, {"id": "ENSG00000163394", "approvedSymbol": "CCKAR"}]}]}}}}

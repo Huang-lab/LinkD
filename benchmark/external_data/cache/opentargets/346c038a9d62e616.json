@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL2364612", "name": "LATANOPROSTENE BUNOD", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Prostanoid FP receptor agonist", "actionType": "AGONIST", "targetName": "Prostaglandin F2-alpha receptor", "targets": [{"id": "ENSG00000122420", "approvedSymbol": "PTGFR"}]}]}}}}

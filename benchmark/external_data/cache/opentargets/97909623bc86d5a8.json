@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL606", "name": "MISOPROSTOL", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Prostanoid EP3 receptor agonist", "actionType": "AGONIST", "targetName": "Prostaglandin E2 receptor EP3 subtype", "targets": [{"id": "ENSG00000050628", "approvedSymbol": "PTGER3"}]}]}}}}

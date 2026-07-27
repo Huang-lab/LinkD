@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL1743034", "name": "IXEKIZUMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Interleukin 17A inhibitor", "actionType": "INHIBITOR", "targetName": "Interleukin-17A", "targets": [{"id": "ENSG00000112115", "approvedSymbol": "IL17A"}]}]}}}}

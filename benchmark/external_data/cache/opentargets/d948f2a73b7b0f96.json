@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL3545131", "name": "ISATUXIMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Lymphocyte differentiation antigen CD38 inhibitor", "actionType": "INHIBITOR", "targetName": "ADP-ribosyl cyclase/cyclic ADP-ribose hydrolase 1", "targets": [{"id": "ENSG00000004468", "approvedSymbol": "CD38"}]}]}}}}

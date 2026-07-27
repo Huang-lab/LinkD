@@ -1,13 +1,17 @@
-from fastapi import APIRouter, Response
+from fastapi import APIRouter, Query
 from pydantic import BaseModel
 from typing import Optional
-from services import db, df_to_records, save_csv, _last_results
+from services import db, df_to_records
 
 router = APIRouter()
 
 
 @router.get("/binding/preload")
-def binding_preload(page: int = 1, page_size: int = 50, gene_filter: str = ""):
+def binding_preload(
+    page: int = Query(1, ge=1, le=100_000),
+    page_size: int = Query(50, ge=1, le=200),
+    gene_filter: str = Query("", max_length=50),
+):
     """Return all genes with binding stats, paginated + filterable."""
     tbs = db.dfs.get("target_binding_stats")
     if tbs is None or tbs.empty:
@@ -106,7 +110,6 @@ def binding_search(req: BindingRequest):
             table_df = drugs_df[cols] if cols else drugs_df
             result["table"] = df_to_records(table_df)
             result["table_columns"] = list(table_df.columns)
-            _last_results["binding_df"] = table_df
 
     # Drug + Gene: evidence radar
     if drug_id and gene:
@@ -132,19 +135,4 @@ def binding_search(req: BindingRequest):
         if not targets_df.empty:
             result["table"] = df_to_records(targets_df)
             result["table_columns"] = list(targets_df.columns)
-            _last_results["binding_df"] = targets_df
-
     return result
-
-
-@router.get("/binding/download/csv")
-def binding_download_csv():
-    df = _last_results.get("binding_df")
-    path = save_csv(df, "binding")
-    if not path:
-        return {"error": "No data to download"}
-    return Response(
-        content=open(path, "rb").read(),
-        media_type="text/csv",
-        headers={"Content-Disposition": "attachment; filename=linkd_binding.csv"},
-    )

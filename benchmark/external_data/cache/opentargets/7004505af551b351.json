@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL1200618", "name": "FEXOFENADINE HYDROCHLORIDE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Histamine H1 receptor antagonist", "actionType": "ANTAGONIST", "targetName": "Histamine H1 receptor", "targets": [{"id": "ENSG00000196639", "approvedSymbol": "HRH1"}]}]}}}}

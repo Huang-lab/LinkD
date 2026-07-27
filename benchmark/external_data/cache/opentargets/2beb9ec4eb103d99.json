@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL1201570", "name": "ANAKINRA", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Interleukin-1 receptor antagonist", "actionType": "ANTAGONIST", "targetName": "Interleukin-1 receptor type 1", "targets": [{"id": "ENSG00000115594", "approvedSymbol": "IL1R1"}]}]}}}}

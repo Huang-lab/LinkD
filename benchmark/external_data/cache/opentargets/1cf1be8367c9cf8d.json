@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL2107869", "name": "INSULIN DEGLUDEC", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Insulin receptor agonist", "actionType": "AGONIST", "targetName": "Insulin receptor", "targets": [{"id": "ENSG00000171105", "approvedSymbol": "INSR"}]}]}}}}

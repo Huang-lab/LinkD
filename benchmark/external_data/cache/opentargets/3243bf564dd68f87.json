@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL2107881", "name": "REGRAMOSTIM", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Granulocyte colony stimulating factor receptor agonist", "actionType": "AGONIST", "targetName": "Granulocyte colony-stimulating factor receptor", "targets": [{"id": "ENSG00000119535", "approvedSymbol": "CSF3R"}]}]}}}}

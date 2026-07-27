@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL787", "name": "MONTELUKAST", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Cysteinyl leukotriene receptor 1 antagonist", "actionType": "ANTAGONIST", "targetName": "Cysteinyl leukotriene receptor 1", "targets": [{"id": "ENSG00000173198", "approvedSymbol": "CYSLTR1"}]}]}}}}

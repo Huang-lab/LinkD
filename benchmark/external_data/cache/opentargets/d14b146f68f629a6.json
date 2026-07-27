@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL701", "name": "BACLOFEN", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "GABA-B receptor agonist", "actionType": "AGONIST", "targetName": "GABA-B receptor", "targets": [{"id": "ENSG00000204681", "approvedSymbol": "GABBR1"}, {"id": "ENSG00000136928", "approvedSymbol": "GABBR2"}]}]}}}}

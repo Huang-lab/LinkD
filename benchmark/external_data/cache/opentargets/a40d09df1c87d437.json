@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL902", "name": "FAMOTIDINE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Histamine H2 receptor antagonist", "actionType": "ANTAGONIST", "targetName": "Histamine H2 receptor", "targets": [{"id": "ENSG00000113749", "approvedSymbol": "HRH2"}]}]}}}}

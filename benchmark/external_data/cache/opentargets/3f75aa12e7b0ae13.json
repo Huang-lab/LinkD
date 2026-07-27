@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL1201533", "name": "THYROTROPIN ALFA", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Thyroid stimulating hormone receptor agonist", "actionType": "AGONIST", "targetName": "Thyrotropin receptor", "targets": [{"id": "ENSG00000165409", "approvedSymbol": "TSHR"}]}]}}}}

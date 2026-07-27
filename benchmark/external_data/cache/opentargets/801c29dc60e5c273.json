@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL2107884", "name": "RESLIZUMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Interleukin-5 inhibitor", "actionType": "INHIBITOR", "targetName": "Interleukin-5", "targets": [{"id": "ENSG00000113525", "approvedSymbol": "IL5"}]}]}}}}

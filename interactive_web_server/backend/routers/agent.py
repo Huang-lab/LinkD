@@ -1,195 +1,266 @@
+"""Stateless LLM planning and execution endpoints."""
+
+from __future__ import annotations
+
+import logging
 import os
-import json
-from fastapi import APIRouter
-from fastapi.responses import StreamingResponse
-from pydantic import BaseModel
-from typing import Optional
-from services import db, planning_agent, PROVIDER_MAP, PROVIDERS, _last_results
-import services
+from typing import Literal
+
+import pandas as pd
+from fastapi import APIRouter, HTTPException, Request
+from pydantic import BaseModel, Field, SecretStr, field_validator, model_validator
+
+from agent import AnalysisPlan, LLMClient, LLMPlanningAgent, PlanStep
+from rate_limits import limiter
+from services import PROVIDER_MAP, PROVIDERS, db
+
 
 router = APIRouter()
+logger = logging.getLogger("linkd.agent")
+LLM_RATE_LIMIT = "5/minute"
+ALLOWED_DATA_SOURCES = frozenset(
+    {
+        "drug_info",
+        "target_info",
+        "binding_affinity",
+        "drug_response",
+        "ehr",
+        "comprehensive",
+    }
+)
+PlanStatus = Literal["pending", "in_progress", "completed", "failed"]
 
 
-def _format_result(result) -> str:
-    """Format step result into readable text with actual data."""
-    import pandas as pd
+class ProviderConfiguration(BaseModel):
+    provider: str = Field(default="OpenAI", min_length=1, max_length=40)
+    model: str = Field(default="gpt-4o-mini", min_length=1, max_length=100)
+    api_key: SecretStr | None = Field(default=None, repr=False)
+
+    @model_validator(mode="after")
+    def validate_provider_and_model(self) -> "ProviderConfiguration":
+        if self.provider not in PROVIDER_MAP:
+            raise ValueError("Unsupported LLM provider")
+        provider_key, models = PROVIDER_MAP[self.provider]
+        if self.model not in models:
+            raise ValueError(
+                f"Unsupported model for {self.provider}; choose one of: {', '.join(models)}"
+            )
+        if provider_key not in PROVIDERS:
+            raise ValueError("Unsupported LLM provider")
+        return self
+
+
+class PlanRequest(ProviderConfiguration):
+    query: str = Field(min_length=1, max_length=2_000)
+
+    @field_validator("query")
+    @classmethod
+    def clean_query(cls, value: str) -> str:
+        cleaned = value.strip()
+        if not cleaned:
+            raise ValueError("Query must not be blank")
+        return cleaned
+
+
+class PlanStepPayload(BaseModel):
+    step_number: int = Field(ge=1, le=6)
+    description: str = Field(min_length=1, max_length=500)
+    data_sources: list[str] = Field(min_length=1, max_length=6)
+    status: PlanStatus = "pending"
+
+    @field_validator("description")
+    @classmethod
+    def clean_description(cls, value: str) -> str:
+        cleaned = value.strip()
+        if not cleaned:
+            raise ValueError("Step description must not be blank")
+        return cleaned
+
+    @field_validator("data_sources")
+    @classmethod
+    def validate_sources(cls, values: list[str]) -> list[str]:
+        unique = list(dict.fromkeys(values))
+        unsupported = sorted(set(unique) - ALLOWED_DATA_SOURCES)
+        if unsupported:
+            raise ValueError("Unsupported LinkD data source: " + ", ".join(unsupported))
+        return unique
+
+
+class PlanPayload(BaseModel):
+    query: str = Field(min_length=1, max_length=2_000)
+    steps: list[PlanStepPayload] = Field(min_length=1, max_length=6)
+
+    @model_validator(mode="after")
+    def validate_step_numbers(self) -> "PlanPayload":
+        numbers = [step.step_number for step in self.steps]
+        if numbers != list(range(1, len(numbers) + 1)):
+            raise ValueError("Plan steps must be numbered consecutively from 1")
+        return self
+
+
+class ExecuteRequest(ProviderConfiguration):
+    plan: PlanPayload
+
+
+def _api_key(configuration: ProviderConfiguration) -> str:
+    supplied = (
+        configuration.api_key.get_secret_value().strip()
+        if configuration.api_key is not None
+        else ""
+    )
+    if supplied:
+        return supplied
+    provider_key = PROVIDER_MAP[configuration.provider][0]
+    configured = os.getenv(PROVIDERS[provider_key]["env_key"], "").strip()
+    if not configured and configuration.provider == "Google Gemini":
+        configured = os.getenv("GEMINI_FREE_KEY", "").strip()
+    if not configured:
+        raise HTTPException(
+            status_code=400,
+            detail=f"An API key is required for {configuration.provider}.",
+        )
+    return configured
+
+
+def _new_agent(configuration: ProviderConfiguration) -> LLMPlanningAgent:
+    provider_key = PROVIDER_MAP[configuration.provider][0]
+    client = LLMClient(
+        provider=provider_key,
+        api_key=_api_key(configuration),
+        model=configuration.model,
+    )
+    return LLMPlanningAgent(llm_client=client, db=db)
+
+
+def _payload_from_plan(plan: AnalysisPlan) -> PlanPayload:
+    steps = [
+        PlanStepPayload(
+            step_number=index,
+            description=step.description,
+            data_sources=step.data_sources,
+            status="pending",
+        )
+        for index, step in enumerate(plan.steps[:6], start=1)
+    ]
+    if not steps:
+        raise ValueError("The model returned an empty analysis plan")
+    return PlanPayload(query=plan.query, steps=steps)
+
+
+def _analysis_plan(payload: PlanPayload) -> AnalysisPlan:
+    return AnalysisPlan(
+        query=payload.query,
+        steps=[
+            PlanStep(
+                step_number=step.step_number,
+                description=step.description,
+                data_sources=step.data_sources,
+                status="pending",
+            )
+            for step in payload.steps
+        ],
+    )
+
+
+def _format_result(result: object) -> str:
+    """Format a bounded, non-sensitive summary of one execution result."""
     if result is None:
         return "No data returned."
     if isinstance(result, pd.DataFrame):
-        n = len(result)
-        # Show top drug/gene names if available
-        names = []
-        for col in ["Drug Name", "Drug Chembl ID", "Gene", "Disease Description"]:
-            if col in result.columns:
-                top = result[col].dropna().unique()[:5]
-                if len(top) > 0:
-                    names.append(f"{col}: {', '.join(str(x) for x in top)}")
-        preview = "; ".join(names) if names else ", ".join(list(result.columns)[:5])
-        return f"Found {n} records. {preview}"
+        names: list[str] = []
+        for column in ("Drug Name", "Drug Chembl ID", "Gene", "Disease Description"):
+            if column in result.columns:
+                values = result[column].dropna().astype(str).unique()[:5]
+                if len(values):
+                    names.append(f"{column}: {', '.join(values)}")
+        preview = "; ".join(names) or ", ".join(map(str, result.columns[:5]))
+        return f"Found {len(result)} records. {preview}"
     if isinstance(result, dict):
-        parts = []
-        for k, v in result.items():
-            if isinstance(v, pd.DataFrame):
-                n = len(v)
-                # Extract actual names
-                drug_names = []
-                for col in ["Drug Name", "Drug Chembl ID"]:
-                    if col in v.columns:
-                        drug_names = v[col].dropna().unique()[:5].tolist()
-                        break
-                if drug_names:
-                    parts.append(f"{k}: {n} records — {', '.join(str(x) for x in drug_names)}")
-                else:
-                    parts.append(f"{k}: {n} records")
-            elif isinstance(v, dict):
-                if "data" in v and isinstance(v["data"], list) and len(v["data"]) > 0:
-                    # Show actual drug names from data
-                    names = []
-                    for row in v["data"][:5]:
-                        name = row.get("Drug Name") or row.get("drugId") or row.get("Drug Chembl ID", "")
-                        if name:
-                            names.append(str(name))
-                    count = v.get("count", len(v["data"]))
-                    if names:
-                        parts.append(f"{k}: {count} records — {', '.join(names)}")
-                    else:
-                        parts.append(f"{k}: {count} records")
-                else:
-                    summary_keys = [sk for sk in v if isinstance(v[sk], (int, float, str)) and sk not in ('Sequence', 'Entry', 'Entry Name')]
-                    items = [f"{sk}: {v[sk]}" for sk in summary_keys[:10]]
-                    if items:
-                        parts.append(f"{k}: {', '.join(items)}")
-                    else:
-                        parts.append(f"{k}: found")
-            elif isinstance(v, list):
-                parts.append(f"{k}: {len(v)} items")
-            elif isinstance(v, (int, float)):
-                parts.append(f"{k}: {v}")
-            elif isinstance(v, str) and len(v) < 100:
-                parts.append(f"{k}: {v}")
-        return "; ".join(parts) if parts else f"{len(result)} fields returned"
+        parts: list[str] = []
+        for key, value in list(result.items())[:20]:
+            if isinstance(value, pd.DataFrame):
+                parts.append(f"{key}: {len(value)} records")
+            elif isinstance(value, list):
+                parts.append(f"{key}: {len(value)} items")
+            elif isinstance(value, (int, float)):
+                parts.append(f"{key}: {value}")
+            elif isinstance(value, str) and len(value) < 100:
+                parts.append(f"{key}: {value}")
+        return "; ".join(parts) or f"{len(result)} fields returned"
     if isinstance(result, list):
         return f"Found {len(result)} items"
     return str(result)[:200]
 
 
-class InitRequest(BaseModel):
-    provider: str = "OpenAI"
-    model: str = "gpt-4o-mini"
-    api_key: str = ""
-
-
-class PlanRequest(BaseModel):
-    query: str
-
-
-@router.post("/agent/init")
-def agent_init(req: InitRequest):
-    """Initialize the LLM agent with provider, model, and API key."""
-    key = req.api_key.strip()
-    if not key:
-        provider_key = PROVIDER_MAP.get(req.provider, ("openai", []))[0]
-        env_var = PROVIDERS[provider_key]["env_key"]
-        key = os.getenv(env_var, "")
-    # Fallback: free Gemini key from server env
-    if not key and req.provider == "Google Gemini":
-        key = os.getenv("GEMINI_FREE_KEY", "")
-    if not key:
-        provider_key = PROVIDER_MAP.get(req.provider, ("openai", []))[0]
-        return {"status": "error", "message": f"Please enter an API key for {req.provider} (or set {PROVIDERS[provider_key]['env_key']} in .env)."}
-
-    provider_key = PROVIDER_MAP[req.provider][0]
-    try:
-        from agent import LLMClient, LLMPlanningAgent
-        llm_client = LLMClient(provider=provider_key, api_key=key, model=req.model)
-        services.planning_agent = LLMPlanningAgent(llm_client=llm_client, db=db)
-        return {"status": "ok", "message": f"Agent initialized with {req.provider} / {req.model}."}
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
-
-
 @router.post("/agent/plan")
-def agent_plan(req: PlanRequest):
-    """Generate an analysis plan from a natural language query."""
-    if services.planning_agent is None:
-        return {"status": "error", "message": "Please initialize the agent first."}
-    if not req.query.strip():
-        return {"status": "error", "message": "Please enter a query."}
-
+@limiter.limit(LLM_RATE_LIMIT)
+def agent_plan(request: Request, body: PlanRequest):
+    """Generate a validated, bounded LinkD analysis plan."""
+    del request
     try:
-        plan = services.planning_agent.generate_plan(req.query)
-        services.current_plan = plan
+        plan = _new_agent(body).generate_plan(body.query)
+        validated = _payload_from_plan(plan)
+        return {"status": "ok", **validated.model_dump()}
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.warning("Planning request failed (%s)", type(exc).__name__)
+        raise HTTPException(
+            status_code=502,
+            detail="Planning request failed. Verify the provider configuration and try again.",
+        ) from None
+
+
+@router.post("/agent/execute")
+@limiter.limit(LLM_RATE_LIMIT)
+def agent_execute(request: Request, body: ExecuteRequest):
+    """Execute only the validated plan supplied in this HTTPS request."""
+    del request
+    try:
+        executed = _new_agent(body).execute_plan(
+            _analysis_plan(body.plan), show_progress=False
+        )
         steps = []
-        for step in plan.steps:
-            steps.append({
+        for step in executed.steps:
+            item = {
                 "step_number": step.step_number,
                 "description": step.description,
                 "data_sources": step.data_sources,
                 "status": step.status,
-            })
-        return {"status": "ok", "steps": steps, "query": plan.query}
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
-
-
-@router.post("/agent/execute")
-def agent_execute():
-    """Execute the current plan. Returns results synchronously."""
-    if services.planning_agent is None:
-        return {"status": "error", "message": "Agent not initialized."}
-    if services.current_plan is None:
-        return {"status": "error", "message": "No plan to execute. Generate a plan first."}
-
-    try:
-        plan = services.planning_agent.execute_plan(services.current_plan)
-        services.current_plan = plan
-
-        steps_results = []
-        for step in plan.steps:
-            step_data = {
-                "step_number": step.step_number,
-                "description": step.description,
-                "status": step.status,
-                "error": step.error,
+                "error": (
+                    "This analysis step could not be completed."
+                    if step.error
+                    else None
+                ),
             }
             if step.result is not None:
-                step_data["result_summary"] = _format_result(step.result)
-            steps_results.append(step_data)
-
-        # Save to history
-        from datetime import datetime
-        services.execution_history.append({
-            "timestamp": datetime.now().isoformat(),
-            "query": plan.query,
-            "steps": len(plan.steps),
-            "completed": sum(1 for s in plan.steps if s.status == "completed"),
-        })
-
+                item["result_summary"] = _format_result(step.result)
+            steps.append(item)
         return {
             "status": "ok",
-            "steps": steps_results,
-            "summary": plan.summary or "",
-            "overall_status": plan.overall_status,
+            "query": executed.query,
+            "steps": steps,
+            "summary": executed.summary or "",
+            "overall_status": executed.overall_status,
         }
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
-
-
-@router.get("/agent/history")
-def agent_history():
-    """Return execution history."""
-    return {"history": services.execution_history}
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.warning("Execution request failed (%s)", type(exc).__name__)
+        raise HTTPException(
+            status_code=502,
+            detail="Plan execution failed. Verify the plan and provider configuration.",
+        ) from None
 
 
 @router.get("/agent/providers")
 def agent_providers():
-    """Return available LLM providers and their suggested models."""
-    result = {}
-    for display_name, (key, models) in PROVIDER_MAP.items():
-        result[display_name] = {
+    """Return the fixed provider/model allowlist; no credentials are returned."""
+    return {
+        display_name: {
             "key": key,
             "models": models,
             "default": PROVIDERS[key]["default"],
-            "env_key": PROVIDERS[key]["env_key"],
         }
-    return result
+        for display_name, (key, models) in PROVIDER_MAP.items()
+    }

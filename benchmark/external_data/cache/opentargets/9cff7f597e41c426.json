@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL1201770", "name": "METHYLNALTREXONE BROMIDE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Mu opioid receptor antagonist", "actionType": "ANTAGONIST", "targetName": "Mu-type opioid receptor", "targets": [{"id": "ENSG00000112038", "approvedSymbol": "OPRM1"}]}]}}}}

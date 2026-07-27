@@ -351,7 +351,7 @@ Response:"""
                     # Try to find drug ID from name
                     drugs = self.db.search_drugs()
                     if not drugs.empty and 'drugId' in drugs.columns:
-                        drug_match = drugs[drugs['drugId'].str.contains(drug_id, case=False, na=False)]
+                        drug_match = drugs[drugs['drugId'].str.contains(drug_id, case=False, na=False, regex=False)]
                         if not drug_match.empty:
                             drug_id = drug_match.iloc[0]['drugId']
                 
@@ -369,7 +369,7 @@ Response:"""
                 if drug_name and not drug_name.startswith("CHEMBL"):
                     drugs = self.db.search_drugs()
                     if not drugs.empty and 'drugId' in drugs.columns:
-                        drug_match = drugs[drugs['drugId'].str.contains(drug_name, case=False, na=False)]
+                        drug_match = drugs[drugs['drugId'].str.contains(drug_name, case=False, na=False, regex=False)]
                         if not drug_match.empty:
                             drug_id = drug_match.iloc[0]['drugId']
                 

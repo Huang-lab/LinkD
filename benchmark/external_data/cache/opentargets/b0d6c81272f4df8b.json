@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL2133806", "name": "JNJ-38877605", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Hepatocyte growth factor receptor inhibitor", "actionType": "INHIBITOR", "targetName": "Hepatocyte growth factor receptor", "targets": [{"id": "ENSG00000105976", "approvedSymbol": "MET"}]}]}}}}

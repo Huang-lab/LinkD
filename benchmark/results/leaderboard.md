@@ -54,11 +54,11 @@ Deterministic agents run offline from cache; base LLMs run live (gpt-4o-mini/4o/
 
 | Condition | Model | auroc | auprc | pos | neg | lat_s/item |
 |---|---|---|---|---|---|---|
-| LinkD (multi-evidence fusion) | tools-only | 0.392 | 0.435 | 72 | 72 | 0.270 |
-| orchestrator | gpt-5.4 | 0.850 | 0.808 | 72 | 72 | 4.130 |
-| Base LLM (closed-book) | gpt-5.4 | 0.788 | 0.770 | 72 | 72 | 1.350 |
-| combined | gpt-5.4 | 0.757 | 0.764 | 72 | 72 | 1.470 |
-| OpenTargets association | opentargets | 0.705 | 0.734 | 72 | 72 | 0.000 |
+| LinkD (multi-evidence fusion) | tools-only | 0.467 | 0.435 | 76 | 76 | 0.270 |
+| orchestrator | gpt-5.4 | 0.806 | 0.808 | 76 | 76 | 4.130 |
+| Base LLM (closed-book) | gpt-5.4 | 0.759 | 0.770 | 76 | 76 | 1.350 |
+| combined | gpt-5.4 | 0.725 | 0.764 | 76 | 76 | 1.470 |
+| OpenTargets association | opentargets | 0.652 | 0.734 | 76 | 76 | 0.000 |
 
 ## l2_binding_moa
 
@@ -160,7 +160,6 @@ Deterministic agents run offline from cache; base LLMs run live (gpt-4o-mini/4o/
 
 | Condition | Model |  |
 |---|---|
-| linkd_crispr_pair | tools-only |  |
 | Base LLM (closed-book) | gpt-5.4 |  |
 | Base LLM (closed-book) | claude-sonnet-4-6 |  |
 | combined | gpt-5.4 |  |
@@ -172,7 +171,6 @@ Deterministic agents run offline from cache; base LLMs run live (gpt-4o-mini/4o/
 
 | Condition | Model |  |
 |---|---|
-| linkd_fusion_pair | tools-only |  |
 | Base LLM (closed-book) | gpt-5.4 |  |
 | Base LLM (closed-book) | claude-sonnet-4-6 |  |
 | combined | gpt-5.4 |  |
@@ -184,7 +182,6 @@ Deterministic agents run offline from cache; base LLMs run live (gpt-4o-mini/4o/
 
 | Condition | Model |  |
 |---|---|
-| linkd_target_aff | tools-only |  |
 | Base LLM (closed-book) | gpt-5.4 |  |
 | Base LLM (closed-book) | claude-sonnet-4-6 |  |
 | combined | gpt-5.4 |  |

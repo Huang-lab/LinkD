@@ -1,5 +1,7 @@
--r requirements.txt
+# Supplementary benchmark and report generation
+matplotlib>=3.8
+PyTDC>=0.3.8
 
-# Benchmark rebuild/test helpers
-pytest>=8.0.0
-PyTDC>=1.1.0
+# The optional live ToolUniverse comparison is not required to regenerate the
+# retained reports from benchmark/results/summary.*.jsonl. Install ToolUniverse
+# from its upstream project only when rerunning that live condition.

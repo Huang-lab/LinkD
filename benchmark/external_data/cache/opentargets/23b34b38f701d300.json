@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL578", "name": "ENALAPRIL", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Angiotensin-converting enzyme inhibitor", "actionType": "INHIBITOR", "targetName": "Angiotensin-converting enzyme", "targets": [{"id": "ENSG00000159640", "approvedSymbol": "ACE"}]}]}}}}

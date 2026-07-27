@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL1200675", "name": "TOREMIFENE CITRATE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Estrogen receptor modulator", "actionType": "MODULATOR", "targetName": "Estrogen receptor", "targets": [{"id": "ENSG00000140009", "approvedSymbol": "ESR2"}, {"id": "ENSG00000091831", "approvedSymbol": "ESR1"}]}]}}}}

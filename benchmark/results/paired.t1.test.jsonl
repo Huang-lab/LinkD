@@ -1,3 +1,0 @@
-{"scenario": "t1_dti", "a": "linkd_cli", "b": "closed_book:gpt-4o-mini", "linkd_only_right": 19, "other_only_right": 6, "n_discordant": 25, "mcnemar_p": 0.01463}
-{"scenario": "t1_dti", "a": "linkd_cli", "b": "closed_book:gpt-4o", "linkd_only_right": 18, "other_only_right": 6, "n_discordant": 24, "mcnemar_p": 0.02266}
-{"scenario": "t1_dti", "a": "linkd_cli", "b": "closed_book:gpt-4.1", "linkd_only_right": 38, "other_only_right": 8, "n_discordant": 46, "mcnemar_p": 1e-05}

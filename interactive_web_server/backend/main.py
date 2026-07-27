@@ -21,24 +21,24 @@ except ImportError:
     pass
 
 import logging
+import json
+import os
 from fastapi import FastAPI, Request
+from fastapi import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, JSONResponse
 from contextlib import asynccontextmanager
-from slowapi import Limiter, _rate_limit_exceeded_handler
-from slowapi.util import get_remote_address
+from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
+from slowapi.middleware import SlowAPIMiddleware
 
 from services import db, precompute_overview
+from rate_limits import limiter
 
 # Logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 logger = logging.getLogger("linkd")
-
-# Rate limiter
-limiter = Limiter(key_func=get_remote_address, default_limits=["60/minute"])
-
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -57,20 +57,29 @@ app = FastAPI(
 
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+app.add_middleware(SlowAPIMiddleware)
 
 
 # Global exception handler
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
-    logger.error(f"Unhandled error on {request.url}: {exc}", exc_info=True)
+    logger.error("Unhandled error on %s (%s)", request.url.path, type(exc).__name__, exc_info=True)
     return JSONResponse(status_code=500, content={"status": "error", "message": "Internal server error. Please try again."})
 
+development_origins = [
+    origin.strip()
+    for origin in os.getenv(
+        "LINKD_ALLOWED_ORIGINS",
+        "http://localhost:5173,http://127.0.0.1:5173",
+    ).split(",")
+    if origin.strip()
+]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=development_origins,
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Content-Type"],
 )
 
 # Import and include routers
@@ -88,15 +97,17 @@ def health_check():
     return {"status": "ok", "datasets": len(db.dfs)}
 
 
+PRERUN_EXAMPLES = frozenset({"vemurafenib_braf", "egfr_landscape"})
+
+
 @app.get("/api/agent/prerun/{name}")
 def get_prerun_example(name: str):
     """Return a pre-run agent example result by name."""
-    import json
+    if name not in PRERUN_EXAMPLES:
+        raise HTTPException(status_code=404, detail="Example not found")
     examples_dir = Path(__file__).parent.parent / "example_results"
     filepath = examples_dir / f"{name}.json"
-    if not filepath.exists():
-        return {"error": f"Example '{name}' not found"}
-    with open(filepath) as f:
+    with filepath.open(encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -131,12 +142,24 @@ def get_examples():
     }
 
 
+@app.api_route(
+    "/api/{unknown_path:path}",
+    methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    include_in_schema=False,
+)
+def unknown_api_route(unknown_path: str):
+    """Prevent unknown API paths from falling through to the React application."""
+    del unknown_path
+    raise HTTPException(status_code=404, detail="API endpoint not found")
+
+
 # ============================================================
 # Serve React frontend build (single-port deployment)
 # ============================================================
 
 frontend_dist = Path(__file__).parent.parent / "frontend" / "dist"
 if frontend_dist.exists():
+    frontend_root = frontend_dist.resolve()
     # Serve static assets (JS, CSS bundles)
     assets_dir = frontend_dist / "assets"
     if assets_dir.exists():
@@ -145,8 +168,8 @@ if frontend_dist.exists():
     @app.get("/{path:path}")
     def serve_frontend(path: str):
         """Serve React SPA — all non-API routes return index.html."""
-        file = frontend_dist / path
-        if file.is_file():
+        file = (frontend_root / path).resolve()
+        if file.is_relative_to(frontend_root) and file.is_file():
             return FileResponse(str(file))
         return FileResponse(str(frontend_dist / "index.html"))
 else:

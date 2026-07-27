@@ -48,13 +48,14 @@ cd interactive_web_server && ./start.sh
 # http://localhost:8000
 ```
 
-Other modes: `./start.sh dev` (hot reload) · `./start.sh gradio` (legacy UI on 7860).
+Development mode: `./start.sh dev` (FastAPI and Vite with hot reload).
 
 ## Data
 
 ```bash
 # Auto-download (also used on Render)
 python scripts/download_data.py
+python scripts/download_data.py --verify-only
 
 # Or extract Zenodo archives into the project root:
 # Database/, DrugTargetMetrics/, EHR_Results/, DrugResponse/, Target_Disease_Association/
@@ -88,12 +89,12 @@ A JSON CLI over the same layers is available at
 .claude/skills/linkd/scripts/linkd evidence CHEMBL553 EGFR --disease "lung cancer" --icd C34 --drug-name Erlotinib
 ```
 
-## Manuscript figures & agent benchmark
+## Manuscript figures & supplementary agent benchmark
 
 | Audience | Path |
 |----------|------|
 | Reviewers regenerating figures | [`For_Reviewer/`](For_Reviewer/) |
-| Full agent-eval harness (T1–T7) | [`benchmark/`](benchmark/) — see `benchmark/README.md` |
+| Supplementary agent-eval harness (T1–T7; not a submitted Figure 6c panel) | [`benchmark/`](benchmark/) |
 
 ## Deployment (Render)
 
@@ -103,7 +104,7 @@ Frontend `dist/` is committed; Render installs Python deps and serves the prebui
 2. **Build:** `pip install -r requirements.txt`  
 3. **Start:** `python scripts/download_data.py && cd interactive_web_server/backend && python -m uvicorn main:app --host 0.0.0.0 --port $PORT`  
 4. Env: `DATABASE_DIR=/opt/render/project/src/data/Database`, `GEMINI_FREE_KEY`, optional other LLM keys  
-5. Persistent disk (~20 GB) at `/opt/render/project/src/data`
+5. Persistent disk (40 GB, allowing atomic dataset upgrades) at `/opt/render/project/src/data`
 
 After frontend source changes, rebuild and commit `interactive_web_server/frontend/dist/`.
 
@@ -126,7 +127,7 @@ LinkD/
 ├── agent/                     # Query module, evidence scoring, LLM planner
 ├── interactive_web_server/    # FastAPI + React (LinkD-Bind/Select/Pheno/Agent)
 ├── For_Reviewer/              # Manuscript figure reproduction package
-├── benchmark/                 # LinkD-Agent evaluation (Figure 6c)
+├── benchmark/                 # Supplementary LinkD-Agent evaluation
 ├── scripts/download_data.py   # Zenodo download
 ├── config/                    # Evidence weights, etc.
 ├── requirements.txt
@@ -142,7 +143,8 @@ LinkD/
 | `POST /api/binding/search` | Binding landscape |
 | `POST /api/selectivity/search` | Selectivity detail |
 | `GET /api/ehr/preload` | EHR associations |
-| `POST /api/agent/plan` · `/execute` | LinkD-Agent plan + run |
+| `POST /api/agent/plan` | Stateless plan request: provider, model, optional transient key, query |
+| `POST /api/agent/execute` | Stateless execution request: provider configuration + validated plan |
 
 Swagger UI: `http://localhost:8000/docs`
 
@@ -154,10 +156,17 @@ Swagger UI: `http://localhost:8000/docs`
 | `DATABASE_DIR` | Path to `Database/` (default `./Database`) |
 | `GEMINI_FREE_KEY` | Free-tier Gemini for LinkD-Agent |
 | `OPENAI_API_KEY` / `GOOGLE_API_KEY` / `ANTHROPIC_API_KEY` | Optional LLM providers |
+| `LINKD_ALLOWED_ORIGINS` | Comma-separated development CORS origins |
 
 ## License
 
-MIT License. Source code and data-processing pipelines are freely available for academic use.
+Repository software is licensed under the [MIT License](LICENSE). The
+figure-reproduction bundle is CC BY 4.0. Upstream application datasets retain
+their respective source terms; downloading them does not relicense them.
+
+> **Research use only.** LinkD associations are observational, predictions
+> require independent validation, and LLM-generated plans or summaries may be
+> incomplete or incorrect. LinkD does not provide clinical advice.
 
 ## Contact
 

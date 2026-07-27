@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL3989958", "name": "IVOSIDENIB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Isocitrate dehydrogenase [NADP] cytoplasmic inhibitor", "actionType": "INHIBITOR", "targetName": "Isocitrate dehydrogenase [NADP] cytoplasmic", "targets": [{"id": "ENSG00000138413", "approvedSymbol": "IDH1"}]}]}}}}

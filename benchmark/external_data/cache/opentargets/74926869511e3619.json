@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL3301675", "name": "LINACLOTIDE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Heat-stable enterotoxin receptor agonist", "actionType": "AGONIST", "targetName": "Guanylyl cyclase C", "targets": [{"id": "ENSG00000070019", "approvedSymbol": "GUCY2C"}]}]}}}}

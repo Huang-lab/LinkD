@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL2396661", "name": "ALPELISIB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "PI3-kinase p110-alpha subunit inhibitor", "actionType": "INHIBITOR", "targetName": "Phosphatidylinositol 4,5-bisphosphate 3-kinase catalytic subunit alpha isoform", "targets": [{"id": "ENSG00000121879", "approvedSymbol": "PIK3CA"}]}]}}}}

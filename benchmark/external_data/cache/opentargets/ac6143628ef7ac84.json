@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL4297911", "name": "SPESOLIMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "IL36 receptor antagonist", "actionType": "ANTAGONIST", "targetName": "IL36 receptor", "targets": [{"id": "ENSG00000115598", "approvedSymbol": "IL1RL2"}, {"id": "ENSG00000196083", "approvedSymbol": "IL1RAP"}]}]}}}}

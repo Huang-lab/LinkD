@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL4594260", "name": "TAZEMETOSTAT HYDROBROMIDE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Histone-lysine N-methyltransferase EZH2 inhibitor", "actionType": "INHIBITOR", "targetName": "Histone-lysine N-methyltransferase EZH2", "targets": [{"id": "ENSG00000106462", "approvedSymbol": "EZH2"}]}]}}}}

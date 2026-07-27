@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL1742996", "name": "BRODALUMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Interleukin-17 receptor A antagonist", "actionType": "ANTAGONIST", "targetName": "Interleukin-17 receptor A", "targets": [{"id": "ENSG00000177663", "approvedSymbol": "IL17RA"}]}]}}}}

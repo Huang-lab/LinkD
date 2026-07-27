@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL1189679", "name": "PALONOSETRON", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Serotonin 3a (5-HT3a) receptor antagonist", "actionType": "ANTAGONIST", "targetName": "5-hydroxytryptamine receptor 3A", "targets": [{"id": "ENSG00000166736", "approvedSymbol": "HTR3A"}]}]}}}}

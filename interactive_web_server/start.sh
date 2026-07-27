@@ -1,10 +1,9 @@
 #!/bin/bash
 # Start the LinkD Agent web application.
 #
-# Usage: ./start.sh [react|dev|gradio]
+# Usage: ./start.sh [react|dev]
 #   react   - Production: FastAPI serves API + React build on single port (default)
 #   dev     - Development: separate FastAPI (hot reload) + Vite dev server
-#   gradio  - Legacy Gradio interface (app.py)
 #
 # Environment variables:
 #   PORT           - Server port for react mode (default: 8000)
@@ -99,18 +98,9 @@ elif [ "$MODE" = "dev" ]; then
     trap "kill $BACKEND_PID $FRONTEND_PID 2>/dev/null; exit 0" INT TERM
     wait
 
-elif [ "$MODE" = "gradio" ]; then
-    PORT="${GRADIO_SERVER_PORT:-7860}"
-    kill_port "$PORT"
-    cd "$SCRIPT_DIR"
-    export GRADIO_SERVER_PORT="$PORT"
-    echo "Starting Gradio on http://localhost:$PORT ..."
-    exec python app.py
-
 else
-    echo "Usage: ./start.sh [react|dev|gradio]"
+    echo "Usage: ./start.sh [react|dev]"
     echo "  react   - Production mode (default)"
     echo "  dev     - Development mode with hot reload"
-    echo "  gradio  - Legacy Gradio interface"
     exit 1
 fi

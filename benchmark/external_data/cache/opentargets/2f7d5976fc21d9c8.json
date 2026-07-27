@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL3655081", "name": "ABROCITINIB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Tyrosine-protein kinase JAK1 inhibitor", "actionType": "INHIBITOR", "targetName": "Tyrosine-protein kinase JAK1", "targets": [{"id": "ENSG00000162434", "approvedSymbol": "JAK1"}]}]}}}}

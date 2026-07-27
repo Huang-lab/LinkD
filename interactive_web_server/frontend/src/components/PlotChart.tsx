@@ -1,10 +1,11 @@
 import { useEffect, useRef } from 'react';
 import Plotly from 'plotly.js-dist-min';
+import type { Config, Data, Layout } from 'plotly.js';
 
 interface PlotChartProps {
-  data: any[];
-  layout?: any;
-  config?: any;
+  data: Data[];
+  layout?: Partial<Layout>;
+  config?: Partial<Config>;
   className?: string;
   style?: React.CSSProperties;
 }
@@ -13,7 +14,8 @@ export default function PlotChart({ data, layout = {}, config = {}, className = 
   const divRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!divRef.current) return;
+    const chart = divRef.current;
+    if (!chart) return;
 
     const defaultConfig = {
       displayModeBar: true,
@@ -22,12 +24,10 @@ export default function PlotChart({ data, layout = {}, config = {}, className = 
       ...config,
     };
 
-    Plotly.newPlot(divRef.current, data, layout, defaultConfig);
+    Plotly.newPlot(chart, data, layout, defaultConfig);
 
     return () => {
-      if (divRef.current) {
-        Plotly.purge(divRef.current);
-      }
+      Plotly.purge(chart);
     };
   }, [data, layout, config]);
 

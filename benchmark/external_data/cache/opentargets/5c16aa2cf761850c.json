@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL513", "name": "CARMUSTINE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Glutathione reductase inhibitor", "actionType": "INHIBITOR", "targetName": "Glutathione reductase, mitochondrial", "targets": [{"id": "ENSG00000104687", "approvedSymbol": "GSR"}]}]}}}}

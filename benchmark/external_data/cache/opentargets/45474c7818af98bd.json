@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL2108724", "name": "SEMAGLUTIDE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Glucagon-like peptide 1 receptor agonist", "actionType": "AGONIST", "targetName": "Glucagon-like peptide 1 receptor", "targets": [{"id": "ENSG00000112164", "approvedSymbol": "GLP1R"}]}]}}}}

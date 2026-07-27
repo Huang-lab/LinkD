@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL2103741", "name": "LEVOTHYROXINE SODIUM", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Thyroid hormone receptor agonist", "actionType": "AGONIST", "targetName": "Thyroid hormone receptor", "targets": [{"id": "ENSG00000126351", "approvedSymbol": "THRA"}, {"id": "ENSG00000151090", "approvedSymbol": "THRB"}]}]}}}}

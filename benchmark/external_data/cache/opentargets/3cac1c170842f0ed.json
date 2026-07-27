@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL271227", "name": "ABIRATERONE ACETATE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Cytochrome P450 17A1 inhibitor", "actionType": "INHIBITOR", "targetName": "Steroid 17-alpha-hydroxylase/17,20 lyase", "targets": [{"id": "ENSG00000148795", "approvedSymbol": "CYP17A1"}]}]}}}}

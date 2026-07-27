@@ -1,12 +1,17 @@
-from fastapi import APIRouter, Response
-from pydantic import BaseModel
-from services import db, df_to_records, save_csv, _last_results
+from fastapi import APIRouter, Query
+from pydantic import BaseModel, Field, field_validator
+from services import db, df_to_records
 
 router = APIRouter()
 
 
 @router.get("/selectivity/preload")
-def selectivity_preload(page: int = 1, page_size: int = 50, type_filter: str = "All", drug_filter: str = ""):
+def selectivity_preload(
+    page: int = Query(1, ge=1, le=100_000),
+    page_size: int = Query(50, ge=1, le=200),
+    type_filter: str = Query("All", max_length=50),
+    drug_filter: str = Query("", max_length=100),
+):
     """Return UMAP landscape + paginated drug table + type distribution."""
     result = {"umap": None, "type_distribution": {}, "drugs": [], "total": 0, "page": page, "page_size": page_size}
 
@@ -17,7 +22,7 @@ def selectivity_preload(page: int = 1, page_size: int = 50, type_filter: str = "
             type_colors = {"Highly Selective": "#238B45", "Moderate poly-target": "#FE9929", "Broad-spectrum": "#CB181D"}
             traces = []
             for t, color in type_colors.items():
-                mask = umap_df["Type"].str.contains(t, case=False, na=False)
+                mask = umap_df["Type"].str.contains(t, case=False, na=False, regex=False)
                 sub = umap_df[mask]
                 if len(sub) > 2000:
                     sub = sub.sample(2000, random_state=42)
@@ -50,11 +55,11 @@ def selectivity_preload(page: int = 1, page_size: int = 50, type_filter: str = "
 
         # Filters
         if type_filter and type_filter != "All" and "Type" in df.columns:
-            df = df[df["Type"].str.contains(type_filter, case=False, na=False)]
+            df = df[df["Type"].str.contains(type_filter, case=False, na=False, regex=False)]
         if drug_filter:
-            mask = df["Drug"].str.contains(drug_filter, case=False, na=False)
+            mask = df["Drug"].str.contains(drug_filter, case=False, na=False, regex=False)
             if "Drug Name" in df.columns:
-                mask = mask | df["Drug Name"].str.contains(drug_filter, case=False, na=False)
+                mask = mask | df["Drug Name"].str.contains(drug_filter, case=False, na=False, regex=False)
             df = df[mask]
 
         total = len(df)
@@ -72,8 +77,16 @@ def selectivity_preload(page: int = 1, page_size: int = 50, type_filter: str = "
 
 
 class SelectivityRequest(BaseModel):
-    drug_id: str = ""
-    selectivity_type: str = "All"
+    drug_id: str = Field("", max_length=30)
+    selectivity_type: str = Field("All", max_length=50)
+
+    @field_validator("drug_id")
+    @classmethod
+    def clean_drug_id(cls, value: str) -> str:
+        value = value.strip()
+        if value and not value.upper().startswith("CHEMBL"):
+            raise ValueError("Drug ID must start with CHEMBL")
+        return value
 
 
 @router.post("/selectivity/search")
@@ -118,7 +131,7 @@ def selectivity_search(req: SelectivityRequest):
                         "drugs": sub["Drug"].tolist() if "Drug" in sub.columns else [],
                     })
                 # Highlight searched drug
-                drug_mask = umap_df["Drug"].str.contains(drug_id, case=False, na=False)
+                drug_mask = umap_df["Drug"].str.contains(drug_id, case=False, na=False, regex=False)
                 highlight = None
                 if drug_mask.any():
                     hit = umap_df[drug_mask].iloc[0]
@@ -132,22 +145,8 @@ def selectivity_search(req: SelectivityRequest):
             table_df = type_df[cols] if cols else type_df
             result["table"] = df_to_records(table_df)
             result["table_columns"] = list(table_df.columns)
-            _last_results["sel_df"] = table_df
 
     if not drug_id and (not req.selectivity_type or req.selectivity_type == "All"):
         return {"error": "Enter a drug ID or select a selectivity type."}
 
     return result
-
-
-@router.get("/selectivity/download/csv")
-def selectivity_download_csv():
-    df = _last_results.get("sel_df")
-    path = save_csv(df, "selectivity")
-    if not path:
-        return {"error": "No data to download"}
-    return Response(
-        content=open(path, "rb").read(),
-        media_type="text/csv",
-        headers={"Content-Disposition": "attachment; filename=linkd_selectivity.csv"},
-    )

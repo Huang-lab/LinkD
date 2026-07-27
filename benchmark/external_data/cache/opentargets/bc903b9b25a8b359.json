@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL36", "name": "PYRIMETHAMINE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Dihydrofolate reductase inhibitor", "actionType": "INHIBITOR", "targetName": "Bifunctional dihydrofolate reductase-thymidylate synthase"}]}}}}

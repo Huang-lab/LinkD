@@ -1,3 +1,5 @@
+import type { Layout } from 'plotly.js';
+
 // Nature Journal color palette
 export const COLORS = {
   primary: '#2171B5',
@@ -14,7 +16,7 @@ export const COLORS = {
 };
 
 // Plotly layout defaults (Nature Journal style)
-export const PLOTLY_LAYOUT: Record<string, any> = {
+export const PLOTLY_LAYOUT: Partial<Layout> = {
   font: { family: 'Arial, sans-serif', size: 12, color: '#333' },
   plot_bgcolor: 'white',
   paper_bgcolor: 'white',

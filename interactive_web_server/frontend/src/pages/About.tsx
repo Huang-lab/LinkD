@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { fetchOverview } from '../api/client';
+import type { OverviewResponse } from '../api/types';
 import { COLORS } from '../styles/theme';
 
 const DATA_SOURCES = [
@@ -12,7 +13,7 @@ const DATA_SOURCES = [
 ];
 
 export default function About() {
-  const [version, setVersion] = useState<any>(null);
+  const [version, setVersion] = useState<OverviewResponse | null>(null);
   useEffect(() => { fetchOverview().then(d => setVersion(d)); }, []);
 
   return (
@@ -36,14 +37,14 @@ export default function About() {
           <strong>LinkD: An Agentic Platform for Drug Repurposing Unified across Molecular, Phenotypic, and Clinical Scales</strong>{' '}
           integrates drug-target binding affinity and selectivity metrics across the druggable proteome,
           CRISPR-based genetic dependency maps (PRISM, GDSC) linking functional drug response to gene knockouts,
-          and population-scale electronic health record associations from Mount Sinai and UK Biobank for
-          real-world clinical validation.
+          and aggregate electronic health record associations from Mount Sinai and UK Biobank for
+          observational research.
         </p>
         <p className="text-sm text-gray-600 leading-relaxed">
           An AI-powered agent (<strong>LinkD-Agent</strong>) enables researchers to query across all evidence sources using
           natural language, automatically decomposing complex biomedical questions into multi-step analysis
           plans that systematically retrieve, integrate, and synthesize findings from binding affinity,
-          drug response, and EHR data to support drug repurposing decisions.
+          drug response, and EHR data to support drug repurposing research.
         </p>
       </div>
 
@@ -57,7 +58,7 @@ export default function About() {
           </div>
           <div className="p-4 bg-gray-50 rounded-lg">
             <h4 className="text-sm font-semibold mb-2" style={{ color: COLORS.primary }}>2. Phenotype-Driven Evidence</h4>
-            <p className="text-xs text-gray-600">CRISPR-based genetic dependency screens (PRISM, GDSC) linking gene knockouts to drug sensitivity, and population-scale EHR associations from two independent cohorts validating drug-disease relationships with odds ratios and propensity score matching.</p>
+            <p className="text-xs text-gray-600">CRISPR-based genetic dependency screens (PRISM, GDSC) linking gene knockouts to drug sensitivity, and aggregate EHR associations from two independent cohorts characterizing drug-disease relationships.</p>
           </div>
           <div className="p-4 bg-gray-50 rounded-lg">
             <h4 className="text-sm font-semibold mb-2" style={{ color: COLORS.primary }}>3. AI-Powered Integration</h4>
@@ -89,7 +90,7 @@ export default function About() {
       <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm mb-6">
         <h3 className="text-lg font-bold text-gray-800 mb-3">Citation & Data</h3>
         <p className="text-sm text-gray-600 mb-2 italic">Citation information will be available upon publication.</p>
-        <p className="text-sm text-gray-600"><strong>Data:</strong> <a href="https://doi.org/10.5281/zenodo.21615191" target="_blank" rel="noopener noreferrer" className="text-[#2171B5] hover:underline">doi.org/10.5281/zenodo.21615191</a> (Zenodo, ~16 GB)</p>
+        <p className="text-sm text-gray-600"><strong>Data:</strong> <a href="https://doi.org/10.5281/zenodo.19241151" target="_blank" rel="noopener noreferrer" className="text-[#2171B5] hover:underline">doi.org/10.5281/zenodo.19241151</a> (Zenodo)</p>
       </div>
 
       {/* Contact & Support */}
@@ -99,14 +100,14 @@ export default function About() {
           <p><strong>Institution:</strong> Icahn School of Medicine at Mount Sinai</p>
           <p><strong>Email:</strong> <a href="mailto:chengwangosu@gmail.com" className="text-[#2171B5] hover:underline">chengwangosu@gmail.com</a></p>
           <p><strong>GitHub:</strong> <a href="https://github.com/Huang-lab/LinkD" target="_blank" rel="noopener noreferrer" className="text-[#2171B5] hover:underline">github.com/Huang-lab/LinkD</a></p>
-          <p><strong>Hosting:</strong> This web server is maintained and will remain accessible for at least 5 years following publication.</p>
+          <p><strong>Support:</strong> Report reproducible issues through the public GitHub repository.</p>
         </div>
       </div>
 
       {/* License */}
       <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm mb-6">
         <h3 className="text-lg font-bold text-gray-800 mb-3">License</h3>
-        <p className="text-sm text-gray-600">LinkD Agent is released under the MIT License. The source code and data processing pipelines are freely available for academic use.</p>
+        <p className="text-sm text-gray-600">Repository software is MIT licensed. The figure-reproduction bundle is CC BY 4.0. Upstream application datasets remain subject to their respective source terms.</p>
       </div>
 
       {/* Tech Stack */}

@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL83", "name": "TAMOXIFEN", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Estrogen receptor alpha modulator", "actionType": "MODULATOR", "targetName": "Estrogen receptor", "targets": [{"id": "ENSG00000091831", "approvedSymbol": "ESR1"}]}]}}}}

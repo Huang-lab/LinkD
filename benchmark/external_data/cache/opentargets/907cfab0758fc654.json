@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL4435170", "name": "DEUCRAVACITINIB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Tyrosine-protein kinase TYK2 negative allosteric modulator", "actionType": "NEGATIVE ALLOSTERIC MODULATOR", "targetName": "Non-receptor tyrosine-protein kinase TYK2", "targets": [{"id": "ENSG00000105397", "approvedSymbol": "TYK2"}]}]}}}}

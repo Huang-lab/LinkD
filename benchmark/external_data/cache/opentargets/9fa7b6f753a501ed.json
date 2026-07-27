@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL1201610", "name": "CORTICOTROPIN", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Melanocortin receptor 2 agonist", "actionType": "AGONIST", "targetName": "Adrenocorticotropic hormone receptor", "targets": [{"id": "ENSG00000185231", "approvedSymbol": "MC2R"}]}]}}}}

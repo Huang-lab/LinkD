@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL1201604", "name": "TOSITUMOMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "B-lymphocyte antigen CD20 binding agent", "actionType": "BINDING AGENT", "targetName": "B-lymphocyte antigen CD20", "targets": [{"id": "ENSG00000156738", "approvedSymbol": "MS4A1"}]}]}}}}

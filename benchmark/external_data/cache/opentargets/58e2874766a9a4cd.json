@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL413376", "name": "SURAMIN HEXASODIUM", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Acidic fibroblast growth factor inhibitor", "actionType": "INHIBITOR", "targetName": "Fibroblast growth factor 1", "targets": [{"id": "ENSG00000113578", "approvedSymbol": "FGF1"}]}]}}}}

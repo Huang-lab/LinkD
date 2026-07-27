@@ -107,6 +107,10 @@ def validate_notebooks() -> None:
             f"{name} has no repository-owned imports",
         )
         require("Data_Preparation.ipynb" in code or name == "Data_Preparation.ipynb", f"{name} names the recovery notebook")
+        require(
+            '"notebooks" / "Data_Preparation.ipynb"' in code,
+            f"{name} locates For_Reviewer unambiguously",
+        )
         count = COMPUTATIONAL_COUNTS.get(name, 0)
         if count:
             require(code.count("pd.read_csv(") >= count, f"{name} directly loads its panel tables")
@@ -128,9 +132,11 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--data-dir", type=Path, default=REVIEWER / "data")
     parser.add_argument("--output-dir", type=Path, default=REVIEWER / "outputs")
+    parser.add_argument("--skip-data", action="store_true")
     parser.add_argument("--skip-outputs", action="store_true")
     args = parser.parse_args()
-    validate_data(args.data_dir.resolve())
+    if not args.skip_data:
+        validate_data(args.data_dir.resolve())
     validate_notebooks()
     if not args.skip_outputs:
         validate_outputs(args.output_dir.resolve())

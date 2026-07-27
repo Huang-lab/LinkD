@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL2108675", "name": "DUPILUMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Interleukin-4 receptor subunit alpha antagonist", "actionType": "ANTAGONIST", "targetName": "Interleukin-4 receptor subunit alpha", "targets": [{"id": "ENSG00000077238", "approvedSymbol": "IL4R"}]}]}}}}

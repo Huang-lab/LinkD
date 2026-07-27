@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL1201589", "name": "OMALIZUMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Ig epsilon chain C region inhibitor", "actionType": "INHIBITOR", "targetName": "Immunoglobulin heavy constant epsilon", "targets": [{"id": "ENSG00000211891", "approvedSymbol": "IGHE"}]}]}}}}

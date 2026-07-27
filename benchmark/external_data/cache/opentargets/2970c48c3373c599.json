@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL1742423", "name": "BILASTINE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Histamine H1 receptor inverse agonist", "actionType": "INVERSE AGONIST", "targetName": "Histamine H1 receptor", "targets": [{"id": "ENSG00000196639", "approvedSymbol": "HRH1"}]}]}}}}

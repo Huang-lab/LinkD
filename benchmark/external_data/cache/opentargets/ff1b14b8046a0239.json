@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL1084546", "name": "PF-00562271", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Focal adhesion kinase 1 inhibitor", "actionType": "INHIBITOR", "targetName": "Focal adhesion kinase 1", "targets": [{"id": "ENSG00000169398", "approvedSymbol": "PTK2"}]}]}}}}

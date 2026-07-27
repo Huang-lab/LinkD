@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL4303669", "name": "ZOLEDRONIC ACID", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Farnesyl diphosphate synthase inhibitor", "actionType": "INHIBITOR", "targetName": "Farnesyl pyrophosphate synthase", "targets": [{"id": "ENSG00000160752", "approvedSymbol": "FDPS"}]}]}}}}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../components/SimpleRouter';
 import { fetchOverview } from '../api/client';
+import type { OverviewResponse } from '../api/types';
 import { COLORS } from '../styles/theme';
 
 const FEATURES = [
@@ -19,7 +20,7 @@ const DATA_SOURCES = [
 ];
 
 export default function Home() {
-  const [stats, setStats] = useState<any>(null);
+  const [stats, setStats] = useState<OverviewResponse | null>(null);
 
   useEffect(() => { fetchOverview().then(d => setStats(d)); }, []);
 
@@ -40,7 +41,7 @@ export default function Home() {
       {/* Key stats */}
       {stats && (
         <div className="flex flex-wrap justify-center gap-6 mb-10">
-          {stats.cards.slice(0, 5).map((c: any, i: number) => (
+          {stats.cards.slice(0, 5).map((c, i) => (
             <div key={i} className="text-center">
               <div className="text-2xl font-bold" style={{ color: c.color }}>
                 {Number(c.value).toLocaleString()}
@@ -65,6 +66,12 @@ export default function Home() {
             </div>
           </Link>
         ))}
+      </div>
+
+      <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-8 text-xs text-amber-900">
+        <strong>Research use only.</strong> Associations shown by LinkD are observational and do
+        not establish causality or clinical efficacy. AI-generated outputs require independent
+        verification.
       </div>
 
       {/* How it works */}

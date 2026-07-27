@@ -27,4 +27,5 @@ services:
     disk:
       name: linkd-data
       mountPath: /opt/render/project/src/data
-      sizeGB: 20
+      # Atomic dataset upgrades temporarily require space for old + new copies.
+      sizeGB: 40

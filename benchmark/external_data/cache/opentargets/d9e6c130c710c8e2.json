@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL1615779", "name": "IOBENGUANE I 131", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Norepinephrine transporter substrate", "actionType": "SUBSTRATE", "targetName": "Sodium-dependent noradrenaline transporter", "targets": [{"id": "ENSG00000103546", "approvedSymbol": "SLC6A2"}]}]}}}}

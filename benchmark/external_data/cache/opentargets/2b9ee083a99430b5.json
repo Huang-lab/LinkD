@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL2108730", "name": "SARILUMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Interleukin-6 receptor alpha subunit antagonist", "actionType": "ANTAGONIST", "targetName": "Interleukin-6 receptor subunit alpha", "targets": [{"id": "ENSG00000160712", "approvedSymbol": "IL6R"}]}]}}}}

@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL1808388", "name": "BEXAGLIFLOZIN", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Sodium/glucose cotransporter 2 inhibitor", "actionType": "INHIBITOR", "targetName": "Sodium/glucose cotransporter 2", "targets": [{"id": "ENSG00000140675", "approvedSymbol": "SLC5A2"}]}]}}}}

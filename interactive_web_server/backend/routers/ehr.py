@@ -1,7 +1,6 @@
-from fastapi import APIRouter, Response
-from pydantic import BaseModel
-from typing import Optional
-from services import db, df_to_records, save_csv, _last_results
+from fastapi import APIRouter, Query
+from pydantic import BaseModel, Field
+from services import db, df_to_records
 
 router = APIRouter()
 
@@ -16,19 +15,21 @@ ICD_CATEGORIES = {
 
 @router.get("/ehr/preload")
 def ehr_preload(
-    page: int = 1, page_size: int = 50, source: str = "Both",
-    drug_filter: str = "", disease_filter: str = "",
-    icd_prefix: str = "C", atc_category: str = "",
+    page: int = Query(1, ge=1, le=100_000),
+    page_size: int = Query(50, ge=1, le=200),
+    source: str = Query("Both", max_length=20),
+    drug_filter: str = Query("", max_length=100),
+    disease_filter: str = Query("", max_length=100),
+    icd_prefix: str = Query("C", max_length=10),
+    atc_category: str = Query("", max_length=100),
 ):
     """Return deduplicated, filtered EHR data with category panels."""
     import pandas as _pd
 
     # --- Build combined DataFrame ---
-    print(f"EHR preload: db has {len(db.dfs)} datasets, keys: {list(db.dfs.keys())}")
     frames = []
     if source in ("Both", "Mount Sinai"):
         ms = db.dfs.get("ehr_mount_sinai")
-        print(f"  ehr_mount_sinai: {'found, ' + str(len(ms)) + ' rows' if ms is not None else 'NOT FOUND'}")
         if ms is not None and not ms.empty:
             msc = ms.copy()
             msc["Source"] = "Mount Sinai"
@@ -84,18 +85,18 @@ def ehr_preload(
     if icd_prefix and "ICD10" in combined.columns:
         combined = combined[combined["ICD10"].astype(str).str.startswith(icd_prefix)]
     if atc_category and "Drug Category" in combined.columns:
-        combined = combined[combined["Drug Category"].astype(str).str.contains(atc_category, case=False, na=False)]
+        combined = combined[combined["Drug Category"].astype(str).str.contains(atc_category, case=False, na=False, regex=False)]
     if drug_filter:
         mask = _pd.Series(False, index=combined.index)
         for col in ["Drug Chembl ID", "Drug Name"]:
             if col in combined.columns:
-                mask = mask | combined[col].astype(str).str.contains(drug_filter, case=False, na=False)
+                mask = mask | combined[col].astype(str).str.contains(drug_filter, case=False, na=False, regex=False)
         combined = combined[mask]
     if disease_filter:
         mask = _pd.Series(False, index=combined.index)
         for col in ["ICD10", "Disease Description"]:
             if col in combined.columns:
-                mask = mask | combined[col].astype(str).str.contains(disease_filter, case=False, na=False)
+                mask = mask | combined[col].astype(str).str.contains(disease_filter, case=False, na=False, regex=False)
         combined = combined[mask]
 
     # --- Sort ---
@@ -161,11 +162,11 @@ def ehr_preload(
 
 
 class EHRRequest(BaseModel):
-    drug_id: str = ""
-    drug_name: str = ""
-    icd_code: str = ""
-    disease_name: str = ""
-    source: str = "Both"
+    drug_id: str = Field("", max_length=30)
+    drug_name: str = Field("", max_length=100)
+    icd_code: str = Field("", max_length=20)
+    disease_name: str = Field("", max_length=100)
+    source: str = Field("Both", max_length=20)
 
 
 @router.post("/ehr/search")
@@ -238,19 +239,4 @@ def ehr_search(req: EHRRequest):
         # Table
         result["table"] = df_to_records(ehr_df)
         result["table_columns"] = list(ehr_df.columns)
-        _last_results["ehr_df"] = ehr_df
-
     return result
-
-
-@router.get("/ehr/download/csv")
-def ehr_download_csv():
-    df = _last_results.get("ehr_df")
-    path = save_csv(df, "ehr")
-    if not path:
-        return {"error": "No data to download"}
-    return Response(
-        content=open(path, "rb").read(),
-        media_type="text/csv",
-        headers={"Content-Disposition": "attachment; filename=linkd_ehr.csv"},
-    )

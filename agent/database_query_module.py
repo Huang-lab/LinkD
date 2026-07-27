@@ -225,15 +225,15 @@ class DrugDiseaseTargetDB:
         df = self.dfs['drug_target_disease'].copy()
         
         if drug_id:
-            df = df[df['drugId'].str.contains(drug_id, case=False, na=False)]
+            df = df[df['drugId'].str.contains(drug_id, case=False, na=False, regex=False)]
         if gene:
-            df = df[df['Gene'].str.contains(gene, case=False, na=False)]
+            df = df[df['Gene'].str.contains(gene, case=False, na=False, regex=False)]
         if disease_id:
-            df = df[df['diseaseId'].str.contains(disease_id, case=False, na=False)]
+            df = df[df['diseaseId'].str.contains(disease_id, case=False, na=False, regex=False)]
         if phase is not None:
             df = df[df['phase'] == phase]
         if status:
-            df = df[df['status'].str.contains(status, case=False, na=False)]
+            df = df[df['status'].str.contains(status, case=False, na=False, regex=False)]
         
         return df
     
@@ -271,13 +271,13 @@ class DrugDiseaseTargetDB:
             mask = pd.Series([True] * len(df))
             
             if disease_id:
-                mask &= df['diseaseId'].str.contains(disease_id, case=False, na=False)
+                mask &= df['diseaseId'].str.contains(disease_id, case=False, na=False, regex=False)
             if icd_code:
-                mask &= df['ICD_Code'].str.contains(icd_code, case=False, na=False)
+                mask &= df['ICD_Code'].str.contains(icd_code, case=False, na=False, regex=False)
             if disease_name:
-                mask &= df['subject_label'].str.contains(disease_name, case=False, na=False)
+                mask &= df['subject_label'].str.contains(disease_name, case=False, na=False, regex=False)
             if gene:
-                mask &= df['Gene'].str.contains(gene, case=False, na=False)
+                mask &= df['Gene'].str.contains(gene, case=False, na=False, regex=False)
             
             if mask.any():
                 disease_cols = ['diseaseId', 'subject_label', 'ICD_Code', 'Gene', 'targetName', 'drugId']
@@ -290,13 +290,13 @@ class DrugDiseaseTargetDB:
             mask = pd.Series([True] * len(df))
             
             if disease_id:
-                mask &= df['Disease Name'].str.contains(disease_id, case=False, na=False)
+                mask &= df['Disease Name'].str.contains(disease_id, case=False, na=False, regex=False)
             if icd_code:
-                mask &= df['ICD_Code'].str.contains(icd_code, case=False, na=False)
+                mask &= df['ICD_Code'].str.contains(icd_code, case=False, na=False, regex=False)
             if disease_name:
-                mask &= df['Disease Name'].str.contains(disease_name, case=False, na=False)
+                mask &= df['Disease Name'].str.contains(disease_name, case=False, na=False, regex=False)
             if gene:
-                mask &= df['Gene'].str.contains(gene, case=False, na=False)
+                mask &= df['Gene'].str.contains(gene, case=False, na=False, regex=False)
             
             if mask.any():
                 results.append(df.loc[mask].drop_duplicates())
@@ -337,13 +337,13 @@ class DrugDiseaseTargetDB:
             mask = pd.Series([True] * len(df))
             
             if gene:
-                mask &= df['Gene'].str.contains(gene, case=False, na=False)
+                mask &= df['Gene'].str.contains(gene, case=False, na=False, regex=False)
             if target_id:
-                mask &= df['targetId'].str.contains(target_id, case=False, na=False)
+                mask &= df['targetId'].str.contains(target_id, case=False, na=False, regex=False)
             if target_name:
-                mask &= df['targetName'].str.contains(target_name, case=False, na=False)
+                mask &= df['targetName'].str.contains(target_name, case=False, na=False, regex=False)
             if disease_id:
-                mask &= df['diseaseId'].str.contains(disease_id, case=False, na=False)
+                mask &= df['diseaseId'].str.contains(disease_id, case=False, na=False, regex=False)
             
             if mask.any():
                 target_cols = ['targetId', 'Gene', 'targetName', 'mechanismOfAction', 'diseaseId', 'drugId']
@@ -353,7 +353,7 @@ class DrugDiseaseTargetDB:
         # Search in oncogene database
         if 'onco_genes' in self.dfs and gene:
             df = self.dfs['onco_genes'].copy()
-            mask = df['Gene'].str.contains(gene, case=False, na=False)
+            mask = df['Gene'].str.contains(gene, case=False, na=False, regex=False)
             
             if is_oncogene is not None:
                 if is_oncogene:
@@ -370,11 +370,11 @@ class DrugDiseaseTargetDB:
             mask = pd.Series([True] * len(df))
             
             if gene:
-                mask &= df['Gene'].str.contains(gene, case=False, na=False)
+                mask &= df['Gene'].str.contains(gene, case=False, na=False, regex=False)
             if target_id:
-                mask &= df['targetId'].str.contains(target_id, case=False, na=False)
+                mask &= df['targetId'].str.contains(target_id, case=False, na=False, regex=False)
             if disease_id:
-                mask &= df['diseaseId'].str.contains(disease_id, case=False, na=False)
+                mask &= df['diseaseId'].str.contains(disease_id, case=False, na=False, regex=False)
             
             if mask.any():
                 priority_cols = ['targetId', 'Gene', 'diseaseId', 'score', 'evidenceCount', 'subject_label']
@@ -432,9 +432,9 @@ class DrugDiseaseTargetDB:
         df = self.dfs['drug_target_disease'].copy()
         
         if drug_id:
-            df = df[df['drugId'].str.contains(drug_id, case=False, na=False)]
+            df = df[df['drugId'].str.contains(drug_id, case=False, na=False, regex=False)]
         if disease_id:
-            df = df[df['diseaseId'].str.contains(disease_id, case=False, na=False)]
+            df = df[df['diseaseId'].str.contains(disease_id, case=False, na=False, regex=False)]
         
         return df[['drugId', 'diseaseId', 'subject_label', 'ICD_Code', 'Gene', 'targetName', 'phase', 'status']].drop_duplicates()
     
@@ -448,9 +448,9 @@ class DrugDiseaseTargetDB:
             mask = pd.Series([True] * len(df))
             
             if disease_id:
-                mask &= df['diseaseId'].str.contains(disease_id, case=False, na=False)
+                mask &= df['diseaseId'].str.contains(disease_id, case=False, na=False, regex=False)
             if gene:
-                mask &= df['Gene'].str.contains(gene, case=False, na=False)
+                mask &= df['Gene'].str.contains(gene, case=False, na=False, regex=False)
             
             if mask.any():
                 cols = ['diseaseId', 'subject_label', 'ICD_Code', 'targetId', 'Gene', 'score', 'evidenceCount']
@@ -462,9 +462,9 @@ class DrugDiseaseTargetDB:
             mask = pd.Series([True] * len(df))
             
             if disease_id:
-                mask &= df['diseaseId'].str.contains(disease_id, case=False, na=False)
+                mask &= df['diseaseId'].str.contains(disease_id, case=False, na=False, regex=False)
             if gene:
-                mask &= df['Gene'].str.contains(gene, case=False, na=False)
+                mask &= df['Gene'].str.contains(gene, case=False, na=False, regex=False)
             
             if mask.any():
                 cols = ['diseaseId', 'subject_label', 'ICD_Code', 'targetId', 'Gene', 'score', 'evidenceCount']
@@ -485,9 +485,9 @@ class DrugDiseaseTargetDB:
         mask = pd.Series([True] * len(df))
         
         if gene:
-            mask &= df['Gene'].str.contains(gene, case=False, na=False)
+            mask &= df['Gene'].str.contains(gene, case=False, na=False, regex=False)
         if disease_name:
-            mask &= df['Disease Name'].str.contains(disease_name, case=False, na=False)
+            mask &= df['Disease Name'].str.contains(disease_name, case=False, na=False, regex=False)
         
         return df.loc[mask]
     
@@ -585,13 +585,13 @@ class DrugDiseaseTargetDB:
             mask = pd.Series([True] * len(df))
             
             if drug_id:
-                mask &= df['Drug Chembl ID'].str.contains(drug_id, case=False, na=False)
+                mask &= df['Drug Chembl ID'].str.contains(drug_id, case=False, na=False, regex=False)
             if drug_name:
-                mask &= df['Drug Name'].str.contains(drug_name, case=False, na=False)
+                mask &= df['Drug Name'].str.contains(drug_name, case=False, na=False, regex=False)
             if icd_code:
-                mask &= df['ICD10'].str.contains(icd_code, case=False, na=False)
+                mask &= df['ICD10'].str.contains(icd_code, case=False, na=False, regex=False)
             if disease_name:
-                mask &= df['Disease Description'].str.contains(disease_name, case=False, na=False)
+                mask &= df['Disease Description'].str.contains(disease_name, case=False, na=False, regex=False)
             
             if mask.any():
                 result_df = df.loc[mask].copy()
@@ -718,13 +718,13 @@ class DrugDiseaseTargetDB:
         mask = pd.Series([True] * len(df))
         
         if drug_name:
-            mask &= df['drugs'].str.contains(drug_name, case=False, na=False)
+            mask &= df['drugs'].str.contains(drug_name, case=False, na=False, regex=False)
         if drug_id:
-            mask &= df['ChEMBL_ID'].str.contains(drug_id, case=False, na=False)
+            mask &= df['ChEMBL_ID'].str.contains(drug_id, case=False, na=False, regex=False)
         if gene:
-            mask &= df['genes'].str.contains(gene, case=False, na=False)
+            mask &= df['genes'].str.contains(gene, case=False, na=False, regex=False)
         if source:
-            mask &= df['source'].str.contains(source, case=False, na=False)
+            mask &= df['source'].str.contains(source, case=False, na=False, regex=False)
         if significant_only:
             # Significant if either AUC or IC50 is significant
             auc_sig = df.get('AUC_FDR_sig', pd.Series([False] * len(df)))
@@ -823,11 +823,11 @@ class DrugDiseaseTargetDB:
         
         # Search by drug ID or name
         if drug_id:
-            mask = df['Drug'].str.contains(drug_id, case=False, na=False)
+            mask = df['Drug'].str.contains(drug_id, case=False, na=False, regex=False)
             if not mask.any() and 'Drug Chembl ID' in df.columns:
-                mask = df['Drug Chembl ID'].str.contains(drug_id, case=False, na=False)
+                mask = df['Drug Chembl ID'].str.contains(drug_id, case=False, na=False, regex=False)
         elif drug_name:
-            mask = df['Drug Name'].str.contains(drug_name, case=False, na=False)
+            mask = df['Drug Name'].str.contains(drug_name, case=False, na=False, regex=False)
         else:
             return None
         
@@ -870,9 +870,9 @@ class DrugDiseaseTargetDB:
         
         # Search by gene or target
         if gene:
-            mask = df['Gene'].str.contains(gene, case=False, na=False)
+            mask = df['Gene'].str.contains(gene, case=False, na=False, regex=False)
         elif target:
-            mask = df['Target'].str.contains(target, case=False, na=False)
+            mask = df['Target'].str.contains(target, case=False, na=False, regex=False)
         else:
             return None
         
@@ -886,7 +886,7 @@ class DrugDiseaseTargetDB:
         """Resolve gene symbol to target name used in parquet files."""
         if 'target_binding_stats' in self.dfs:
             target_df = self.dfs['target_binding_stats']
-            gene_match = target_df[target_df['Gene'].str.contains(gene, case=False, na=False)]
+            gene_match = target_df[target_df['Gene'].str.contains(gene, case=False, na=False, regex=False)]
             if not gene_match.empty:
                 return gene_match.iloc[0].get('Target')
         return None
@@ -1021,7 +1021,7 @@ class DrugDiseaseTargetDB:
             return pd.DataFrame()
         
         df = self.dfs['drug_umap'].copy()
-        mask = df['Type'].str.contains(selectivity_type, case=False, na=False)
+        mask = df['Type'].str.contains(selectivity_type, case=False, na=False, regex=False)
         
         if mask.any():
             return df[mask]

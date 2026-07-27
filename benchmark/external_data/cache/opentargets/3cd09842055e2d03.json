@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL2108324", "name": "OBLIMERSEN", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Bcl-2 mRNA antisense inhibitor", "actionType": "ANTISENSE INHIBITOR", "targetName": "Bcl-2 mRNA", "targets": [{"id": "ENSG00000171791", "approvedSymbol": "BCL2"}]}]}}}}

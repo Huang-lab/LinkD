@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL4297951", "name": "COAGULATION FACTOR X HUMAN", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Coagulation factor X exogenous protein", "actionType": "EXOGENOUS PROTEIN", "targetName": "Coagulation factor X", "targets": [{"id": "ENSG00000126218", "approvedSymbol": "F10"}]}]}}}}

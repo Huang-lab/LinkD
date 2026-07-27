@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL710", "name": "FINASTERIDE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Steroid 5-alpha-reductase 2 inhibitor", "actionType": "INHIBITOR", "targetName": "3-oxo-5-alpha-steroid 4-dehydrogenase 2", "targets": [{"id": "ENSG00000277893", "approvedSymbol": "SRD5A2"}]}]}}}}

@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL1201506", "name": "GEMTUZUMAB OZOGAMICIN", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Myeloid cell surface antigen CD33 binding agent", "actionType": "BINDING AGENT", "targetName": "Myeloid cell surface antigen CD33", "targets": [{"id": "ENSG00000105383", "approvedSymbol": "CD33"}]}]}}}}

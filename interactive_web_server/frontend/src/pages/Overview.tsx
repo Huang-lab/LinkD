@@ -1,18 +1,20 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../components/SimpleRouter';
 import PlotChart from '../components/PlotChart';
 import StatCard from '../components/StatCard';
 import { fetchOverview } from '../api/client';
 import { COLORS } from '../styles/theme';
+import type { OverviewResponse } from '../api/types';
+import type { Layout } from 'plotly.js';
 
-const BASE_LAYOUT: any = {
+const BASE_LAYOUT: Partial<Layout> = {
   font: { family: 'Arial, sans-serif', size: 12, color: '#333' },
   plot_bgcolor: 'white', paper_bgcolor: 'white',
   margin: { l: 60, r: 20, t: 50, b: 50 }, showlegend: false, height: 320,
 };
 
 // Horizontal bars need wider left margin for labels
-const HBAR_LAYOUT: any = { ...BASE_LAYOUT, margin: { l: 180, r: 30, t: 50, b: 50 } };
+const HBAR_LAYOUT: Partial<Layout> = { ...BASE_LAYOUT, margin: { l: 180, r: 30, t: 50, b: 50 } };
 
 const DATA_SOURCE_LINKS = [
   { label: 'Drug-Target-Disease', desc: '276K+ associations from ChEMBL', url: 'https://www.ebi.ac.uk/chembl/' },
@@ -24,7 +26,7 @@ const DATA_SOURCE_LINKS = [
 ];
 
 export default function Overview() {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<OverviewResponse | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -42,7 +44,7 @@ export default function Overview() {
 
       {/* Stat Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 mb-6">
-        {cards.map((c: any, i: number) => (
+        {cards.map((c, i) => (
           <StatCard key={i} label={String(c.label)} value={Number(c.value)} color={String(c.color)} />
         ))}
       </div>
@@ -72,10 +74,10 @@ export default function Overview() {
           <PlotChart
             data={[{
               type: 'bar', orientation: 'h',
-              y: charts.sources.map((s: any) => s.source),
-              x: charts.sources.map((s: any) => s.count),
+              y: charts.sources.map(s => s.source),
+              x: charts.sources.map(s => s.count),
               marker: { color: COLORS.palette.slice(0, charts.sources.length) },
-              text: charts.sources.map((s: any) => s.count.toLocaleString()),
+              text: charts.sources.map(s => s.count.toLocaleString()),
               textposition: 'outside',
               hovertemplate: '<b>%{y}</b><br>Records: %{x:,}<extra></extra>',
             }]}
@@ -89,8 +91,8 @@ export default function Overview() {
           <PlotChart
             data={[{
               type: 'bar',
-              x: charts.phases.map((p: any) => p.phase),
-              y: charts.phases.map((p: any) => p.count),
+              x: charts.phases.map(p => p.phase),
+              y: charts.phases.map(p => p.count),
               marker: { color: COLORS.palette.slice(0, charts.phases.length) },
               hovertemplate: '<b>%{x}</b><br>Records: %{y:,}<extra></extra>',
             }]}
@@ -127,7 +129,7 @@ export default function Overview() {
               </tr>
             </thead>
             <tbody>
-              {sources_table.map((s: any, i: number) => (
+              {sources_table.map((s, i) => (
                 <tr key={i} className={`border-b border-gray-100 ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
                   <td className="px-3 py-1.5">{s.dataset}</td>
                   <td className="px-3 py-1.5 text-right">{s.rows.toLocaleString()}</td>

@@ -3,11 +3,13 @@ import PlotChart from '../components/PlotChart';
 import DataTable from '../components/DataTable';
 import DownloadBar from '../components/DownloadBar';
 import Pagination from '../components/Pagination';
-import { preloadEHR, downloadCSV } from '../api/client';
+import { downloadRecordsCSV, preloadEHR } from '../api/client';
+import type { EHRPreloadResponse } from '../api/types';
+import type { Data } from 'plotly.js';
 import { COLORS } from '../styles/theme';
 
 export default function EHR() {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<EHRPreloadResponse | null>(null);
   const [page, setPage] = useState(1);
   const [source, setSource] = useState('Both');
   const [icdPrefix] = useState('C'); // cancer only
@@ -20,7 +22,17 @@ export default function EHR() {
     setData(d);
   }, []);
 
-  useEffect(() => { loadData(1, 'Both', 'C', '', '', ''); }, [loadData]);
+  useEffect(() => {
+    void preloadEHR({
+      page: 1,
+      page_size: 50,
+      source: 'Both',
+      icd_prefix: 'C',
+      atc_category: '',
+      drug_filter: '',
+      disease_filter: '',
+    }).then(setData);
+  }, []);
 
   const applyFilters = () => { setPage(1); loadData(1, source, icdPrefix, atcCategory, drugFilter, diseaseFilter); };
   const onPageChange = (p: number) => { setPage(p); loadData(p, source, icdPrefix, atcCategory, drugFilter, diseaseFilter); };
@@ -60,7 +72,7 @@ export default function EHR() {
       </div>
 
       {/* Drug category panel */}
-      {data?.drug_categories?.length > 0 && (
+      {data && data.drug_categories.length > 0 && (
         <div className="bg-white rounded-lg border border-gray-200 p-3 mb-3 shadow-sm">
           <div className="text-xs font-semibold text-gray-600 mb-2">Drug Category (ATC)</div>
           <div className="flex flex-wrap gap-1.5">
@@ -68,7 +80,7 @@ export default function EHR() {
               className={`px-3 py-1 text-xs rounded-full border transition-colors ${!atcCategory ? 'bg-[#238B45] text-white border-[#238B45]' : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-100'}`}>
               All
             </button>
-            {data.drug_categories.map((c: any) => (
+            {data.drug_categories.map(c => (
               <button key={c.category} onClick={() => selectDrugCategory(c.category)}
                 className={`px-3 py-1 text-xs rounded-full border transition-colors ${atcCategory === c.category ? 'bg-[#238B45] text-white border-[#238B45]' : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-100'}`}>
                 {c.category} ({c.count.toLocaleString()})
@@ -97,22 +109,24 @@ export default function EHR() {
       </div>
 
       {/* Preloaded forest plot */}
-      {data?.forest?.length > 0 && (
+      {data && data.forest.length > 0 && (
         <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm mb-4">
           <h4 className="text-sm font-semibold text-gray-700 mb-0.5">Odds Ratio vs Statistical Significance</h4>
           <p className="text-xs text-gray-400 mb-2">Each point is a drug-disease association. X = Odds Ratio (OR=1 dashed line), Y = -log10(P-value). Hover for details.</p>
           <PlotChart
-            data={['mount_sinai', 'uk_biobank'].map(src => {
-              const srcData = data.forest.filter((f: any) => f.source === src);
+            data={['mount_sinai', 'uk_biobank']
+              .filter(src => data.forest.some(point => point.source === src))
+              .map((src): Data => {
+              const srcData = data.forest.filter(f => f.source === src);
               return { type: 'scatter', mode: 'markers',
-                x: srcData.map((f: any) => f.or_value),
-                y: srcData.map((f: any) => f.neg_log_p),
+                x: srcData.map(f => f.or_value),
+                y: srcData.map(f => f.neg_log_p),
                 marker: { size: 6, color: src === 'mount_sinai' ? COLORS.primary : COLORS.amber, opacity: 0.7 },
                 name: src === 'mount_sinai' ? 'Mount Sinai' : 'UK Biobank',
-                customdata: srcData.map((f: any) => [f.drug_name, f.disease, f.icd10]),
+                customdata: srcData.map(f => [f.drug_name, f.disease, f.icd10]),
                 hovertemplate: '<b>Drug:</b> %{customdata[0]}<br><b>Disease:</b> %{customdata[1]} (%{customdata[2]})<br>OR: %{x:.3f}<br>-log10(p): %{y:.2f}<extra></extra>',
               };
-            }).filter((t: any) => t.x.length > 0)}
+              })}
             layout={{ font: { family: 'Arial', size: 11 }, plot_bgcolor: 'white', paper_bgcolor: 'white',
               xaxis: { title: { text: 'Odds Ratio', font: { size: 13, family: 'Arial' } }, showgrid: false, showline: true, linecolor: '#333' },
               yaxis: { title: { text: '-log\u2081\u2080(P-value)', font: { size: 13, family: 'Arial' } }, showgrid: true, gridcolor: '#f0f0f0', showline: true, linecolor: '#333' },
@@ -137,7 +151,7 @@ export default function EHR() {
             <>
               <DataTable data={data.associations} columns={data.columns || []} />
               <Pagination page={page} totalPages={totalPages} total={data.total || 0} onPageChange={onPageChange} />
-              <DownloadBar onCSV={() => downloadCSV('ehr')} />
+              <DownloadBar onCSV={() => downloadRecordsCSV(data.associations, data.columns || [], 'linkd_ehr.csv')} />
             </>
           ) : (
             <p className="text-xs text-gray-400 italic">No associations found with current filters.</p>

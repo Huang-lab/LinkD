@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL1743070", "name": "SILTUXIMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Interleukin-6 antagonist", "actionType": "ANTAGONIST", "targetName": "Interleukin-6", "targets": [{"id": "ENSG00000136244", "approvedSymbol": "IL6"}]}]}}}}

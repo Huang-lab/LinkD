@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL1434", "name": "MINOCYCLINE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Bacterial 70S ribosome inhibitor", "actionType": "INHIBITOR", "targetName": "Bacterial 70S ribosome"}]}}}}

@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL1730601", "name": "GIMERACIL", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Dihydropyrimidine dehydrogenase inhibitor", "actionType": "INHIBITOR", "targetName": "Dihydropyrimidine dehydrogenase [NADP(+)]", "targets": [{"id": "ENSG00000188641", "approvedSymbol": "DPYD"}]}]}}}}

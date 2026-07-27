@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL957", "name": "BOSENTAN", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Endothelin receptor, ET-A/ET-B antagonist", "actionType": "ANTAGONIST", "targetName": "Endothelin receptor, ET-A/ET-B", "targets": [{"id": "ENSG00000136160", "approvedSymbol": "EDNRB"}, {"id": "ENSG00000151617", "approvedSymbol": "EDNRA"}]}]}}}}

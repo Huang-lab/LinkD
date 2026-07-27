@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL2347655", "name": "FILANESIB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Kinesin-like protein 1 inhibitor", "actionType": "INHIBITOR", "targetName": "Kinesin-like protein KIF11", "targets": [{"id": "ENSG00000138160", "approvedSymbol": "KIF11"}]}]}}}}

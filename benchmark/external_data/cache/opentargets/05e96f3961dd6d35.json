@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL1200762", "name": "BETAMETHASONE SODIUM PHOSPHATE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Glucocorticoid receptor agonist", "actionType": "AGONIST", "targetName": "Glucocorticoid receptor", "targets": [{"id": "ENSG00000113580", "approvedSymbol": "NR3C1"}]}]}}}}

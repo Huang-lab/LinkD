@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL1447", "name": "LINCOMYCIN", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "70S ribosome inhibitor", "actionType": "INHIBITOR", "targetName": "70S ribosome"}, {"mechanismOfAction": "Bacterial 70S ribosome inhibitor", "actionType": "INHIBITOR", "targetName": "Bacterial 70S ribosome"}]}}}}

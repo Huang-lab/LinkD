@@ -1,12 +1,9 @@
-"""
-Shared services: database instance, helper functions, download utilities.
-"""
+"""Shared read-only database services for the LinkD API."""
 
 import sys
 import os
-import tempfile
 from pathlib import Path
-from typing import Optional, Dict, Any, List
+from typing import List
 
 import pandas as pd
 
@@ -15,7 +12,7 @@ project_root = Path(__file__).resolve().parent.parent.parent
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
-from agent import load_database, LLMPlanningAgent, LLMClient, PROVIDERS
+from agent import load_database, PROVIDERS
 
 # ============================================================
 # Database (loaded once at import time)
@@ -40,15 +37,6 @@ DATA_SOURCES_VERSION = {
     "PRISM/GDSC": "2024-Q4",
     "Open Targets": "24.09",
 }
-
-# ============================================================
-# Agent state (per-session, not persistent)
-# ============================================================
-
-planning_agent: Optional[LLMPlanningAgent] = None
-current_plan = None
-execution_history: list = []
-_last_results: Dict[str, Any] = {}
 
 # ============================================================
 # Provider map
@@ -155,17 +143,3 @@ def df_to_records(df: pd.DataFrame, max_rows: int = 200) -> List[dict]:
             if isinstance(v, float) and (math.isnan(v) or math.isinf(v)):
                 row[k] = None
     return records
-
-
-# ============================================================
-# Download helpers
-# ============================================================
-
-
-def save_csv(df: pd.DataFrame, name: str = "results") -> Optional[str]:
-    """Save DataFrame to temp CSV, return path."""
-    if df is None or df.empty:
-        return None
-    tmp = tempfile.NamedTemporaryFile(suffix=".csv", delete=False, prefix=f"linkd_{name}_")
-    df.to_csv(tmp.name, index=False)
-    return tmp.name

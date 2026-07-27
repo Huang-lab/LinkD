@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL1201574", "name": "ONABOTULINUMTOXINA", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Synaptosomal nerve-associated protein 25 (SNAP-25) inhibitor", "actionType": "INHIBITOR", "targetName": "Synaptosomal-associated protein 25", "targets": [{"id": "ENSG00000132639", "approvedSymbol": "SNAP25"}]}]}}}}

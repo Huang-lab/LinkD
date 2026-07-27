@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -r requirements.txt pytest httpx
+      - run: python -m pytest -q
+      - run: python scripts/check_repository_consistency.py
+      - run: python scripts/reviewer_data/validate_package.py --skip-data --skip-outputs
+      - run: python benchmark/tests/test_benchmark_smoke.py
+      - run: python benchmark/report/performance_report.py
+      - run: python benchmark/report/leaderboard.py
+      - name: Require retained benchmark reports to match their summaries
+        run: git diff --exit-code -- benchmark/results/PERFORMANCE_REPORT.md benchmark/results/leaderboard.md benchmark/results/leaderboard.csv
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: interactive_web_server/frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: interactive_web_server/frontend/package-lock.json
+      - run: npm ci
+      - run: npm audit --omit=dev
+      - run: npm run lint
+      - run: npm run build
+      - name: Require committed bundle to match source
+        working-directory: .
+        run: git diff --exit-code -- interactive_web_server/frontend/dist
+
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

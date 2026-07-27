@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL160", "name": "CYCLOSPORINE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Cyclophilin A modulator", "actionType": "MODULATOR", "targetName": "Peptidyl-prolyl cis-trans isomerase A", "targets": [{"id": "ENSG00000196262", "approvedSymbol": "PPIA"}]}]}}}}

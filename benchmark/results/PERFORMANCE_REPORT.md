@@ -1,4 +1,4 @@
-# LinkD Benchmark — Performance Report (refined, manuscript-aligned)
+# LinkD-Agent Supplementary Benchmark — Performance Report
 
 _Auto-generated from `results/summary.*.jsonl`. Seven tasks aligned to LinkD's described modules (LinkD-Bind, causal/clinical target evidence, Target Priority Index, CRISPR drug-response, weighted multi-evidence fusion, selectivity), each scored against the most independent external gold. Tasks are grouped by **type**, defined a priori: **Prediction** = the answer must be computed from molecular/clinical data (LinkD's design target, not memorizable); **Mechanism/Integration** = infer or fuse evidence; **Knowledge** = the answer is a documented fact (LLM home turf). **Best LLM** / **Combined** pick the strongest model per task (named in cell); LLM tiers = gpt-5.4, claude-sonnet-4-6, gpt-4.1/4o/4o-mini. **SOTA tool-agent** = best of ToolUniverse(OpenTargets) / OT-genetics / OT-association / PubMed (where applicable). Router = per-task max(LinkD, LLM). Higher = better on every metric. Two gold-limited diagnostics (EHR repurposing, FAERS safety) are reported separately below and excluded from the headline averages — see the appendix for why._
 
@@ -8,29 +8,29 @@ _Auto-generated from `results/summary.*.jsonl`. Seven tasks aligned to LinkD's d
 | T2 | Prediction | Causal + clinical-phase evidence | ndcg@20 | 0.515 | 0.350 (gpt-5.4) | 0.497 (gpt-5.4) | **0.506 (gpt-5.4)** | 0.531 (ToolUniverse-agent) | 0.515 | -0.009 |
 | T3 | Prediction | Target Priority Index (TPI) | ndcg@20 | 0.515 | 0.335 (claude-sonnet-4-6) | 0.479 (gpt-5.4) | **0.518 (gpt-5.4)** | 0.531 (ToolUniverse-agent) | 0.515 | +0.003 |
 | T4 | Mechanism | CRISPR drug-response corr. | ndcg@20 | 0.587 | 0.840 (claude-sonnet-4-6) | 0.851 (claude-sonnet-4-6) | **0.818 (gpt-5.4)** | — | 0.840 | -0.022 |
-| T5 | Integration | Weighted multi-evidence fusion | auroc | 0.392 | 0.788 (gpt-5.4) | 0.757 (gpt-5.4) | **0.850 (gpt-5.4)** | 0.705 (OpenTargets) | 0.788 | +0.062 |
+| T5 | Integration | Weighted multi-evidence fusion | auroc | 0.467 | 0.759 (gpt-5.4) | 0.725 (gpt-5.4) | **0.806 (gpt-5.4)** | 0.652 (OpenTargets) | 0.759 | +0.047 |
 | T6 | Knowledge | Binding → mechanism rank | ndcg@20 | 0.465 | 0.902 (claude-sonnet-4-6) | 0.825 (gpt-5.4) | **0.837 (gpt-5.4)** | — | 0.902 | -0.065 |
 | T7 | Knowledge | Selectivity score | auroc | 0.474 | 0.908 (gpt-4.1) | 0.819 (gpt-4.1) | **0.834 (gpt-5.4)** | — | 0.908 | -0.074 |
 | — | _Prediction mean (n=3)_ | — | — | _0.616_ | _0.438_ | _0.589_ | _**0.614**_ | — | _0.616_ | -0.002 |
 | — | _Mechanism mean (n=1)_ | — | — | _0.587_ | _0.840_ | _0.851_ | _**0.818**_ | — | _0.840_ | -0.022 |
-| — | _Integration mean (n=1)_ | — | — | _0.392_ | _0.788_ | _0.757_ | _**0.850**_ | — | _0.788_ | +0.062 |
+| — | _Integration mean (n=1)_ | — | — | _0.467_ | _0.759_ | _0.725_ | _**0.806**_ | — | _0.759_ | +0.047 |
 | — | _Knowledge mean (n=2)_ | — | — | _0.470_ | _0.905_ | _0.822_ | _**0.835**_ | — | _0.905_ | -0.070 |
-| — | **Overall** | **Average (n=7 tasks)** | — | **0.538** | **0.679** | **0.717** | **0.740** | — | **0.755** | +0.062 |
+| — | **Overall** | **Average (n=7 tasks)** | — | **0.549** | **0.675** | **0.712** | **0.734** | — | **0.751** | +0.059 |
 
-## Verdict — a specialist predictor, best deployed via an LLM orchestrator
+## Retained benchmark summary
 
-Averaged over the 7 headline tasks: **LinkD 0.538** · **best-LLM 0.679** · **Combined (equal-weight) 0.717** · **Orchestrator (LLM-calls-LinkD) 0.740** · **Router-oracle 0.755**.
+Averaged over the 7 headline tasks: **LinkD 0.549** · **best-LLM 0.675** · **Combined (equal-weight) 0.712** · **Orchestrator (LLM-calls-LinkD) 0.734** · **Router-oracle 0.751**.
 
-- **LinkD wins its design target.** On the *Prediction* tasks — binding affinity, target identification, prioritization, where the answer is computed from molecular/clinical data and is not memorizable — **LinkD alone (0.616) beats the best frontier LLM (0.438)**. This is LinkD's core value: it supplies quantitative predictions an LLM cannot recall.
+- On the three *Prediction* tasks, **LinkD alone (0.616) scored above the strongest retained closed-book LLM selected per task (0.438)**. This comparison is limited to the retained fixtures and metrics.
 
 - **The LLM wins knowledge recall.** On the *Knowledge* tasks (naming a drug's MoA target, judging selectivity from the drug name) the answer is a documented fact, so a frontier LLM is far stronger — as expected for a database vs a knowledge model.
 
-- **The orchestrator is the best deployable strategy (0.740).** By having the LLM *call* LinkD as a tool and cross-check it (rather than blending 50/50), it captures LinkD's prediction edge AND the LLM's breadth: it relays LinkD's hard numbers on Prediction tasks (e.g. T1 binding: orchestrator = LinkD 0.819 vs Combined 0.79, which diluted in the LLM's weak pKd guess) and answers Knowledge tasks from its own memory. It beats every other deployable method on average and approaches the router-oracle (0.755) — the per-task best-of ceiling — without needing the gold labels a router-oracle requires.
+- The retained orchestrator had the highest evaluated aggregate among the deployable conditions (0.734) and was below the descriptive router-oracle (0.751). This does not establish superiority outside these tasks.
 
 - **Caveat:** the agent is only as reliable as the model's tool-use + output formatting. Per-task detail below shows each model's behavior.
 
 
-**Recommendation:** ship the **LLM-as-orchestrator** (LLM calls LinkD tools, cross-checks, answers) as the production interface — it captures LinkD's prediction edge *and* the LLM's breadth, and is robust to which source is stronger per query. See `figures/fig_nature.png`.
+**Scope:** this is a retained supplementary benchmark, not a submitted figure panel or an application-wide accuracy estimate. See `agent_benchmark.py` and `TASK_CATALOG.md`.
 
 
 ## Appendix — gold-limited diagnostics (excluded from headline averages)
@@ -148,21 +148,21 @@ _These two EHR tasks are reported for completeness but **excluded from the avera
 | Base LLM (closed-book) | gpt-4o-mini | 0.493 | 0.496 | 0.564 | 60 |
 
 ### T5 · Weighted multi-evidence fusion — Target–disease validation (hard decoys)  *(type: Integration)*
-- **Definition:** Score whether a gene is a drug's validated target, among the disease's other validated targets. *(unit = one (drug, gene, disease) triad, n = 144)*
+- **Definition:** Score whether a gene is a drug's validated target, among the disease's other validated targets. *(unit = one (drug, gene, disease) triad, n = 152)*
 - **Gold:** positive = approved drug's true MoA target; HARD negative = another validated target of the SAME disease, excluding all known targets of the same drug.
 - **LinkD signal:** weighted multi-evidence final_score (get_comprehensive_drug_target_evidence).
 - **LLM:** closed-book: 'confidence gene G is an established target in disease D (0–1)'.
 - **Combined fusion:** MEAN of the two 0–1 scores.
 - **Metric:** auroc (+ auprc)
-- **Combined vs best-single:** ⚠️ fusion HURTS (-0.031) — equal-weight score-mean blends 50/50 with no reliability gate, so the stronger source (the LLM, 0.788) is dragged toward the weaker (LinkD, 0.392) → 0.757.
+- **Combined vs best-single:** ⚠️ fusion HURTS (-0.034) — equal-weight score-mean blends 50/50 with no reliability gate, so the stronger source (the LLM, 0.759) is dragged toward the weaker (LinkD, 0.467) → 0.725.
 
 | Condition | Model | auroc | auprc | n |
 |---|---|---|---|---|
-| LinkD (multi-evidence fusion) | tools-only | 0.392 | 0.435 | 144 |
-| orchestrator | gpt-5.4 | 0.850 | 0.808 | 144 |
-| Base LLM (closed-book) | gpt-5.4 | 0.788 | 0.770 | 144 |
-| combined | gpt-5.4 | 0.757 | 0.764 | 144 |
-| OpenTargets association | opentargets | 0.705 | 0.734 | 144 |
+| LinkD (multi-evidence fusion) | tools-only | 0.467 | 0.435 | 152 |
+| orchestrator | gpt-5.4 | 0.806 | 0.808 | 152 |
+| Base LLM (closed-book) | gpt-5.4 | 0.759 | 0.770 | 152 |
+| combined | gpt-5.4 | 0.725 | 0.764 | 152 |
+| OpenTargets association | opentargets | 0.652 | 0.734 | 152 |
 
 ### T6 · Binding → mechanism rank — Recover MoA target (knowledge recall)  *(type: Knowledge)*
 - **Definition:** Rank a drug's molecular mechanism-of-action target genes. KNOWLEDGE-RECALL task — a drug's canonical MoA target is a documented fact, so a frontier LLM is expected to win; LinkD must rediscover it from predicted binding, which is noisier than memory. *(unit = one drug (rank its targets), n = 44)*

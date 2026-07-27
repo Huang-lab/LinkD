@@ -23,8 +23,9 @@ installs the inputs under `data/` and `static/`.
 
 The live Zenodo record only needs to contain the ZIP. The notebook checks
 Zenodo's published checksum and then verifies every bundled file against the
-ZIP's internal SHA-256 manifest. If the ZIP is not published, the notebook can
-use `../zenodo_upload/` as a prominently labelled author-only testing fallback.
+ZIP's internal SHA-256 manifest. There is no repository-local fallback: a
+missing or invalid public archive stops the preparation notebook with a clear
+error.
 
 ## Figure notebooks
 
@@ -45,3 +46,7 @@ Figure 6 contains only submitted panels 6a–b; non-submitted panel 6c is
 intentionally excluded. All distributed EHR and virtual-clinical-trial inputs
 are aggregate and non-identifiable. Licensing, release identifiers,
 provenance, checksums, row counts, and schemas are installed under `data/`.
+
+The repository software is MIT licensed. The figure-reproduction bundle is
+licensed CC BY 4.0; upstream datasets used by the public LinkD application
+remain subject to their respective source terms.

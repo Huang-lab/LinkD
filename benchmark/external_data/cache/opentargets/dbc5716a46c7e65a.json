@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL1743010", "name": "ELOTUZUMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "SLAM family member 7 inhibitor", "actionType": "INHIBITOR", "targetName": "SLAM family member 7", "targets": [{"id": "ENSG00000026751", "approvedSymbol": "SLAMF7"}]}]}}}}

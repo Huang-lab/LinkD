@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL3707229", "name": "TEZEPELUMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Thymic stromal lymphopoietin inhibitor", "actionType": "INHIBITOR", "targetName": "Thymic stromal lymphopoietin", "targets": [{"id": "ENSG00000145777", "approvedSymbol": "TSLP"}]}]}}}}

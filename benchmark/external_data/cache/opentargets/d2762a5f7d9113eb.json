@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL513909", "name": "BI-2536", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Serine/threonine-protein kinase PLK1 inhibitor", "actionType": "INHIBITOR", "targetName": "Serine/threonine-protein kinase PLK1", "targets": [{"id": "ENSG00000166851", "approvedSymbol": "PLK1"}]}]}}}}

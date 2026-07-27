@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL4297729", "name": "COSIBELIMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Programmed cell death 1 ligand 1 inhibitor", "actionType": "INHIBITOR", "targetName": "Programmed cell death 1 ligand 1", "targets": [{"id": "ENSG00000120217", "approvedSymbol": "CD274"}]}]}}}}

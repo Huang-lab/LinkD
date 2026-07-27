@@ -1,2 +1,0 @@
-{"scenario": "c1_validate", "condition": "closed_book", "model": "gpt-5.4", "n": 144, "answered": 144, "pos": 72, "neg": 72, "auroc": 0.788, "auprc": 0.77, "auroc_ci": [0.716, 0.853], "errors": 0, "lat_s/item": 1.35}
-{"scenario": "c1_validate", "condition": "combined", "model": "gpt-5.4", "n": 144, "answered": 144, "pos": 72, "neg": 72, "auroc": 0.757, "auprc": 0.764, "auroc_ci": [0.681, 0.828], "errors": 0, "lat_s/item": 1.47}

@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL4297794", "name": "NEMOLIZUMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Interleukin-31 receptor subunit alpha inhibitor", "actionType": "INHIBITOR", "targetName": "Interleukin-31 receptor subunit alpha", "targets": [{"id": "ENSG00000164509", "approvedSymbol": "IL31RA"}]}]}}}}

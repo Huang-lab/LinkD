@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL397420", "name": "ACENOCOUMAROL", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Vitamin k epoxide reductase complex subunit 1 isoform 1 inhibitor", "actionType": "INHIBITOR", "targetName": "Vitamin K epoxide reductase complex subunit 1", "targets": [{"id": "ENSG00000167397", "approvedSymbol": "VKORC1"}]}]}}}}

@@ -190,9 +190,6 @@ def main() -> int:
     validate_payload()
     build_archive(output)
     digest = sha256_file(output)
-    output.with_suffix(output.suffix + ".sha256").write_text(
-        f"{digest}  {output.name}\n", encoding="utf-8"
-    )
     if not args.keep_obsolete and OBSOLETE.exists() and OBSOLETE.resolve() != output:
         OBSOLETE.unlink()
     print(f"Built: {output}")

@@ -25,14 +25,13 @@ from benchmark.scoring.regression import aggregate_dti  # noqa: E402
 from benchmark.scoring.ranking import aggregate_target_rank  # noqa: E402
 from benchmark.aggregate import mcnemar, correct_of  # noqa: E402
 
-# Manuscript T1–T7 (+ SI diagnostics D1/D2). ID map: benchmark/TASK_CATALOG.md
+# Supplementary T1–T7 (+ diagnostics D1/D2). ID map: benchmark/TASK_CATALOG.md
 #   T1=t1_dti T2=a2_target_id T3=a3_priority T4=l4_crispr_moa
 #   T5=c1_validate T6=l2_binding_moa T7=l3_selectivity
 #   D1=t2_repurpose D2=l9_safety
 ALL_SCENARIOS = ["t1_dti", "l2_binding_moa", "l3_selectivity", "l4_crispr_moa",
                  "a2_target_id", "a3_priority", "t2_repurpose", "l9_safety", "c1_validate"]
-# Redesign diagnostics archived under benchmark/archive/ (not Fig 6c).
-REFINED_SCENARIOS = []  # was t7_sel_retrieval, t5_concordance, t4_crispr_conc
+REFINED_SCENARIOS = []
 # deterministic (no-LLM) conditions -> their fixed model label
 DETERMINISTIC = {"linkd_cli": "tools-only", "linkd": "tools-only", "linkd_tpi": "tools-only",
                  "linkd_evidence": "tools-only", "linkd_rwe": "tools-only",

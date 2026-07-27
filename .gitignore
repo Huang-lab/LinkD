@@ -49,9 +49,6 @@ Thumbs.db
 *.swp
 *.swo
 
-# Gradio
-flagged/
-
 # Local manuscript submission package (not software)
 docs/Submit/
 docs/Figures_Tables/
@@ -67,8 +64,10 @@ docs/WEAK_TASK_REDESIGN.md
 docs/feature_plan.md
 docs/COMPREHENSIVE_TASK_TABLE.md
 
-# Benchmark caches are tracked when present (Fig 6 / agent eval).
-# Oversized LinkD DB tables stay on Zenodo (see Database/ rules above).
+# Supplementary benchmark: retain frozen task/result evidence, not caches or logs.
+benchmark/external_data/cache/
+benchmark/archive/
+benchmark/results/*.log
 
 # Local Davis extract duplicate (prefer TDC cache under benchmark/external_data/cache/)
 data/

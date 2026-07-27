@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL536151", "name": "IMD-0354", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Inhibitor of nuclear factor kappa B kinase beta subunit inhibitor", "actionType": "INHIBITOR", "targetName": "Inhibitor of nuclear factor kappa-B kinase subunit beta", "targets": [{"id": "ENSG00000104365", "approvedSymbol": "IKBKB"}]}]}}}}

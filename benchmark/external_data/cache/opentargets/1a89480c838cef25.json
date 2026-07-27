@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL1487", "name": "ATORVASTATIN", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "HMG-CoA reductase inhibitor", "actionType": "INHIBITOR", "targetName": "3-hydroxy-3-methylglutaryl-coenzyme A reductase", "targets": [{"id": "ENSG00000113161", "approvedSymbol": "HMGCR"}]}]}}}}

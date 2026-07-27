@@ -1,15 +1,15 @@
 # Models for closed_book / combined / orchestrator conditions.
 # Env-key gated: any model whose provider key is absent is skipped automatically.
 #
-# Fig 6c / SI lock the primary LLM column to gpt-5.4 (OpenAI).
-# claude-sonnet-4-6 was evaluated as a secondary closed-book tier (SI Methods).
+# The retained supplementary run uses gpt-5.4 as its primary OpenAI column.
+# claude-sonnet-4-6 was evaluated as a secondary closed-book tier.
 
 openai:
   - gpt-4o-mini
   - gpt-4o
   - gpt-4.1-mini
   - gpt-4.1
-  - gpt-5.4              # Fig 6c / SI primary lock
+  - gpt-5.4              # retained supplementary benchmark model
 
 claude:                    # requires ANTHROPIC_API_KEY
   - claude-sonnet-4-6      # SI secondary closed-book tier

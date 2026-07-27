@@ -3,17 +3,18 @@ import PlotChart from '../components/PlotChart';
 import DataTable from '../components/DataTable';
 import DownloadBar from '../components/DownloadBar';
 import Pagination from '../components/Pagination';
-import { preloadBinding, searchBinding, downloadCSV } from '../api/client';
+import { downloadRecordsCSV, preloadBinding, searchBinding } from '../api/client';
+import type { BindingPreloadResponse, BindingSearchResponse } from '../api/types';
 import { COLORS } from '../styles/theme';
 
 export default function Binding() {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<BindingPreloadResponse | null>(null);
   const [page, setPage] = useState(1);
   const [geneFilter, setGeneFilter] = useState('');
   const [searchGene, setSearchGene] = useState('');
   const [drugId, setDrugId] = useState('');
   const [minAff, setMinAff] = useState('');
-  const [searchResult, setSearchResult] = useState<any>(null);
+  const [searchResult, setSearchResult] = useState<BindingSearchResponse | null>(null);
   const [loading, setLoading] = useState(false);
 
   const loadData = useCallback(async (p: number, filter: string) => {
@@ -21,7 +22,9 @@ export default function Binding() {
     setData(d);
   }, []);
 
-  useEffect(() => { loadData(1, ''); }, [loadData]);
+  useEffect(() => {
+    void preloadBinding({ page: 1, page_size: 50, gene_filter: '' }).then(setData);
+  }, []);
 
   const onFilterChange = (val: string) => {
     setGeneFilter(val);
@@ -95,14 +98,14 @@ export default function Binding() {
               <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
                 <PlotChart
                   data={[{ type: 'bar', orientation: 'h',
-                    y: searchResult.landscape.map((d: any) => d.drug).reverse(),
-                    x: searchResult.landscape.map((d: any) => d.affinity).reverse(),
-                    marker: { color: searchResult.landscape.map((d: any) => d.affinity >= 7 ? COLORS.green : COLORS.secondary).reverse() },
+                    y: searchResult.landscape.map(d => d.drug).reverse(),
+                    x: searchResult.landscape.map(d => d.affinity).reverse(),
+                    marker: { color: searchResult.landscape.map(d => d.affinity >= 7 ? COLORS.green : COLORS.secondary).reverse() },
                     hovertemplate: '<b>%{y}</b><br>pKd: %{x:.2f}<extra></extra>',
                   }]}
-                  layout={{ title: `Drug Binding Affinities for ${searchGene}`, font: { family: 'Arial', size: 11 },
+                  layout={{ title: { text: `Drug Binding Affinities for ${searchGene}` }, font: { family: 'Arial', size: 11 },
                     plot_bgcolor: 'white', paper_bgcolor: 'white', margin: { l: 120, r: 20, t: 40, b: 40 },
-                    xaxis: { title: 'Binding Affinity (pKd)', showgrid: false, showline: true, linecolor: '#333' },
+                    xaxis: { title: { text: 'Binding Affinity (pKd)' }, showgrid: false, showline: true, linecolor: '#333' },
                     height: Math.max(350, searchResult.landscape.length * 25), showlegend: false,
                     shapes: [{ type: 'line', x0: 7, x1: 7, y0: -0.5, y1: searchResult.landscape.length - 0.5, line: { color: COLORS.red, dash: 'dash', width: 1 } }],
                   }}
@@ -119,7 +122,7 @@ export default function Binding() {
                     fill: 'toself', fillcolor: 'rgba(33,113,181,0.2)',
                     line: { color: COLORS.primary, width: 2 }, marker: { size: 8, color: COLORS.primary },
                   }]}
-                  layout={{ title: `Evidence: ${drugId} / ${searchGene} — ${searchResult.radar.overall_strength.toUpperCase()}`,
+                  layout={{ title: { text: `Evidence: ${drugId} / ${searchGene} — ${searchResult.radar.overall_strength.toUpperCase()}` },
                     font: { family: 'Arial', size: 11 }, plot_bgcolor: 'white', paper_bgcolor: 'white',
                     polar: { radialaxis: { visible: true, range: [0, 1.1] } },
                     height: 400, showlegend: false, margin: { l: 40, r: 40, t: 50, b: 40 },
@@ -130,7 +133,7 @@ export default function Binding() {
             )}
           </div>
           {searchResult.table?.length > 0 && (
-            <><DataTable data={searchResult.table} columns={searchResult.table_columns} /><DownloadBar onCSV={() => downloadCSV('binding')} /></>
+            <><DataTable data={searchResult.table} columns={searchResult.table_columns} /><DownloadBar onCSV={() => downloadRecordsCSV(searchResult.table, searchResult.table_columns, 'linkd_binding.csv')} /></>
           )}
           <button onClick={() => setSearchResult(null)} className="mt-4 text-xs text-[#2171B5] hover:underline">&larr; Back to all genes</button>
         </>
@@ -157,7 +160,7 @@ export default function Binding() {
                 </tr>
               </thead>
               <tbody>
-                {data.genes?.map((g: any, i: number) => (
+                {data.genes?.map((g, i) => (
                   <tr key={i} onClick={() => doSearch(g.gene)}
                     className={`border-b border-gray-100 cursor-pointer hover:bg-blue-50 transition-colors ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
                     <td className="px-3 py-2 font-medium text-[#2171B5]">{g.gene}</td>

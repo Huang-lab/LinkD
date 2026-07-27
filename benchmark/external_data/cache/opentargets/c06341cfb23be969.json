@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL1789844", "name": "IPILIMUMAB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Cytotoxic T-lymphocyte protein 4 inhibitor", "actionType": "INHIBITOR", "targetName": "Cytotoxic T-lymphocyte protein 4", "targets": [{"id": "ENSG00000163599", "approvedSymbol": "CTLA4"}]}]}}}}

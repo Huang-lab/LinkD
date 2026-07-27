@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL416146", "name": "ETORICOXIB", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Cyclooxygenase-2 inhibitor", "actionType": "INHIBITOR", "targetName": "Prostaglandin G/H synthase 2", "targets": [{"id": "ENSG00000073756", "approvedSymbol": "PTGS2"}]}]}}}}

@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL1201564", "name": "INTERFERON GAMMA-1B", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Interferon gamma receptor agonist", "actionType": "AGONIST", "targetName": "Interferon gamma receptor", "targets": [{"id": "ENSG00000159128", "approvedSymbol": "IFNGR2"}, {"id": "ENSG00000027697", "approvedSymbol": "IFNGR1"}]}]}}}}

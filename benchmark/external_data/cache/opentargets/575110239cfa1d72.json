@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL3545185", "name": "SELINEXOR", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Exportin-1 inhibitor", "actionType": "INHIBITOR", "targetName": "Exportin-1", "targets": [{"id": "ENSG00000082898", "approvedSymbol": "XPO1"}]}]}}}}

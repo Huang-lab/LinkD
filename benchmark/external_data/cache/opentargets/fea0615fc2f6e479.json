@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL571", "name": "KETOPROFEN", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Cyclooxygenase inhibitor", "actionType": "INHIBITOR", "targetName": "Cyclooxygenase", "targets": [{"id": "ENSG00000073756", "approvedSymbol": "PTGS2"}, {"id": "ENSG00000095303", "approvedSymbol": "PTGS1"}]}]}}}}

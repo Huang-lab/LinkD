@@ -12,7 +12,7 @@ import os
 RESULTS = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "results")
 
 # (id, scenario, LinkD feature, task, gold, headline metric key, secondary keys, higher_is_better, type)
-# Refined, manuscript-aligned task set, ordered by TASK TYPE (defined a priori — what the task
+# Retained supplementary task set, ordered by TASK TYPE (defined a priori — what the task
 # tests, not who wins). Prediction = answer is computed from molecular/clinical data (LinkD's
 # design target, not memorizable); Mechanism/Integration = infer/fuse evidence; Knowledge =
 # answer is a documented fact (LLM home turf — these expose the orchestrator's routing value).
@@ -144,7 +144,7 @@ def _best(rows, key, pred):
 
 def render():
     by_scn = _load()
-    md = ["# LinkD Benchmark — Performance Report (refined, manuscript-aligned)\n",
+    md = ["# LinkD-Agent Supplementary Benchmark — Performance Report\n",
           "_Auto-generated from `results/summary.*.jsonl`. Seven tasks aligned to LinkD's described "
           "modules (LinkD-Bind, causal/clinical target evidence, Target Priority Index, CRISPR "
           "drug-response, weighted multi-evidence fusion, selectivity), each scored against the most "
@@ -265,31 +265,24 @@ def render():
     pl = sum(predt["LinkD"]) / len(predt["LinkD"]) if predt["LinkD"] else 0
     pe = sum(predt["LLM"]) / len(predt["LLM"]) if predt["LLM"] else 0
     verdict = [
-        "\n## Verdict — a specialist predictor, best deployed via an LLM orchestrator\n",
+        "\n## Retained benchmark summary\n",
         f"Averaged over the {len(acc['LinkD'])} headline tasks: **LinkD {avg['LinkD']:.3f}** · "
         f"**best-LLM {avg['LLM']:.3f}** · **Combined (equal-weight) {avg['Combined']:.3f}** · "
         f"**Orchestrator (LLM-calls-LinkD) {avg['Orchestrator']:.3f}** · "
         f"**Router-oracle {avg['Router']:.3f}**.\n",
-        f"- **LinkD wins its design target.** On the *Prediction* tasks — binding affinity, target "
-        f"identification, prioritization, where the answer is computed from molecular/clinical data "
-        f"and is not memorizable — **LinkD alone ({pl:.3f}) beats the best frontier LLM ({pe:.3f})**. "
-        f"This is LinkD's core value: it supplies quantitative predictions an LLM cannot recall.\n",
+        f"- On the three *Prediction* tasks, **LinkD alone ({pl:.3f}) scored above the strongest "
+        f"retained closed-book LLM selected per task ({pe:.3f})**. This comparison is limited to "
+        f"the retained fixtures and metrics.\n",
         "- **The LLM wins knowledge recall.** On the *Knowledge* tasks (naming a drug's MoA target, "
         "judging selectivity from the drug name) the answer is a documented fact, so a frontier LLM "
         "is far stronger — as expected for a database vs a knowledge model.\n",
-        f"- **The orchestrator is the best deployable strategy ({avg['Orchestrator']:.3f}).** By having "
-        f"the LLM *call* LinkD as a tool and cross-check it (rather than blending 50/50), it captures "
-        f"LinkD's prediction edge AND the LLM's breadth: it relays LinkD's hard numbers on Prediction "
-        f"tasks (e.g. T1 binding: orchestrator = LinkD 0.819 vs Combined 0.79, which diluted in the "
-        f"LLM's weak pKd guess) and answers Knowledge tasks from its own memory. It beats every other "
-        f"deployable method on average and approaches the router-oracle ({avg['Router']:.3f}) — the "
-        f"per-task best-of ceiling — without needing the gold labels a router-oracle requires.\n",
+        f"- The retained orchestrator had the highest evaluated aggregate among the deployable "
+        f"conditions ({avg['Orchestrator']:.3f}) and was below the descriptive router-oracle "
+        f"({avg['Router']:.3f}). This does not establish superiority outside these tasks.\n",
         "- **Caveat:** the agent is only as reliable as the model's tool-use + output formatting. "
         "Per-task detail below shows each model's behavior.\n",
-        "\n**Recommendation:** ship the **LLM-as-orchestrator** (LLM calls LinkD tools, cross-checks, "
-        "answers) as the production interface — it captures LinkD's prediction edge *and* the LLM's "
-        "breadth, and is robust to which source is stronger per query. See Fig 6c (`fig6_cell.py`). "
-        "Numeric freeze notes: `TASK_CATALOG.md`.\n",
+        "\n**Scope:** this is a retained supplementary benchmark, not a submitted figure panel or "
+        "an application-wide accuracy estimate. See `agent_benchmark.py` and `TASK_CATALOG.md`.\n",
     ]
     diag = []
     if diag_md:

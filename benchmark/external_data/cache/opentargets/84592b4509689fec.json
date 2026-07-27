@@ -1,1 +1,0 @@
-{"status": "success", "data": {"drug": {"id": "CHEMBL3989931", "name": "ENASIDENIB MESYLATE", "mechanismsOfAction": {"rows": [{"mechanismOfAction": "Isocitrate dehydrogenase [NADP], mitochondrial inhibitor", "actionType": "INHIBITOR", "targetName": "Isocitrate dehydrogenase [NADP], mitochondrial", "targets": [{"id": "ENSG00000182054", "approvedSymbol": "IDH2"}]}]}}}}
