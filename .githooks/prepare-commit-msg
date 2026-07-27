@@ -1,0 +1,9 @@
+#!/bin/sh
+# Strip AI tool Co-authored-by trailers so GitHub Contributors stays human-only.
+# Enable once per clone:  git config core.hooksPath .githooks
+MSG_FILE="$1"
+[ -n "$MSG_FILE" ] && [ -f "$MSG_FILE" ] || exit 0
+# portable in-place edit
+tmp=$(mktemp)
+sed -E '/^[Cc]o-[Aa]uthored-[Bb]y:.*(cursoragent@cursor\.com|noreply@anthropic\.com|[Cc]laude|[Cc]ursor)/d' "$MSG_FILE" > "$tmp" && mv "$tmp" "$MSG_FILE"
+exit 0
