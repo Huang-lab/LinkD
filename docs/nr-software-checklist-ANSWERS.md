@@ -16,6 +16,8 @@ Tentative resolutions below. Items marked `[TENTATIVE — confirm]` need author 
 LinkD source code is released under the MIT License (see LICENSE in https://github.com/Huang-lab/LinkD). The interactive website https://linkd-agent.net/ is freely accessible in a modern web browser; authors will maintain public access for the foreseeable future. Third-party LLM APIs remain subject to provider terms; API keys and proprietary model weights are not redistributed. Aggregate research data are available under the Zenodo record terms (DOI 10.5281/zenodo.19241152). Individual-level EHR are not redistributable.
 ```
 
+MIT `LICENSE` is in the repository root (commit `ef481b9`). After push, add one MIT sentence to manuscript Code availability.
+
 ### 2. Pinned dependency / tool versions — tentative
 
 ```
@@ -24,7 +26,7 @@ For Reviewer: pandas≥2.0, numpy≥1.24, matplotlib≥3.7, seaborn≥0.13, open
 Full app (requirements.txt): fastapi≥0.100, uvicorn≥0.23, gradio≥4, openai≥1, google-generativeai≥0.4, anthropic≥0.20, plus core data/viz packages.
 Docking (SI): RDKit ≥2022.09, Open Babel ≥3.1, AutoDockTools/MGLTools, PDB2PQR ≥3.x, FPocket, P2Rank, Smina (confirm builds).
 OS tested [TENTATIVE]: macOS 15 (darwin) and/or Ubuntu 22.04.
-Submission code version: git commit `ef481b96318b2c87920c149d1a134d803095d7b4` (short: `ef481b9`) on https://github.com/Huang-lab/LinkD `main` — Nature software deposit commit (“Add MIT license, weighted evidence agent, and benchmark source…”). Confirm this SHA is visible on GitHub after push.
+Submission code version: git commit `ef481b96318b2c87920c149d1a134d803095d7b4` (short: `ef481b9`) on local `main` (tip after checklist note: `37e2f9421b87300a91b8bb77e816fe652a31db14`). Push to https://github.com/Huang-lab/LinkD when credentials are available (`git push -u origin main`), then confirm the SHA is visible on GitHub.
 Node.js and browser versions: record from author machine when pasting (frontend build + https://linkd-agent.net/).
 ```
 
